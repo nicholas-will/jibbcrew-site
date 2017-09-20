@@ -1,0 +1,119 @@
+body {
+/*    font-family: 'Helvetica', 'Arial', sans-serif;*/
+    font-family: Helvetica Neue, Calibri, Helvetica, Arial, sans-serif;
+    font-size: 150%;
+}
+
+a {
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
+.jibb-navbar {
+    background-color: white;
+}
+
+.news-item {
+    border-top: solid 2px;
+    padding-bottom: 16px;
+}
+
+.container {
+    max-width:960px;
+}
+
+.jibb-container {
+    border-top: solid 2px;
+    padding-bottom: 16px;
+}
+
+.jibb-inner-container {
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.video-container {
+	position:relative;
+	padding-bottom:56.25%;
+	padding-top:30px;
+	height:0;
+	overflow:hidden;
+}
+
+.video-container iframe, .video-container object, .video-container embed {
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+}
+
+.navbar .navbar-toggle .icon-bar {
+    color: black;
+    border-color: black;
+    background-color: black;
+}
+
+.navbar .navbar-nav > li > a:hover, .navbar .navbar-nav > li > a:focus {
+    background-color: white;
+    color: black;
+}
+
+.navbar .navbar-right {
+/*    margin-right: 0;*/
+}
+
+.btn.outline {
+    background: none;
+    padding: 6px 14px;
+    border: 2px solid black;
+    color: black;
+}
+    
+@media only screen and (max-width: 480px) {
+    body { font-size:90%;}
+    
+    .blog-sidebar {
+        display: none;
+    }
+    
+    .row {
+        padding: 0px;
+        margin-left: -60px;
+        margin-right: -60px;
+    }
+    
+    .list-inline {padding-left: 20px;}
+}
+
+@media only screen and (max-width: 740px) {
+    body { font-size:90%;}
+    
+    .blog-sidebar {
+        display: none;
+    }
+    
+    .row {
+        padding: 0px;
+        margin-left: -60px;
+        margin-right: -60px;
+    }
+    
+    .list-inline {padding-left: 20px;}
+}
+
+/*
+@media only screen and (max-width: 800px) {
+    body { font-size:120%;}
+}  
+*/
+     
+/*
+@media only screen and (max-width: 2400px) {
+    body { font-size:140%;}
+} */
