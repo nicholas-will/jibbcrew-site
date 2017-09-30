@@ -42,20 +42,22 @@ class loginRouter
         $fullname = $_POST['fullname'];
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $type = 'user';
         
         $hash = password_hash($password, PASSWORD_DEFAULT);
 
-        $query = $this->dbh->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password) ");
+        $query = $this->dbh->prepare("INSERT INTO users (name, email, password, type) VALUES (:name, :email, :password, :type) ");
         $query->bindParam(':name', $fullname);
         $query->bindParam(':email', $email);
         $query->bindParam(':password', $hash);
+        $query->bindParam(':type', $type);
         
         if($query->execute())
         {
             
             $data = array(
                 'resp' => true,
-                'message' => "user added."
+                'message' => "user type: ".$type." added."
             );
         }
         else
@@ -77,7 +79,7 @@ class loginRouter
         $email = $_POST['email'];
         $password = $_POST['password'];
 
-        $query = $this->dbh->prepare("SELECT * FROM users WHERE email = :email ");
+        $query = $this->dbh->prepare("SELECT * FROM users WHERE email = :email AND active = 1");
         $query->bindParam(':email', $email);
         $query->execute();
 
