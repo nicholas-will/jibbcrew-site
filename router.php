@@ -51,6 +51,18 @@ class router
                 $this->getPostToEdit();
                 break;
                 
+            case 'get-users' :
+                $this->getUsers();
+                break;
+                
+            case 'get-user' :
+                $this->getUser();
+                break;
+                
+            case 'delete-user' :
+                $this->deleteUser();
+                break;
+                
             case 'check-login' :
                 $this->checkLogin();
                 break;
@@ -331,6 +343,101 @@ class router
         echo "<br/>";
         echo "<textarea class='form-control' rows='14' id='content' name='content'>".$row['content']."</textarea>";
         echo "</div>";
+    }
+    
+    private function getUsers()
+    {
+        
+        $start = $_GET['start'];
+        $type = $_GET['type'];
+
+        $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        //build post
+        switch($type)
+        {
+                
+            case 'all' :
+                $query = $this->dbh->prepare("SELECT * FROM `users` ORDER BY `id` LIMIT :start, 1000");
+                $query->bindParam(':start', intval(trim($start)));
+                break;
+                
+            default :
+                $query = $this->dbh->prepare("SELECT * FROM `users` ORDER BY `id` LIMIT :start, 1000");
+                $query->bindParam(':start', intval(trim($start)));
+        }
+
+        $query->execute();
+
+        $query->setFetchMode(PDO::FETCH_ASSOC);
+
+        while($row = $query->fetch()) 
+        {
+            
+            $post_data[] = array(
+                    'id' => $row['id'],
+                    'name' => $row['name'],
+                    'email' => $row['email'],
+                    'type' => $row['type'],
+                    'status' => $row['active']
+            );
+        }
+        
+        header ("Content-type: application/json");
+        echo json_encode($post_data);
+    }
+    
+    private function getUser()
+    {
+        
+        $id = $_POST['id'];
+
+        $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        //get user info
+        $query = $this->dbh->prepare("SELECT * FROM `users` WHERE `id` = :id LIMIT 1");
+        
+        $query->bindParam(':id', intval(trim($id)));
+
+        $query->execute();
+        
+        $query->setFetchMode(PDO::FETCH_ASSOC);
+        
+        $row = $query->fetch(); 
+        
+        $user_data = array(
+                    'id' => $row['id'],
+                    'name' => $row['name'],
+                    'email' => $row['email'],
+                    'type' => $row['type'],
+                    'status' => $row['active']
+            );
+        
+        header ("Content-type: application/json");
+        echo json_encode($user_data);
+    }
+    
+    private function deleteUser()
+    {
+        
+        $id = $_POST['id'];
+
+        $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        $query = $this->dbh->prepare("DELETE FROM `users` WHERE `id` = :id LIMIT 1");
+        
+        $query->bindParam(':id', intval(trim($id)));
+
+        if(!$query->execute())
+        {
+
+            echo "error - something went wrong.";  
+        }
+        else
+        {
+
+            echo "successfully deleted user.";
+        }
     }
     
     private function slug($string)
