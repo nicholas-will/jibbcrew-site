@@ -331,7 +331,26 @@ function getUser(id)
 function updateUser(id)
 {
     
-    //todo
+    $.ajax({
+        method: 'POST',
+        url: '/router.php',
+        data: {
+            route: 'update-user',
+            name: $('#user_name').val(),
+            type: $('#user_type').val(),
+            status: $('#user_status').val(),
+            id: id
+        }
+    }).done(function(result) {
+        //alert("content posted");
+        $("#update_result").html(""); //clear div
+        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        getUsers();
+    }).fail(function(result) {
+        //alert("error");
+        $("#update_result").html(""); //clear div
+        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+    });
 }
 
 function deleteUser(id)

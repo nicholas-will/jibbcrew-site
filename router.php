@@ -59,6 +59,10 @@ class router
                 $this->getUser();
                 break;
                 
+            case 'update-user' :
+                $this->updateUser();
+                break;
+                
             case 'delete-user' :
                 $this->deleteUser();
                 break;
@@ -415,6 +419,35 @@ class router
         
         header ("Content-type: application/json");
         echo json_encode($user_data);
+    }
+    
+    private function updateUser()
+    {
+        
+        $id = $_POST['id'];
+        $name = $_POST['name'];
+        $type = $_POST['type'];
+        $status = $_POST['status'];
+
+        $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        $query = $this->dbh->prepare("UPDATE `users` SET `name` = :name, `type` = :type, `active` = :status WHERE `id` = :id LIMIT 1");
+
+        $query->bindParam(':name', $name);
+        $query->bindParam(':type', $type);
+        $query->bindParam(':status', $status);
+        $query->bindParam(':id', intval(trim($id)));
+
+        if(!$query->execute())
+        {
+
+            echo "error - something went wrong.";  
+        }
+        else
+        {
+
+            echo "successfully updated user.";
+        }
     }
     
     private function deleteUser()
