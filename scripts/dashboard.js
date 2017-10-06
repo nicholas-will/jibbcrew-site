@@ -77,7 +77,7 @@ function updatePost(id)
             route: 'update-post',
             //user: '',
             content: $('#content').val(),
-            //type: $('#type').val(),
+            description: $('#description').val(),
             title: $('#title').val(),
             date: formattedDate,
             id: id

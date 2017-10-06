@@ -251,16 +251,18 @@ class router
         //$type = $_POST['type'];
         $date = date('Y-m-d H:i:s');
         $title = $_POST['title'];
+        $description = $_POST['description'];
         //$slug = slug($title);
         //$name = getUserName($dbh);
         $id = $_POST['id'];
 
         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $query = $this->dbh->prepare("UPDATE `postings` SET `title` = :title, `content` = :content, `timestamp` = :date WHERE `id` = :id LIMIT 1");
+        $query = $this->dbh->prepare("UPDATE `postings` SET `title` = :title, `content` = :content, `timestamp` = :date, `description` = :description WHERE `id` = :id LIMIT 1");
 
         //$query->bindParam(':name', $name);
         $query->bindParam(':title', $title);
+        $query->bindParam(':description', $description);
         //$query->bindParam(':type', $type);
         $query->bindParam(':content', $content);
         //$query->bindParam(':slug', $slug);
@@ -344,6 +346,8 @@ class router
 
         echo "<div>";
         echo "<input type='text' class='form-control' id='title' value='".$row['title']."'>";
+        echo "<br/>";
+        echo "<input type='text' class='form-control' id='description' value='".$row['description']."'>";
         echo "<br/>";
         echo "<textarea class='form-control' rows='14' id='content' name='content'>".$row['content']."</textarea>";
         echo "</div>";
