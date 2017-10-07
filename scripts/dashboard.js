@@ -276,7 +276,7 @@ function getUsers()
             
             var td4 = document.createElement('td');
             td4.style = "text-align:center";
-            td4.innerHTML = (users[i].status ? "<p class='alert-success' style='border-radius:10px;'>active</p>" : "<p class='alert-danger' style='border-radius:10px;'>inactive</p>");  //edit this
+            td4.innerHTML = (users[i].status == 1 ? "<p class='alert-success' style='border-radius:10px;'>active</p>" : "<p class='alert-danger' style='border-radius:10px;'>inactive</p>");
 
             var td5 = document.createElement('td');
             td5.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+users[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+users[i].id+"' type='button' class='btn btn-danger' onclick='deleteUser("+users[i].id+")'>Delete</button>";
