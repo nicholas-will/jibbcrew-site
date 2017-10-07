@@ -35,70 +35,60 @@
                 //create update button and add to modal
                 var update_button = $('<button type="button" class="btn btn-default" data-dismiss="modal">Update</button>').click(function () {
                     
-                    //get title
-                    //get content
-                    
-                    //alert('id: ' + post_id + " content: " + $('#content').val() + " title: "+ $('#title').val()); 
-                    
                     //update post
                     updateUser(user_id);
                 });
                 
                 $('.modal-footer').append(update_button);
-                
-                //make call for data
-                //$("#post_id").html(""); //clear div
-                //$("#post_id").append(post_id);
-
             }); 
         </script>
         
     </head>
     <body style="margin: 60px;">
             <!-- Fixed navbar -->
-        <nav class="navbar navbar-fixed-top" style="background-color: white;">
-        <div class="container" style="max-width:960px;">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="true" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+        <nav class="navbar navbar-fixed-top jibb-navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
 <!--
-                <ul class="list-inline" style="float:left; margin-left:-26px;">
-                    <li><a href="/"><img src="/img/jibbcrew-block-full.png" height="60" width="250"></a></li>
-                </ul>
+                    <ul class="list-inline" style="float:left; margin-left:-26px;">
+                        <li><a href="/"><img src="/img/jibbcrew-block-full.png" height="60" width="250"></a></li>
+                    </ul>
 -->
-                <ul class="list-inline" style="float:left; margin-left:-22px;">
-                    <li>
-                        <a style="text-decoration: none;" href="/">
-                            <div style="border: 4px solid black; margin-top: 8px;">
-                                <div style="padding-left: 4px; padding-right: 4px; margin-bottom: -8px; margin-top: -8px; font-size: 40px;">
-                                    <strong><i>JIBB</i></strong>
+                    <ul class="list-inline" style="float:left; margin-left:-22px;">
+                        <li>
+                            <a style="text-decoration: none;" href="/">
+                                <div style="border: 4px solid black; margin-top: 8px;">
+                                    <div style="padding-left: 4px; padding-right: 4px; margin-bottom: -8px; margin-top: -8px; font-size: 40px;">
+                                        <strong><i>JIBB</i></strong>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a style="text-decoration: none;" href="/">
-                            <div style="margin-left: -10px;">
-                                <div style="font-size: 38px;">
-                                    <i>CREW</i>
+                            </a>
+                        </li>
+                        <li>
+                            <a style="text-decoration: none;" href="/">
+                                <div style="margin-left: -10px;">
+                                    <div style="font-size: 38px;">
+                                        <i>CREW</i>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="dashboard.html">dashboard</a></li>
+                        <li><a href="edit.html">edit posts</a></li>
+                        <li><a href="manage-users.html">manage users</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="dashboard.html">dashboard</a></li>
-                    <li><a href="edit.html">edit posts</a></li>
-                    <li><a href="manage-users.html">manage users</a></li>
-                </ul>
-            </div>
-        </div>
         </nav>
         <div class="container" style="max-width:960px;">
             <div class="row">

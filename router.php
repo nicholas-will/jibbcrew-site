@@ -343,14 +343,25 @@ class router
         $query->setFetchMode(PDO::FETCH_ASSOC);
         
         $row = $query->fetch(); 
+        
+        $post_data = array(
+                    'id' => $row['id'],
+                    'title' => $row['title'],
+                    'description' => (!$row['description'] ? "" : $row['description']),
+                    'content' => $row['content'],
+                    'type' => $row['type']
+        );
+        
+        header ("Content-type: application/json");
+        echo json_encode($post_data);
 
-        echo "<div>";
-        echo "<input type='text' class='form-control' id='title' value='".$row['title']."'>";
-        echo "<br/>";
-        echo "<input type='text' class='form-control' id='description' value='".$row['description']."'>";
-        echo "<br/>";
-        echo "<textarea class='form-control' rows='14' id='content' name='content'>".$row['content']."</textarea>";
-        echo "</div>";
+//        echo "<div>";
+//        echo "<input type='text' class='form-control' id='title' value='".$row['title']."'>";
+//        echo "<br/>";
+//        echo "<input type='text' class='form-control' id='description' value='".$row['description']."'>";
+//        echo "<br/>";
+//        echo "<textarea class='form-control' rows='14' id='content' name='content'>".$row['content']."</textarea>";
+//        echo "</div>";
     }
     
     private function getUsers()
@@ -419,7 +430,7 @@ class router
                     'email' => $row['email'],
                     'type' => $row['type'],
                     'status' => $row['active']
-            );
+        );
         
         header ("Content-type: application/json");
         echo json_encode($user_data);

@@ -59,6 +59,7 @@ function uploadFile()
         processData: false,
         contentType: false,
         success: function(msg){
+            
             alert(msg); // display response from the PHP script, if any
         }
     });
@@ -76,19 +77,19 @@ function updatePost(id)
         data: {
             route: 'update-post',
             //user: '',
-            content: $('#content').val(),
-            description: $('#description').val(),
-            title: $('#title').val(),
+            title: $('#post_title').val(),
+            description: $('#post_description').val(),
+            content: $('#post_content').val(),
             date: formattedDate,
             id: id
         }
     }).done(function(result) {
-        //alert("content posted");
+
         $("#update_result").html(""); //clear div
         $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getPostsToEdit();
     }).fail(function(result) {
-        //alert("error");
+
         $("#update_result").html(""); //clear div
         $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
@@ -106,6 +107,7 @@ function deletePost(id)
             id: id
         },
     }).done(function(result) {
+        
         $("#result").html(""); //clear div
         $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getPostsToEdit();
@@ -125,6 +127,7 @@ function getPostsToEdit()
             type: 'all'
         },
     }).done(function(posts) {
+        
         $('#posts').html(""); //clear div
 
         var table = document.createElement('table');
@@ -185,6 +188,7 @@ function getPostsToEdit()
 
         $('#posts').append(table);
     }).fail(function() {
+        
         $('#posts').html(""); //clear div
         $('#posts').append("<table class='table'><thead><tr><th>Error</th></tr></thead></table>");
     });
@@ -193,20 +197,32 @@ function getPostsToEdit()
 function getPostToEdit(id)
 {
 
-    //console.log("id in getPostToEdit "+id);
-
     $.ajax({
         method: 'POST',
         url: '/router.php',
-        dataType: 'html',
+        dataType: 'json',
         data: {
             route: 'get-post-to-edit',
             id: id
         },
     }).done(function(post) {
-        $('.modal-body #edit_post').html(""); //clear div
-        $('.modal-body #edit_post').append(post);
+//        $('.modal-body #edit_post').html(""); //clear div
+        
+        $("#post_title").val('');
+        
+        $("#post_title").val(post.title);
+        
+        $("#post_description").val('');
+        
+        $("#post_description").val(post.description);
+        
+        $("#post_content").val('');
+        
+        $("#post_content").val(post.content);
+        
+//        $('.modal-body #edit_post').append(post);
     }).fail(function() {
+        
         $('.modal-body #edit_post').html(""); //clear div
         $('.modal-body #edit_post').append("<div>Error</div>");
     });
@@ -225,6 +241,7 @@ function getUsers()
             type: 'all'
         },
     }).done(function(users) {
+        
         $('#users').html(""); //clear div
 
         var table = document.createElement('table');
@@ -294,6 +311,7 @@ function getUsers()
 
         $('#users').append(table);
     }).fail(function() {
+        
         $('#users').html(""); //clear div
         $('#users').append("<table class='table'><thead><tr><th>Error</th></tr></thead></table>");
     });
@@ -323,6 +341,7 @@ function getUser(id)
         
 //        $('.modal-body #edit_user').append(div);
     }).fail(function() {
+        
         $('.modal-body #edit_user').html(""); //clear div
         $('.modal-body #edit_user').append("<div>Error</div>");
     });
@@ -342,12 +361,12 @@ function updateUser(id)
             id: id
         }
     }).done(function(result) {
-        //alert("content posted");
+        
         $("#update_result").html(""); //clear div
         $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getUsers();
     }).fail(function(result) {
-        //alert("error");
+        
         $("#update_result").html(""); //clear div
         $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
@@ -365,6 +384,7 @@ function deleteUser(id)
             id: id
         },
     }).done(function(result) {
+        
         $("#result").html(""); //clear div
         $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getUsers();

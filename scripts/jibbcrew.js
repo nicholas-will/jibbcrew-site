@@ -84,6 +84,10 @@ routie({
         ga('send', 'pageview');
     
         getPost(slug);
+    },
+    'login': function() {
+        
+        window.location.href = "login.html";
     }
 });
 
