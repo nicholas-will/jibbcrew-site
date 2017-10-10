@@ -16,7 +16,7 @@ routie({
 
         getPosts(post_type);
         
-        //$("#load-more").show();
+//        $("#load-more").show();
     },
     'videos': function() {
         //console.log(window.location.hash);
@@ -76,6 +76,29 @@ routie({
         $("#load-more").hide();
         
         $("#comments").remove();
+    },
+    'shop': function() {
+        //ga('set', 'page', '/' + window.location.hash);
+        //ga('send', 'pageview');
+
+        $("#title").html("");
+        
+        $("#title").html('shop');
+        
+        $("#load-more").hide();
+        
+        $("#comments").remove();
+        
+        getShop();
+        
+    },
+    'shop/:item': function(item) {
+        
+        //ga('set', 'page', '/' + window.location.hash);
+        //ga('send', 'pageview');
+        
+        getShopItem(item);   
+        
     },
     'post/:slug': function(slug) {
         //console.log(window.location.hash);
@@ -190,7 +213,7 @@ function getPosts(post_type)
                 //heading.innerHTML = posts[i].title;
 
                 var a = document.createElement('a');
-                a.setAttribute('href', "#post/"+posts[i].slug);
+                a.href = "#post/" + posts[i].slug;
                 a.innerHTML = posts[i].title;
 
                 heading.appendChild(a);
@@ -325,6 +348,83 @@ function getContact()
     div.appendChild(content);
     
     $('#posts').append(div);
+}
+
+function getShop()
+{
+    
+    var div = document.createElement('div');
+    div.className = "news-item";
+    
+    $.ajax({
+            method: 'POST',
+            url: 'shop-router.php',
+            dataType: 'json',
+            data: {
+                route: 'get-items',
+                start: 0
+            },
+        }).done(function(items) {
+        
+            $('#posts').html(""); //clear div
+    
+            for(var i = 0; i < items.length; i++)
+            {
+
+                var inner_div = document.createElement('div');
+                inner_div.className = 'responsive-card-row';
+                
+                var card = document.createElement('div');
+                card.className = 'card jibb-card';
+                
+                var a = document.createElement('a');
+                a.href = '#shop/' + items[i].slug;
+                a.style = 'text-decoration:none';
+                
+                var img = document.createElement('img');
+                img.className = 'card-img-top';
+                img.src = items[i].image_path;
+                img.style = 'width: 100%; height: 200px;';
+                
+                var card_body = document.createElement('div');
+                card_body.className = 'card-body';
+                
+                var paragraph = document.createElement('p');
+                paragraph.className = "card-text";
+                paragraph.innerHTML = items[i].name + " - $" + items[i].price;
+
+                card_body.appendChild(paragraph);
+                
+                card.appendChild(img);
+                card.appendChild(card_body);
+                
+                a.appendChild(card);
+                
+                inner_div.appendChild(a);
+                
+                div.appendChild(inner_div);
+                $('#posts').append(div);
+            }
+
+        }).fail(function() {
+            $('#posts').html(""); //clear div
+
+            var now = new Date();
+            var formattedDate = (now.getMonth()+1)+"-"+now.getDate()+"-"+now.getFullYear();
+
+            $('#posts').append(
+                "<div class='news-item'><div class='card jibb-card'><img class='card-img-top' src='' height='120' width='120' alt='error'><div class='card-body'><p class='card-text'>"+formattedDate+"<p>site down :(</p></div></div></div>");
+        
+        });
+}
+
+function getShopItem(item)
+{
+    $("#load-more").hide();
+        
+    $("#comments").remove();
+    
+    console.log(item);
 }
 
 var loaded = 5;
