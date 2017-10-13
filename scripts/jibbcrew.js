@@ -92,12 +92,12 @@ routie({
         getShop();
         
     },
-    'shop/:item': function(item) {
+    'shop/:item': function(item_slug) {
         
         //ga('set', 'page', '/' + window.location.hash);
         //ga('send', 'pageview');
         
-        getShopItem(item);   
+        getShopItem(item_slug);   
         
     },
     'post/:slug': function(slug) {
@@ -266,7 +266,6 @@ function getPost(slug)
 
             var heading = document.createElement('h4');
             heading.className = "news-item-title";
-            //heading.innerHTML = post.post.title;
 
             var a = document.createElement('a');
             a.setAttribute('href', "#post/"+post.slug);
@@ -418,13 +417,77 @@ function getShop()
         });
 }
 
-function getShopItem(item)
+function getShopItem(item_slug)
 {
-    $("#load-more").hide();
-        
-    $("#comments").remove();
     
-    console.log(item);
+    $.ajax({
+            method: 'POST',
+            url: 'shop-router.php',
+            dataType: 'json',
+            data: {
+                route: 'get-item',
+                slug: item_slug
+            },
+        }).done(function(item) {
+            //console.log(item);
+    
+            $('#posts').html(""); //clear div
+        
+            $("#load-more").hide();
+        
+            $("#comments").remove();
+    
+            var div = document.createElement('div');
+            div.className = "news-item";
+
+            var media_div = document.createElement('div');
+            media_div.className = "media";
+            media_div.style = 'padding-top: 20px';
+        
+            var media_left = document.createElement('div');
+            media_left.className = 'media-left';
+        
+            var img = document.createElement('img');
+            img.className = 'media-object';
+            img.src = item.image_path;
+            img.style = 'width: 200px; height: 200px;';
+        
+            var media_body = document.createElement('div');
+            media_body.className = 'media-body';
+            media_body.style = 'padding-left: 20px';
+                
+            var paragraph1 = document.createElement('p');
+            paragraph1.innerHTML = item.description;
+        
+            var paragraph2 = document.createElement('p');
+            paragraph2.innerHTML = (item.in_stock == 1 ? 'item in stock - ' + item.count + ' available' : 'item out of stock');
+            
+            var paragraph3 = document.createElement('p');
+            paragraph3.innerHTML = "<strong>$" + item.price + "</strong>";
+        
+            var media_heading = document.createElement('h4');
+            media_heading.className = "media-heading";
+
+            var a = document.createElement('a');
+            a.setAttribute('href', "#shop/"+item.slug);
+            a.innerHTML = item.name;
+
+            media_heading.appendChild(a);
+
+            media_body.appendChild(media_heading);
+            media_body.appendChild(paragraph1);
+            media_body.appendChild(paragraph2);
+            media_body.appendChild(paragraph3);
+        
+            media_left.appendChild(img);
+        
+            media_div.appendChild(media_left);
+            media_div.appendChild(media_body);
+        
+            div.appendChild(media_div);
+
+            $('#posts').append(div);
+        });
 }
 
 var loaded = 5;
