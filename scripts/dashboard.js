@@ -261,7 +261,7 @@ function getUsers()
         th3.style = "width:15%";
         th3.innerHTML = "type";
         var th4 = document.createElement('th');
-        th4.style = "width:15%";
+        th4.style = "width:15%; text-align: center;";
         th4.innerHTML = "status";
         var th5 = document.createElement('th');
         th5.style = "width:15%";
@@ -389,6 +389,134 @@ function deleteUser(id)
         $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getUsers();
     });
+}
+
+function getShopItems()
+{
+    
+    $.ajax({
+        method: 'GET',
+        url: '/shop-router.php',
+        dataType: 'json',
+        data: {
+            route: 'get-items',
+            start: 0
+        },
+    }).done(function(items) {
+        
+        $('#items').html(""); //clear div
+
+        var table = document.createElement('table');
+        table.className = 'table dataTable no-footer';
+        table.style = "table-layout:fixed";
+
+        var thead = document.createElement('thead');
+        var tr = document.createElement('tr');
+
+        var th1 = document.createElement('th');
+        th1.style = "width:20%";
+        th1.innerHTML = "name";
+        var th2 = document.createElement('th');
+        th2.style = "width:10%";
+        th2.innerHTML = "price";
+        var th3 = document.createElement('th');
+        th3.style = "width:10%";
+        th3.innerHTML = "type";
+        var th4 = document.createElement('th');
+        th4.style = "width:15%";
+        th4.innerHTML = "count";
+        var th5 = document.createElement('th');
+        th5.style = "width:10%";
+        th5.innerHTML = "remaining";
+        var th6 = document.createElement('th');
+        th6.style = "width:15%; text-align: center;";
+        th6.innerHTML = "avaliable";
+        var th7 = document.createElement('th');
+        th7.style = "width:20%";
+
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+        tr.appendChild(th4);
+        tr.appendChild(th5);
+        tr.appendChild(th6);
+        tr.appendChild(th7);
+        thead.appendChild(tr);
+        table.appendChild(thead);
+
+        var tbody = document.createElement('tbody')
+
+        for(var i = 0; i < items.length; i++)
+        {
+
+            var row = document.createElement('tr');
+            //row.className = '';
+
+            var td1 = document.createElement('td');
+            td1.innerHTML = items[i].name;
+
+            var td2 = document.createElement('td');
+            td2.innerHTML = '$' + items[i].price;
+
+            var td3 = document.createElement('td');
+            td3.innerHTML = items[i].type; 
+            
+            var td4 = document.createElement('td');
+            td4.innerHTML = items[i].count; 
+            
+            var td5 = document.createElement('td');
+            td5.innerHTML = items[i].remaining; 
+            
+            var td6 = document.createElement('td');
+            td6.style = "text-align:center";
+            td6.innerHTML = (items[i].in_stock == 1 ? "<p class='alert-success' style='border-radius:10px;'>in stock</p>" : "<p class='alert-danger' style='border-radius:10px;'>out of stock</p>");
+
+            var td7 = document.createElement('td');
+            td7.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger' onclick='deleteUser("+items[i].id+")'>Delete</button>";
+
+            row.appendChild(td1);
+            row.appendChild(td2);
+            row.appendChild(td3);
+            row.appendChild(td4);
+            row.appendChild(td5);
+            row.appendChild(td6);
+            row.appendChild(td7);
+
+            tbody.appendChild(row);
+        }
+
+        table.appendChild(tbody);
+
+        $('#items').append(table);
+    }).fail(function() {
+        
+        $('#items').html(""); //clear div
+        $('#items').append("<table class='table'><thead><tr><th>Error</th></tr></thead></table>");
+    });
+}
+
+function createItem()
+{
+    
+    //to do
+}
+
+function getItem(id)
+{
+    
+    //to do
+}
+
+function updateItem(id)
+{
+    
+    //to do
+}
+
+function deleteItem(id)
+{
+    
+    //to do
 }
 
 function checkLogin()

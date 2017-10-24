@@ -18,6 +18,30 @@
         <link rel="stylesheet" href="/css/main.css" >
         
         <script src="/scripts/dashboard.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                
+                getShopItems();
+            });
+            
+            $(document).on("click", ".edit_modal", function () {
+                var item_id = $(this).data('id');
+                
+                getItem(item_id);
+                
+                $('.modal-footer').html("");
+                
+                //create update button and add to modal
+                var update_button = $('<button type="button" class="btn btn-default" data-dismiss="modal">Update</button>').click(function () {
+                    
+                    //update post
+                    updateItem(item_id);
+                });
+                
+                $('.modal-footer').append(update_button);
+            }); 
+        </script>
         
     </head>
     <body style="margin: 60px;">
@@ -70,44 +94,55 @@
         <div class="container" style="max-width:960px;">
             <div class="row">
                 <div class="sidebar-module">
-                    <h3>post</h3>
+                    <h3>manage shop</h3>
                     <h5 style="float:right;">User: <span id="user-name"></span></h5>
                 </div>
                 <div class="jibb-container">
                     <div class="jibb-inner-container">
-
-                        <input type="text" class="form-control" id="title" placeholder="title"> 
-                        <h6>image upload, post type</h6>
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <input name="fileInput" id="fileInput" type="file" class="form-control">
-                                <input class="btn btn-default" type="button" value="Upload" onclick="uploadFile()">
-                            </div>
-                            <div class="form-group"> 
-                                <select class="form-control" name="type" id="type">
-                                    <option value="news">News</option>
-                                    <option value="video">Video</option>
-                                    <option value="gallery">Gallery</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                        </form>
-                        <br/>
-                        <input type="text" class="form-control" id="description" placeholder="description"> 
-                        <h6>type post below, html is allowed</h6>
-
-                        <textarea class="form-control" rows="14" id="content" name="content"></textarea>
-                        <br/>
-                        <button type="button" class="btn btn-default"  onclick="addPost()" style="float: right;">Post</button>
-                        <br/>
+                        <div id="items">
+                            <!-- content here -->
+                        </div>
                     </div>
                 </div>
-                
+
                 <div class="jibb-inner-container">
                     <div id="result"></div>
+                    <div id="update_result"></div>
                 </div>
-                
-                <div style="float: right;"><h4><span class="label label-default"><a style="text-decoration: none; color:white;" onclick="logout()" href="#">logout</a></span></h4></div>
+
+            </div>
+        </div>
+        
+        <!-- Modal -->
+        <div id="editModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">edit item</h4>
+                      </div>
+                      <div class="modal-body">
+                          <div id="edit_user" class="form-group">
+<!--
+                              <input type='text' class='form-control' id='user_name' value=''>
+                              <br/>
+                              <select class='form-control' id='user_type'>
+                                  <option value="user">user</option>
+                                  <option value="admin">admin</option>
+                              </select>
+                              <br/>
+                              <select class='form-control' id='user_status'>
+                                  <option value="0">inactive</option>
+                                  <option value="1">active</option>
+                              </select>
+-->
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                <!--            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                      </div>
+                </div>
             </div>
         </div>
     </body>

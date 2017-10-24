@@ -59,8 +59,10 @@ class shopRouter
                     'description' => $row['item_description'],
                     'image_path' => $row['item_image_path'],
                     'price' => $row['item_price'],
+                    'type' => $row['item_type'],
                     'slug' => $row['item_slug'],
-                    'count' => $row['item_count'],
+                    'count' => $row['item_total_count'],
+                    'remaining' => $row['item_remaining'],
                     'in_stock' => $row['in_stock']
             );
         }
@@ -94,8 +96,10 @@ class shopRouter
                     'description' => 'your content could not be located',
                     'image_path' => '',
                     'price' => 0,
+                    'type' => '',
                     'slug' => 'post-not-found',
                     'count' => 0,
+                    'remaining' => 0,
                     'in_stock' => 0
             );
         }
@@ -110,8 +114,10 @@ class shopRouter
                     'description' => $row['item_description'],
                     'image_path' => $row['item_image_path'],
                     'price' => $row['item_price'],
+                    'type' => $row['item_type'],
                     'slug' => $row['item_slug'],
-                    'count' => $row['item_count'],
+                    'count' => $row['item_total_count'],
+                    'remaining' => $row['item_remaining'],
                     'in_stock' => $row['in_stock']
             );
         }
