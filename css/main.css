@@ -26,11 +26,12 @@ a:hover {
 }
 
 .jibb-container {
-    border-bottom: solid 2px;
+/*    border-bottom: solid 2px;*/
     padding-bottom: 16px;
 }
 
 .jibb-inner-container {
+	border-top: solid 2px;
     padding-top: 16px;
     padding-bottom: 16px;
     padding-left: 8px;
