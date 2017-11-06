@@ -140,12 +140,15 @@ function getPostsToEdit()
         var th1 = document.createElement('th');
         th1.style = "width:20%";
         th1.innerHTML = "title";
+        
         var th2 = document.createElement('th');
         th2.style = "width:25%";
         th2.innerHTML = "description";
+        
         var th3 = document.createElement('th');
         th3.style = "width:40%";
         th3.innerHTML = "content";
+        
         var th4 = document.createElement('th');
         th4.style = "width:15%";
 
@@ -254,15 +257,19 @@ function getUsers()
         var th1 = document.createElement('th');
         th1.style = "width:20%";
         th1.innerHTML = "name";
+        
         var th2 = document.createElement('th');
         th2.style = "width:35%";
         th2.innerHTML = "email";
+        
         var th3 = document.createElement('th');
         th3.style = "width:15%";
         th3.innerHTML = "type";
+        
         var th4 = document.createElement('th');
         th4.style = "width:15%; text-align: center;";
         th4.innerHTML = "status";
+        
         var th5 = document.createElement('th');
         th5.style = "width:15%";
 
@@ -375,20 +382,24 @@ function updateUser(id)
 function deleteUser(id)
 {
     
-    $.ajax({
-        method: 'POST',
-        url: '/router.php',
-        dataType: 'html',
-        data: {
-            route: 'delete-user',
-            id: id
-        },
-    }).done(function(result) {
+    if(confirm("are you sure you want to delete this user?"))    
+    {
         
-        $("#result").html(""); //clear div
-        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
-        getUsers();
-    });
+        $.ajax({
+            method: 'POST',
+            url: '/router.php',
+            dataType: 'html',
+            data: {
+                route: 'delete-user',
+                id: id
+            },
+        }).done(function(result) {
+
+            $("#result").html(""); //clear div
+            $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+            getUsers();
+        });
+    }
 }
 
 function getShopItems()
@@ -416,21 +427,27 @@ function getShopItems()
         var th1 = document.createElement('th');
         th1.style = "width:20%";
         th1.innerHTML = "name";
+        
         var th2 = document.createElement('th');
         th2.style = "width:10%";
         th2.innerHTML = "price";
+        
         var th3 = document.createElement('th');
         th3.style = "width:10%";
         th3.innerHTML = "type";
+        
         var th4 = document.createElement('th');
         th4.style = "width:15%";
         th4.innerHTML = "count";
+        
         var th5 = document.createElement('th');
         th5.style = "width:10%";
         th5.innerHTML = "remaining";
+        
         var th6 = document.createElement('th');
         th6.style = "width:15%; text-align: center;";
         th6.innerHTML = "avaliable";
+        
         var th7 = document.createElement('th');
         th7.style = "width:20%";
 
@@ -472,7 +489,7 @@ function getShopItems()
             td6.innerHTML = (items[i].in_stock == 1 ? "<p class='alert-success' style='border-radius:10px;'>in stock</p>" : "<p class='alert-danger' style='border-radius:10px;'>out of stock</p>");
 
             var td7 = document.createElement('td');
-            td7.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger' onclick='deleteUser("+items[i].id+")'>Delete</button>";
+            td7.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger' onclick='deleteItem("+items[i].id+")'>Delete</button>";
 
             row.appendChild(td1);
             row.appendChild(td2);
@@ -495,28 +512,131 @@ function getShopItems()
     });
 }
 
-function createItem()
+function getShopItemById(id)
 {
     
-    //to do
+    $.ajax({
+        method: 'POST',
+        url: '/shop-router.php',
+        dataType: 'json',
+        data: {
+            route: 'get-item-by-id',
+            id: id
+        },
+    }).done(function(item) {
+//        $('.modal-body #edit_user').html(""); //clear div
+        
+        $("#item_name").val('');
+        
+        $("#item_name").val(item.name);
+        
+        $("#item_description").val('');
+        
+        $("#item_description").val(item.description);
+        
+        $("#item_price").val('');
+        
+        $("#item_price").val(item.price);
+        
+        $("#item_type").val(item.type);
+        
+        $("#item_count").val('');
+        
+        $("#item_count").val(item.count);
+        
+        $("#item_remaining").val('');
+        
+        $("#item_remaining").val(item.remaining);
+        
+        $("#item_available").val(item.in_stock);
+        
+//        $('.modal-body #edit_user').append(div);
+    }).fail(function() {
+        
+        $('.modal-body #edit_item').html(""); //clear div
+        $('.modal-body #edit_item').append("<div>Error</div>");
+    });
 }
 
-function getItem(id)
+function addItem()
 {
     
-    //to do
+    $.ajax({
+        method: 'POST',
+        url: '/shop-router.php',
+        data: {
+            route: 'add-item',
+            name: $('#add_item_name').val(),
+            description: $("#add_item_description").val(),
+            image_path: $("#add_item_image_path").val(),
+            price: $("#add_item_price").val(),
+            type: $('#add_item_type').val(),
+            count: $("#add_item_count").val(),
+            remaining: $("#add_item_remaining").val(),
+            in_stock: $("#add_item_available").val()
+        }
+    }).done(function(result) {
+        
+        $("#update_result").html(""); //clear div
+        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        getShopItems();
+    }).fail(function(result) {
+        
+        $("#update_result").html(""); //clear div
+        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+    });
 }
 
 function updateItem(id)
 {
     
-    //to do
+    $.ajax({
+        method: 'POST',
+        url: '/shop-router.php',
+        data: {
+            route: 'update-item',
+            name: $('#item_name').val(),
+            description: $("#item_description").val(),
+            price: $("#item_price").val(),
+            type: $('#item_type').val(),
+            count: $("#item_count").val(),
+            remaining: $("#item_remaining").val(),
+            in_stock: $("#item_available").val(),
+            id: id
+        }
+    }).done(function(result) {
+        
+        $("#update_result").html(""); //clear div
+        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        getShopItems();
+    }).fail(function(result) {
+        
+        $("#update_result").html(""); //clear div
+        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+    });
 }
 
 function deleteItem(id)
 {
     
-    //to do
+    if(confirm("are you sure you want to delete this item?"))    
+    {
+        
+        $.ajax({
+            method: 'POST',
+            url: '/shop-router.php',
+            dataType: 'html',
+            data: {
+                route: 'delete-item',
+                id: id
+            },
+        }).done(function(result) {
+        
+            $("#result").html(""); //clear div
+            $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+            getShopItems();
+        });
+    }
 }
 
 function checkLogin()
