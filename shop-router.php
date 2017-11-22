@@ -46,6 +46,22 @@ class shopRouter
             case 'delete-item' :
                 $this->deleteItem();
                 break;
+				
+			case 'get-orders' :
+				$this->getOrders();
+				break;
+				
+			case 'get-order-by-order-number' :
+				$this->getOrderByOrderNumber();
+				break;
+				
+			case 'update-order' :
+				$this->updateOrder();
+				break;
+				
+			case 'delete-order' :
+				$this->deleteOrder();
+				break;
         }
         
          //close connection
@@ -76,6 +92,7 @@ class shopRouter
                     'image_path' => $row['item_image_path'],
                     'price' => $row['item_price'],
                     'type' => $row['item_type'],
+                    'options' => ($row['item_options'] ?: ""),
                     'slug' => $row['item_slug'],
                     'count' => $row['item_total_count'],
                     'remaining' => $row['item_remaining'],
@@ -113,6 +130,7 @@ class shopRouter
                     'image_path' => '',
                     'price' => 0,
                     'type' => '',
+					'options' => '',
                     'slug' => 'post-not-found',
                     'count' => 0,
                     'remaining' => 0,
@@ -131,6 +149,7 @@ class shopRouter
                     'image_path' => $row['item_image_path'],
                     'price' => $row['item_price'],
                     'type' => $row['item_type'],
+					'options' => ($row['item_options'] ?: ""),
                     'slug' => $row['item_slug'],
                     'count' => $row['item_total_count'],
                     'remaining' => $row['item_remaining'],
@@ -149,7 +168,7 @@ class shopRouter
 
         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        //build post
+        //select item
         $query = $this->dbh->prepare("SELECT * FROM `shop` WHERE `id` = :id LIMIT 1");
         
         $query->bindParam(':id', intval(trim($id)));
@@ -167,6 +186,7 @@ class shopRouter
                     'image_path' => $row['item_image_path'],
                     'price' => $row['item_price'],
                     'type' => $row['item_type'],
+					'options' => ($row['item_options'] ?: ""),
                     'slug' => $row['item_slug'],
                     'count' => $row['item_total_count'],
                     'remaining' => $row['item_remaining'],
@@ -189,10 +209,11 @@ class shopRouter
         $remaining = $_POST['remaining'];
         $in_stock = $_POST['in_stock'];
         $id = $_POST['id'];
+		$slug = $this->slug($name);
 
         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $query = $this->dbh->prepare("UPDATE `shop` SET `item_name` = :name, `item_description` = :description, `item_price` = :price, `item_type` = :type, `item_total_count` = :count, `item_remaining` = :remaining, `in_stock` = :in_stock WHERE `id` = :id LIMIT 1");
+        $query = $this->dbh->prepare("UPDATE `shop` SET `item_name` = :name, `item_description` = :description, `item_price` = :price, `item_type` = :type, `item_total_count` = :count, `item_remaining` = :remaining, `item_slug` = :slug, `in_stock` = :in_stock WHERE `id` = :id LIMIT 1");
 
         $query->bindParam(':name', $name);
         $query->bindParam(':description', $description);
@@ -200,6 +221,7 @@ class shopRouter
         $query->bindParam(':type', $type);
         $query->bindParam(':count', $count);
         $query->bindParam(':remaining', $remaining);
+        $query->bindParam(':slug', $slug);
         $query->bindParam(':in_stock', $in_stock);
         $query->bindParam(':id', intval(trim($id)));
 
@@ -223,19 +245,21 @@ class shopRouter
         $image_path = $_POST['image_path'];
         $price = $_POST['price'];
         $type = $_POST['type'];
+        $options = $_POST['options'];
         $count = $_POST['count'];
         $remaining = $_POST['remaining'];
         $in_stock = $_POST['in_stock'];
         $slug = $this->slug($name);
 
-        $query = $this->dbh->prepare("INSERT INTO shop (item_name, item_description, item_image_path, item_price, item_type, item_total_count, item_remaining, item_slug, in_stock)
-        VALUES (:name, :description, :image_path, :price, :type, :count, :remaining, :slug, :in_stock)");
+        $query = $this->dbh->prepare("INSERT INTO shop (item_name, item_description, item_image_path, item_price, item_type, item_options, item_total_count, item_remaining, item_slug, in_stock)
+        VALUES (:name, :description, :image_path, :price, :type, :options, :count, :remaining, :slug, :in_stock)");
 
         $query->bindParam(':name', $name);
         $query->bindParam(':description', $description);
         $query->bindParam(':image_path', $image_path);
         $query->bindParam(':price', $price);
         $query->bindParam(':type', $type);
+        $query->bindParam(':options', $options);
         $query->bindParam(':count', $count);
         $query->bindParam(':remaining', $remaining);
         $query->bindParam(':slug', $slug);
@@ -272,7 +296,7 @@ class shopRouter
         else
         {
 
-            echo "successfully deleted user.";
+            echo "successfully deleted item.";
         }
     }
     
@@ -288,6 +312,148 @@ class shopRouter
         $string = preg_replace("/[\s_]/", "-", $string);
         return $string;
     }
+	
+	private function getOrders()
+	{
+		
+		$start = $_POST['start'];
+
+        $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);  
+
+        $query = $this->dbh->prepare("SELECT SUM(`item_price`) as `order_total`, `order_number` as `order_number`, `order_date` as `order_date`, `shipping_date` as `shipping_date`, `tracking_number` as `tracking_number` FROM `orders` GROUP BY `order_number` DESC LIMIT :start, 20");
+        $query->bindParam(':start', intval(trim($start)));
+
+        $query->execute();
+
+        $query->setFetchMode(PDO::FETCH_ASSOC);
+
+        while($row = $query->fetch()) 
+        {
+
+            $orders_data[] = array(
+                    'order_number' => $row['order_number'],
+                    'order_date' => $row['order_date'],
+					'order_total' => $row['order_total'],
+                    'shipping_date' => $row['shipping_date'],
+                    'tracking' => $row['tracking_number']
+            );
+        }
+        
+        header ("Content-type: application/json");
+        echo json_encode($orders_data);
+	}
+	
+	private function getOrderByOrderNumber()
+	{
+		
+		$order_number = $_POST['order_number'];
+
+        $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        //select order
+        $query = $this->dbh->prepare("SELECT * FROM `orders` WHERE `order_number` = :order_number");
+        
+        $query->bindParam(':order_number', $order_number);
+
+        $query->execute();
+        
+        $query->setFetchMode(PDO::FETCH_ASSOC);
+		
+		//select total
+        $query2 = $this->dbh->prepare("SELECT SUM(`item_price`) as `order_total` FROM `orders` WHERE `order_number` = :order_number");
+        
+        $query2->bindParam(':order_number', $order_number);
+   
+        while($row = $query->fetch()) 
+        {
+        
+			$query2->execute();
+        
+        	$query2->setFetchMode(PDO::FETCH_ASSOC);
+		
+			$row2 = $query2->fetch(); 
+			
+        	$order_data[] = array(
+                    'id' => $row['id'],
+                    'first_name' => $row['first_name'],
+                    'last_name' => $row['last_name'],
+                    'email' => $row['email'],
+                    'address' => $row['address'],
+                    'address_2' => ($row['address_2'] ?: ""),
+                    'city' => $row['city'],
+                    'state' => $row['state'],
+                    'zip' => $row['zip_code'],
+                    'country' => $row['country'],
+                    'notes' => ($row['order_notes'] ?: ""),
+                    'order_number' => $row['order_number'],
+                    'order_date' => $row['order_date'],
+					'order_total' => $row2['order_total'],
+                    'item_price' => $row['item_price'],
+					'item_name' => $row['item_name'],
+					'item_count' => $row['item_count'],
+					'item_id' => $row['item_id'],
+                    'shipping_date' => $row['shipping_date'],
+                    'tracking' => $row['tracking_number']
+            );	
+		}
+		
+
+//		
+//		$order_data['order_total'] = $row2['order_total'];
+        
+        header ("Content-type: application/json");
+        echo json_encode($order_data);
+	}
+	
+	private function updateOrder()
+	{
+		
+		$shipping_date = $_POST['shipping_date'];
+        $tracking = $_POST['tracking'];
+        $order_number = $_POST['order_number'];
+
+        $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        $query = $this->dbh->prepare("UPDATE `orders` SET `shipping_date` = :shipping_date, `tracking_number` = :tracking WHERE `order_number` = :order_number");
+
+        $query->bindParam(':shipping_date', $shipping_date);
+        $query->bindParam(':tracking', $tracking);
+        $query->bindParam(':order_number', $order_number);
+
+        if(!$query->execute())
+        {
+
+            echo "error - something went wrong.";  
+        }
+        else
+        {
+
+            echo "successfully updated order.";
+        }
+	}
+	
+	private function deleteOrder()
+	{
+		
+		$order_number = $_POST['order_number'];
+		
+		$this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
+        $query = $this->dbh->prepare("DELETE FROM `orders` WHERE `order_number` = :order_number");
+        
+        $query->bindParam(':order_number', $order_number);
+
+        if(!$query->execute())
+        {
+
+            echo "error - something went wrong.";  
+        }
+        else
+        {
+
+            echo "successfully deleted order.";
+        }
+	}
 }
 
 $ShopRouter = new shopRouter();

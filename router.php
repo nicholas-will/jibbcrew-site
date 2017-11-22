@@ -123,7 +123,7 @@ class router
                     'id' => $row['id'],
                     'slug' => $row['slug'],
                     'title' => $row['title'],
-                    'description' => (!$row['description'] ? "" : $row['description']),
+                    'description' => ($row['description'] ?: ""),
                     'content' => $row['content'],
                     'type' => $row['type'],
                     'timestamp' => $row['timestamp']
@@ -172,7 +172,7 @@ class router
                     'id' => $row['id'],
                     'slug' => $row['slug'],
                     'title' => $row['title'],
-                    'description' => (!$row['description'] ? "" : $row['description']),
+                    'description' => ($row['description'] ?: ""),
                     'content' => $row['content'],
                     'type' => $row['type'],
                     'timestamp' => $row['timestamp']
@@ -252,20 +252,20 @@ class router
         $date = date('Y-m-d H:i:s');
         $title = $_POST['title'];
         $description = $_POST['description'];
-        //$slug = slug($title);
         //$name = getUserName($dbh);
         $id = $_POST['id'];
+		$slug = $this->slug($title);
 
         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $query = $this->dbh->prepare("UPDATE `postings` SET `title` = :title, `content` = :content, `timestamp` = :date, `description` = :description WHERE `id` = :id LIMIT 1");
+        $query = $this->dbh->prepare("UPDATE `postings` SET `title` = :title, `content` = :content, `slug` = :slug, `timestamp` = :date, `description` = :description WHERE `id` = :id LIMIT 1");
 
         //$query->bindParam(':name', $name);
         $query->bindParam(':title', $title);
         $query->bindParam(':description', $description);
         //$query->bindParam(':type', $type);
         $query->bindParam(':content', $content);
-        //$query->bindParam(':slug', $slug);
+        $query->bindParam(':slug', $slug);
         $query->bindParam(':date', $date);
         $query->bindParam(':id', intval(trim($id)));
 
@@ -314,7 +314,7 @@ class router
                     'id' => $row['id'],
                     'slug' => $row['slug'],
                     'title' => $row['title'],
-                    'description' => (!$row['description'] ? "" : $row['description']),
+                    'description' => ($row['description'] ?: ""),
                     'stripped_content' => str_replace(array("<", "</", ">"), " ", $row['content']),
                     'content' => $row['content'],
                     'type' => $row['type'],
@@ -347,7 +347,7 @@ class router
         $post_data = array(
                     'id' => $row['id'],
                     'title' => $row['title'],
-                    'description' => (!$row['description'] ? "" : $row['description']),
+                    'description' => ($row['description'] ?: ""),
                     'content' => $row['content'],
                     'type' => $row['type']
         );

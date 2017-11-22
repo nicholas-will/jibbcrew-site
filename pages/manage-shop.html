@@ -103,6 +103,7 @@
                         <li><a href="edit.html">edit posts</a></li>
                         <li><a href="manage-users.html">manage users</a></li>
                         <li><a href="manage-shop.html">manage shop</a></li>
+						<li><a href="manage-orders.html">manage orders</a></li>
                     </ul>
                 </div>
             </div>
@@ -119,7 +120,7 @@
                             <!-- content here -->
                         </div>
                         <hr/>
-                        <button type="button" class="btn btn-default add_modal" data-toggle="modal" data-target="#addModal" style="float: right;">Add Item</button>
+                        <button type="button" class="btn outline add_modal" data-toggle="modal" data-target="#addModal" style="float: right;">Add Item</button>
                         <br/>
                     </div>
                 </div>
@@ -180,22 +181,24 @@
                       </div>
                       <div class="modal-body">
                           <div id="add_item" class="form-group">
-                              <input type='text' class='form-control' id='add_item_name' value=''>
+                              <input type='text' class='form-control' id='add_item_name' value='' placeholder='name'>
                               <br/>
-                              <textarea class='form-control' rows='4' id='add_item_description' value=''></textarea>
+                              <textarea class='form-control' rows='4' id='add_item_description' value='' placeholder='description'></textarea>
                               <br/>
-                              <input type='text' class='form-control' id='add_item_image_path' value=''>
+                              <input type='text' class='form-control' id='add_item_image_path' value='' placeholder='image path'>
                               <br/>
-                              <input type='text' class='form-control' id='add_item_price' value=''>
+                              <input type='text' class='form-control' id='add_item_price' value='' placeholder='price'>
                               <br/>
                               <select class='form-control' id='add_item_type'>
                                   <option value="sticker">sticker</option>
                                   <option value="shirt">shirt</option>
                               </select>
                               <br/>
-                              <input type='text' class='form-control' id='add_item_count' value=''>
+							  <input type='text' class='form-control' id='add_item_options' value='' placeholder='options'>
+							  <br/>
+                              <input type='text' class='form-control' id='add_item_count' value='' placeholder='count'>
                               <br/>
-                              <input type='text' class='form-control' id='add_item_remaining' value=''>
+                              <input type='text' class='form-control' id='add_item_remaining' value='' placeholder='remaining'>
                               <br/>
                               <select class='form-control' id='add_item_available'>
                                   <option value="0">out of stock</option>

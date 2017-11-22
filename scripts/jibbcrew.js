@@ -16,7 +16,9 @@ routie({
 
         getPosts(post_type);
         
-//        $("#load-more").show();
+        $("#load-more").show();
+		
+		$("#comments").remove();
     },
     'videos': function() {
         //console.log(window.location.hash);
@@ -93,7 +95,7 @@ routie({
         
     },
     'shop/:item': function(item_slug) {
-        
+		
         //ga('set', 'page', '/' + window.location.hash);
         //ga('send', 'pageview');
         
@@ -108,6 +110,21 @@ routie({
     
         getPost(slug);
     },
+	'cart': function() {
+		
+		//ga('set', 'page', '/' + window.location.hash);
+        //ga('send', 'pageview');
+		
+		$("#title").html("");
+        
+        $("#title").html('cart');
+        
+        $("#load-more").hide();
+        
+        $("#comments").remove();
+        
+        getCart();
+	},
     'login': function() {
         
         window.location.href = "login.html";
@@ -462,8 +479,42 @@ function getShopItem(item_slug)
             var paragraph2 = document.createElement('p');
             paragraph2.innerHTML = (item.in_stock == 1 ? 'item in stock - ' + item.count + ' available' : 'item out of stock');
             
+			var select = document.createElement('select');
+		
+			if(item.options != "")
+			{
+				
+				var opts = item.options.split(",");
+				
+				for(var i = 0; i < opts.length; i++) 
+				{
+    				var opt = opts[i];
+    				var el = document.createElement("option");
+    				el.textContent = opt;
+    				el.value = opt;
+    				select.appendChild(el);
+				}
+				
+				var paragraph4 = document.createElement('p');
+				paragraph4.appendChild(select);
+			}
+		
             var paragraph3 = document.createElement('p');
             paragraph3.innerHTML = "<strong>$" + item.price + "</strong>";
+		
+			var hr = document.createElement('hr');
+		
+			var button = document.createElement('input');
+			button.setAttribute("type", "button");
+			button.className = 'btn outline';
+			button.setAttribute('value', 'add to cart');
+		
+			button.onclick = function(){
+				console.log(item.id);
+				
+				//todo add number of items dropdown and pass to addToCart
+				addToCart(item.id, number_of_items, option_selected);
+			}
         
             var media_heading = document.createElement('h4');
             media_heading.className = "media-heading";
@@ -477,7 +528,16 @@ function getShopItem(item_slug)
             media_body.appendChild(media_heading);
             media_body.appendChild(paragraph1);
             media_body.appendChild(paragraph2);
+		
+			if(item.options != "")
+			{
+				
+				media_body.appendChild(paragraph4);
+			}
+		
             media_body.appendChild(paragraph3);
+            media_body.appendChild(hr);
+            media_body.appendChild(button);
         
             media_left.appendChild(img);
         
@@ -488,6 +548,14 @@ function getShopItem(item_slug)
 
             $('#posts').append(div);
         });
+}
+
+function getCart()
+{
+	
+	$('#posts').html(""); //clear div
+	
+	//todo
 }
 
 var loaded = 5;

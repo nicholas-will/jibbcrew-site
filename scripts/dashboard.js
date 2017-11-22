@@ -571,6 +571,7 @@ function addItem()
             image_path: $("#add_item_image_path").val(),
             price: $("#add_item_price").val(),
             type: $('#add_item_type').val(),
+            options: $('#add_item_options').val(),
             count: $("#add_item_count").val(),
             remaining: $("#add_item_remaining").val(),
             in_stock: $("#add_item_available").val()
@@ -635,6 +636,280 @@ function deleteItem(id)
             $("#result").html(""); //clear div
             $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
             getShopItems();
+        });
+    }
+}
+
+function getOrders()
+{
+
+	$.ajax({
+        method: 'GET',
+        url: '/shop-router.php',
+        dataType: 'json',
+        data: {
+            route: 'get-orders',
+            start: 0
+        },
+    }).done(function(orders) {
+        
+        $('#orders').html(""); //clear div
+
+        var table = document.createElement('table');
+        table.className = 'table dataTable no-footer';
+        table.style = "table-layout:fixed";
+
+        var thead = document.createElement('thead');
+        var tr = document.createElement('tr');
+
+        var th1 = document.createElement('th');
+        th1.style = "width:20%";
+        th1.innerHTML = "order number";
+        
+        var th2 = document.createElement('th');
+        th2.style = "width:10%";
+        th2.innerHTML = "order date";
+        
+        var th3 = document.createElement('th');
+        th3.style = "width:10%";
+        th3.innerHTML = "order total";
+        
+        var th4 = document.createElement('th');
+        th4.style = "width:20%";
+        th4.innerHTML = "shipping date";
+        
+        var th5 = document.createElement('th');
+        th5.style = "width:20%";
+        th5.innerHTML = "tracking";
+        
+        var th6 = document.createElement('th');
+        th6.style = "width:20%;";
+
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+        tr.appendChild(th4);
+        tr.appendChild(th5);
+        tr.appendChild(th6);
+        thead.appendChild(tr);
+        table.appendChild(thead);
+
+        var tbody = document.createElement('tbody')
+
+        for(var i = 0; i < orders.length; i++)
+        {
+
+            var row = document.createElement('tr');
+            //row.className = '';
+
+            var td1 = document.createElement('td');
+            td1.innerHTML = '#' + orders[i].order_number;
+
+            var td2 = document.createElement('td');
+            td2.innerHTML = orders[i].order_date.substr(0,10);
+
+            var td3 = document.createElement('td');
+            td3.innerHTML = '$' + orders[i].order_total; 
+            
+            var td4 = document.createElement('td');
+            td4.innerHTML = (orders[i].shipping_date ? orders[i].shipping_date.substr(0,10) : 'not shipped yet'); 
+            
+            var td5 = document.createElement('td');
+            td5.innerHTML = orders[i].tracking; 
+            
+            var td6 = document.createElement('td');
+            td6.innerHTML = "<button type='button' class='btn btn-default view_modal' data-toggle='modal' data-target='#viewModal' data-id='"+orders[i].order_number+"'>View</button>&nbsp&nbsp<button id='delete_"+orders[i].order_number+"' type='button' class='btn btn-danger' onclick='deleteOrder("+orders[i].order_number+")'>Delete</button>";
+
+            row.appendChild(td1);
+            row.appendChild(td2);
+            row.appendChild(td3);
+            row.appendChild(td4);
+            row.appendChild(td5);
+            row.appendChild(td6);
+
+            tbody.appendChild(row);
+        }
+
+        table.appendChild(tbody);
+
+        $('#orders').append(table);
+    }).fail(function() {
+        
+        $('#orders').html(""); //clear div
+        $('#orders').append("<table class='table'><thead><tr><th>Error</th></tr></thead></table>");
+    });
+}
+
+function getOrderByOrderNumber(order_number)
+{
+	
+	$.ajax({
+        method: 'POST',
+        url: '/shop-router.php',
+        dataType: 'json',
+        data: {
+            route: 'get-order-by-order-number',
+            order_number: order_number
+        },
+	}).done(function(order) {
+//        $('.modal-body #edit_user').html(""); //clear div
+
+		$("#order_number").html("");
+
+		$("#order_number").html("#" + order[0].order_number);
+
+		$("#order_date").html("");
+
+		$("#order_date").html(order[0].order_date.substr(0,10));
+
+		$("#name").html("");
+
+		$("#name").html(order[0].first_name + " " + order[0].last_name);
+
+		$("#email").html("");
+
+		$("#email").html(order[0].email);
+
+		$("#address").html("");
+
+		$("#address").html(order[0].address + " " + order[0].address_2);
+
+		$("#city").html("");
+
+		$("#city").html(order[0].city);
+
+		$("#state").html("");
+
+		$("#state").html(order[0].state);
+
+		$("#zip").html("");
+
+		$("#zip").html(order[0].zip);
+		
+		//build table
+		$('#items_table').html(""); //clear div
+
+        var table = document.createElement('table');
+        table.className = 'table dataTable no-footer';
+        table.style = "table-layout:fixed";
+
+        var thead = document.createElement('thead');
+        var tr = document.createElement('tr');
+        
+        var th1 = document.createElement('th');
+        th1.style = "width:60%";
+        th1.innerHTML = "item name";
+        
+        var th2 = document.createElement('th');
+        th2.style = "width:20%";
+        th2.innerHTML = "item count";
+        
+        var th3 = document.createElement('th');
+        th3.style = "width:20%";
+        th3.innerHTML = "item price";
+        
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+        thead.appendChild(tr);
+        table.appendChild(thead);
+
+        var tbody = document.createElement('tbody')
+
+        for(var i = 0; i < order.length; i++)
+        {
+
+            var row = document.createElement('tr');
+            //row.className = '';
+
+            var td1 = document.createElement('td');
+            td1.innerHTML = order[i].item_name;
+
+            var td2 = document.createElement('td');
+            td2.innerHTML = 'x' + order[i].item_count;
+
+            var td3 = document.createElement('td');
+            td3.innerHTML = '$' + order[i].item_price; 
+            
+            row.appendChild(td1);
+            row.appendChild(td2);
+            row.appendChild(td3);
+
+            tbody.appendChild(row);
+        }
+
+        table.appendChild(tbody);
+
+        $('#items_table').append(table);
+		
+		$("#order_total").html("");
+
+		$("#order_total").html("$" + order[0].order_total);
+
+		$("#notes").html("");
+
+		$("#notes").html(order[0].notes);
+
+		$("#shipping_date").val('');
+
+		$("#shipping_date").val(order[0].shipping_date);
+
+		$("#tracking").val('');
+
+		$("#tracking").val(order[0].tracking);
+
+//        $('.modal-body #edit_user').append(div);
+	}).fail(function() {
+
+			$('.modal-body #view_order').html(""); //clear div
+			$('.modal-body #view_order').append("<div>Error</div>");
+		});
+	
+}
+
+function updateOrder(order_number)
+{
+	
+	$.ajax({
+        method: 'POST',
+        url: '/shop-router.php',
+        data: {
+            route: 'update-order',
+            shipping_date: $("#shipping_date").val(),
+            tracking: $("#tracking").val(),
+            order_number: order_number
+        }
+    }).done(function(result) {
+        
+        $("#update_result").html(""); //clear div
+        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        getOrders();
+    }).fail(function(result) {
+        
+        $("#update_result").html(""); //clear div
+        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+    });
+}
+
+function deleteOrder(order_number)
+{
+	
+	if(confirm("are you sure you want to delete this order?"))    
+    {
+        
+        $.ajax({
+            method: 'POST',
+            url: '/shop-router.php',
+            dataType: 'html',
+            data: {
+                route: 'delete-order',
+                order_number: order_number
+            },
+        }).done(function(result) {
+        
+            $("#result").html(""); //clear div
+            $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+            getOrders();
         });
     }
 }
