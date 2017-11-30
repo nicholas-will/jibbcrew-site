@@ -15,8 +15,6 @@ routie({
         $("#title").html('news');
 
         getPosts(post_type);
-        
-        $("#load-more").show();
 		
 		$("#comments").remove();
     },
@@ -34,8 +32,6 @@ routie({
         $("#title").html('videos');
         
         getPosts(post_type);
-
-        $("#load-more").show();
         
         $("#comments").remove();
     },
@@ -54,10 +50,6 @@ routie({
 
         getPosts(post_type);
         
-        //getInstagramPosts(10);
-
-        $("#load-more").show();
-        
         $("#comments").remove();
     },
     'contact': function() {
@@ -75,7 +67,7 @@ routie({
         
         getContact();
         
-        $("#load-more").hide();
+        $("#load-more-button").remove();
         
         $("#comments").remove();
     },
@@ -86,13 +78,12 @@ routie({
         $("#title").html("");
         
         $("#title").html('shop');
+		
+		getShop();
         
-        $("#load-more").hide();
+        $("#load-more-button").remove();
         
-        $("#comments").remove();
-        
-        getShop();
-        
+        $("#comments").remove(); 
     },
     'shop/:item': function(item_slug) {
 		
@@ -118,12 +109,27 @@ routie({
 		$("#title").html("");
         
         $("#title").html('cart');
+		
+		getCart();
         
-        $("#load-more").hide();
+        $("#load-more-button").remove();
+        
+        $("#comments").remove();        
+	},
+	'checkout': function() {
+	
+		//ga('set', 'page', '/' + window.location.hash);
+        //ga('send', 'pageview');
+		
+		$("#title").html("");
+        
+        $("#title").html('checkout');
+		
+		getCheckout();
+        
+        $("#load-more-button").remove();
         
         $("#comments").remove();
-        
-        getCart();
 	},
     'login': function() {
         
@@ -178,30 +184,30 @@ function buildCarousel()
     return div;
 }
 
-function getInstagramPosts(limit)
-{
-    
-    var carousel = buildCarousel();
-    
-    $('#posts').html(""); //clear div
-    
-    $('#posts').append(carousel);
-    
-    var userFeed = new Instafeed({
-        get: 'user',
-        userId: '4629847913',
-        limit: limit,
-        clientId: 'f4001fdcf1574ee6a47b248fc54ae4e6',
-        accessToken: '4629847913.1677ed0.647cfc4ef7a64a2680ea99f42f1e5078',
-        resolution: 'standard_resolution',
-        template: '<div class="item"><a href="{{link}}"><img class="img-responsive center-block" src="{{image}}" /></a></div>' //height="{{height}}" width="{{width}}"
-    });
-    userFeed.run();
-    
-    setTimeout(function(){
-        $('#instafeed .item:nth-child(1)').addClass('active');
-    }, 1000); //1 sec
-}
+//function getInstagramPosts(limit)
+//{
+//    
+//    var carousel = buildCarousel();
+//    
+//    $('#posts').html(""); //clear div
+//    
+//    $('#posts').append(carousel);
+//    
+//    var userFeed = new Instafeed({
+//        get: 'user',
+//        userId: '4629847913',
+//        limit: limit,
+//        clientId: 'f4001fdcf1574ee6a47b248fc54ae4e6',
+//        accessToken: '4629847913.1677ed0.647cfc4ef7a64a2680ea99f42f1e5078',
+//        resolution: 'standard_resolution',
+//        template: '<div class="item"><a href="{{link}}"><img class="img-responsive center-block" src="{{image}}" /></a></div>' //height="{{height}}" width="{{width}}"
+//    });
+//    userFeed.run();
+//    
+//    setTimeout(function(){
+//        $('#instafeed .item:nth-child(1)').addClass('active');
+//    }, 1000); //1 sec
+//}
 
 function getPosts(post_type)
 {
@@ -249,6 +255,8 @@ function getPosts(post_type)
                 //console.log(posts[i].post.id);
                 $('#posts').append(div);
             }
+		
+			addLoadMoreButton();
 
         }).fail(function() {
             $('#posts').html(""); //clear div
@@ -276,7 +284,7 @@ function getPost(slug)
     
             $('#posts').html(""); //clear div
         
-            $("#load-more").hide();
+            $("#load-more-button").remove();
     
             var div = document.createElement('div');
             div.className = "news-item";
@@ -450,7 +458,7 @@ function getShopItem(item_slug)
     
             $('#posts').html(""); //clear div
         
-            $("#load-more").hide();
+            $("#load-more-button").remove();
         
             $("#comments").remove();
     
@@ -641,14 +649,9 @@ function getCart()
 {
 	
 	$('#posts').html(""); //clear div
-	
-	$("#load-more").hide();
-        
-	$("#comments").remove();
     
 	var div = document.createElement('div');
 	div.className = "news-item";
-	
 	
 	if(sessionStorage.length == 0)
 	{
@@ -672,24 +675,27 @@ function getCart()
 		var th1 = document.createElement('th');
 		th1.style = "width:20%";
 		th1.innerHTML = "name";
-
-		//todo add option
 		
 		var th2 = document.createElement('th');
 		th2.style = "width:15%";
-		th2.innerHTML = "quantity";
-
+		th2.innerHTML = "option";
+		
 		var th3 = document.createElement('th');
-		th3.style = "width:10%";
-		th3.innerHTML = "price";
+		th3.style = "width:15%";
+		th3.innerHTML = "quantity";
 
 		var th4 = document.createElement('th');
-		th4.style = "width:20%";
+		th4.style = "width:10%";
+		th4.innerHTML = "price";
+
+		var th5 = document.createElement('th');
+		th5.style = "width:20%";
 
 		tr.appendChild(th1);
 		tr.appendChild(th2);
 		tr.appendChild(th3);
 		tr.appendChild(th4);
+		tr.appendChild(th5);
 
 		thead.appendChild(tr);
 		table.appendChild(thead);
@@ -707,20 +713,24 @@ function getCart()
 
 			var td1 = document.createElement('td');
 			td1.innerHTML = cart_item[1];
-
+			
 			var td2 = document.createElement('td');
-			td2.innerHTML = 'x'+ window.sessionStorage.getItem(key);
+			td2.innerHTML = cart_item[2];
 
 			var td3 = document.createElement('td');
-			td3.innerHTML = '$' + cart_item[3]; 
+			td3.innerHTML = 'x'+ window.sessionStorage.getItem(key);
 
 			var td4 = document.createElement('td');
-			td4.innerHTML = "<button id='delete_"+cart_item[1]+"' type='button' class='btn btn-danger' onclick='removeFromCart(&quot;"+key+"&quot;)'>remove item</button>";
+			td4.innerHTML = '$' + cart_item[3]; 
+
+			var td5 = document.createElement('td');
+			td5.innerHTML = "<button id='delete_"+cart_item[1]+"' type='button' class='btn btn-danger' onclick='removeFromCart(&quot;"+key+"&quot;)'>remove item</button>";
 
 			row.appendChild(td1);
 			row.appendChild(td2);
 			row.appendChild(td3);
 			row.appendChild(td4);
+			row.appendChild(td5);
 
 			tbody.appendChild(row);
 		}
@@ -732,76 +742,117 @@ function getCart()
 		div.appendChild(table);
 	}
 	
-	var button = document.createElement('input');
-	button.setAttribute("type", "button");
-	button.className = 'btn outline';
-	button.setAttribute('value', 'empty cart');
+	var empty_button = document.createElement('input');
+	empty_button.setAttribute("type", "button");
+	empty_button.className = 'btn';
+	empty_button.setAttribute('value', 'empty cart');
 
-	button.onclick = function(){
+	empty_button.onclick = function(){
 
 		emptyCart();
 	}
 	
+	var checkout_button = document.createElement('a');
+	
+	if(sessionStorage.length == 0)
+    {
+	   checkout_button.className = 'btn outline disabled';
+    }
+	else
+	{
+		checkout_button.className = 'btn outline';
+	}
+	
+	checkout_button.innerHTML = 'checkout';
+	checkout_button.style = "margin-right:10px;";
+	checkout_button.href = "#checkout";
+	
 	var button_div = document.createElement('div');
 	button_div.style = "float: right;";
 	
-	button_div.appendChild(button);
+	button_div.appendChild(checkout_button);
+	button_div.appendChild(empty_button);
 	
 	div.appendChild(button_div);
 	
 	$('#posts').append(div);
 }
 
+function getCheckout()
+{
+	
+	$('#posts').html(""); //clear div
+    
+	var div = document.createElement('div');
+	div.className = "news-item";
+	
+	//todo
+	
+	$('#posts').append(div);
+}
+
 var loaded = 5;
 
-window.onload = function() {
-    document.getElementById("load-more").onclick = function() {loadMore();};
-};
+function addLoadMoreButton()
+{
+	
+	if(!document.getElementById('load-more-button'))
+	{
+		
+		var button = document.createElement('input');
+		button.setAttribute("type", "button");
+		button.setAttribute("data-num-loaded", "5");
+		button.setAttribute('value', 'show more');
+		button.className = 'btn outline';
+		button.id = "load-more-button";
 
-function loadMore() {
-    
-    $.ajax({
-        method: 'POST',
-        url: 'router.php',
-        dataType: 'json',
-        data: {
-            route: 'get-posts',
-            start: loaded,
-            type: post_type
-        },
-    }).done(function(posts) {
+		button.onclick = function(){
+			$.ajax({
+			method: 'POST',
+			url: 'router.php',
+			dataType: 'json',
+			data: {
+				route: 'get-posts',
+				start: loaded,
+				type: post_type
+			},
+			}).done(function(posts) {
 
-        for(var i = 0; i < posts.length; i++)
-        {
+				for(var i = 0; i < posts.length; i++)
+				{
 
-            var div = document.createElement('div');
-            div.className = "news-item";
+					var div = document.createElement('div');
+					div.className = "news-item";
 
-            var heading = document.createElement('h4');
-            heading.className = "news-item-title";
-            //heading.innerHTML = posts[i].title;
+					var heading = document.createElement('h4');
+					heading.className = "news-item-title";
+					//heading.innerHTML = posts[i].title;
 
-            var a = document.createElement('a');
-            a.setAttribute('href', "#post/"+posts[i].slug);
-            a.innerHTML = posts[i].title;
+					var a = document.createElement('a');
+					a.setAttribute('href', "#post/"+posts[i].slug);
+					a.innerHTML = posts[i].title;
 
-            heading.appendChild(a);
+					heading.appendChild(a);
 
-            var paragraph = document.createElement('p');
-            paragraph.className = "news-item-desc";
-            paragraph.innerHTML = posts[i].description;
+					var paragraph = document.createElement('p');
+					paragraph.className = "news-item-desc";
+					paragraph.innerHTML = posts[i].description;
 
-            var content = document.createElement("div");
-            content.innerHTML = posts[i].content;
+					var content = document.createElement("div");
+					content.innerHTML = posts[i].content;
 
-            div.appendChild(heading);
-            div.appendChild(paragraph);
-            div.appendChild(content);
+					div.appendChild(heading);
+					div.appendChild(paragraph);
+					div.appendChild(content);
 
-            //console.log(posts[i].id);
-            $('#posts').append(div);
-        }
+					//console.log(posts[i].id);
+					$('#posts').append(div);
+				}
 
-        loaded += 5;
-    });
-};
+				loaded += 5;
+			});
+		}
+
+		$('#load-more').append(button);
+	}	
+}
