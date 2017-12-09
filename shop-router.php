@@ -62,6 +62,10 @@ class shopRouter
 			case 'delete-order' :
 				$this->deleteOrder();
 				break;
+				
+			case 'add-item-to-order' :
+				$this->addItemToOrder();
+				break;
         }
         
          //close connection
@@ -320,7 +324,8 @@ class shopRouter
 
         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);  
 
-        $query = $this->dbh->prepare("SELECT SUM(`item_price`) as `order_total`, `order_number` as `order_number`, `order_date` as `order_date`, `shipping_date` as `shipping_date`, `tracking_number` as `tracking_number` FROM `orders` GROUP BY `order_number` DESC LIMIT :start, 20");
+        $query = $this->dbh->prepare("SELECT `order_total` as `order_total`, `order_number` as `order_number`, `order_date` as `order_date`, `shipping_date` as `shipping_date`, `tracking_number` as `tracking_number` FROM `orders` GROUP BY `order_number` DESC LIMIT :start, 20");
+		
         $query->bindParam(':start', intval(trim($start)));
 
         $query->execute();
@@ -360,18 +365,18 @@ class shopRouter
         $query->setFetchMode(PDO::FETCH_ASSOC);
 		
 		//select total
-        $query2 = $this->dbh->prepare("SELECT SUM(`item_price`) as `order_total` FROM `orders` WHERE `order_number` = :order_number");
-        
-        $query2->bindParam(':order_number', $order_number);
+//        $query2 = $this->dbh->prepare("SELECT SUM(`item_price`) as `order_total` FROM `orders` WHERE `order_number` = :order_number");
+//        
+//        $query2->bindParam(':order_number', $order_number);
    
         while($row = $query->fetch()) 
         {
         
-			$query2->execute();
-        
-        	$query2->setFetchMode(PDO::FETCH_ASSOC);
+//			$query2->execute();
+//        
+//        	$query2->setFetchMode(PDO::FETCH_ASSOC);
 		
-			$row2 = $query2->fetch(); 
+//			$row2 = $query2->fetch(); 
 			
         	$order_data[] = array(
                     'id' => $row['id'],
@@ -387,19 +392,16 @@ class shopRouter
                     'notes' => ($row['order_notes'] ?: ""),
                     'order_number' => $row['order_number'],
                     'order_date' => $row['order_date'],
-					'order_total' => $row2['order_total'],
+					'order_total' => $row['order_total'],
                     'item_price' => $row['item_price'],
 					'item_name' => $row['item_name'],
-					'item_count' => $row['item_count'],
+					'item_option' => ($row['item_option'] ?: ""),
+					'item_quantity' => $row['item_quantity'],
 					'item_id' => $row['item_id'],
                     'shipping_date' => $row['shipping_date'],
                     'tracking' => $row['tracking_number']
             );	
 		}
-		
-
-//		
-//		$order_data['order_total'] = $row2['order_total'];
         
         header ("Content-type: application/json");
         echo json_encode($order_data);
@@ -453,6 +455,69 @@ class shopRouter
 
             echo "successfully deleted order.";
         }
+	}
+	
+	private function addItemToOrder()
+	{
+		
+		$first_name = $_POST['first_name'];
+		$last_name = $_POST['last_name'];
+		$email = $_POST['email'];
+		$address = $_POST['address'];
+		$address_2 = $_POST['address_2'];
+		$city = $_POST['city'];
+		$state = $_POST['state'];
+		$zip_code = $_POST['zip_code'];
+		$country = $_POST['country'];
+		$order_number = $_POST['order_number'];
+		$order_date = date('Y-m-d H:i:s', strtotime($_POST['order_date']));
+		$order_total = $_POST['order_total'];
+		$item_price = $_POST['item_price'];
+		$item_name = $_POST['item_name'];
+		$item_option = $_POST['item_option'];
+		$item_quantity = $_POST['item_quantity'];
+		$item_id = $_POST['item_id'];
+		
+		$query = $this->dbh->prepare("INSERT INTO orders (first_name, last_name, email, address, address_2, city, state, zip_code, country, order_number, order_date, order_total, item_price, item_name, item_option, item_quantity, item_id ) VALUES (:first_name, :last_name, :email, :address, :address_2, :city, :state, :zip_code, :country, :order_number, :order_date, :order_total, :item_price, :item_name, :item_option, :item_quantity, :item_id)");
+
+        $query->bindParam(':first_name', $first_name);
+        $query->bindParam(':last_name', $last_name);
+		$query->bindParam(':email', $email);
+        $query->bindParam(':address', $address);
+        $query->bindParam(':address_2', $address_2);
+        $query->bindParam(':city', $city);
+        $query->bindParam(':state', $state);
+        $query->bindParam(':zip_code', $zip_code);
+        $query->bindParam(':country', $country);
+        $query->bindParam(':order_number', $order_number);
+        $query->bindParam(':order_date', $order_date);
+        $query->bindParam(':order_total', $order_total);
+        $query->bindParam(':item_price', $item_price);
+        $query->bindParam(':item_name', $item_name);
+        $query->bindParam(':item_option', $item_option);
+        $query->bindParam(':item_quantity', $item_quantity);
+        $query->bindParam(':item_id', $item_id);
+
+        if($query->execute())
+        {
+            
+            $data = array(
+				'resp' => true
+			);
+        }
+        else 
+        {
+            
+			$arr = $query->errorInfo();
+			
+            $data = array(
+				'resp' => false,
+				'message' => "error execute failed: " . $arr[2]
+			);
+        }
+		
+		header ("Content-type: application/json");
+        echo json_encode($data);
 	}
 }
 

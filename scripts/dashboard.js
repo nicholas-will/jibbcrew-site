@@ -797,20 +797,25 @@ function getOrderByOrderNumber(order_number)
         var tr = document.createElement('tr');
         
         var th1 = document.createElement('th');
-        th1.style = "width:60%";
+        th1.style = "width:40%";
         th1.innerHTML = "item name";
         
         var th2 = document.createElement('th');
         th2.style = "width:20%";
-        th2.innerHTML = "item count";
+        th2.innerHTML = "item option";
         
         var th3 = document.createElement('th');
         th3.style = "width:20%";
-        th3.innerHTML = "item price";
+        th3.innerHTML = "item quantity";
         
+		var th4 = document.createElement('th');
+        th4.style = "width:20%";
+        th4.innerHTML = "item price";
+		
         tr.appendChild(th1);
         tr.appendChild(th2);
         tr.appendChild(th3);
+        tr.appendChild(th4);
         thead.appendChild(tr);
         table.appendChild(thead);
 
@@ -824,16 +829,20 @@ function getOrderByOrderNumber(order_number)
 
             var td1 = document.createElement('td');
             td1.innerHTML = order[i].item_name;
-
-            var td2 = document.createElement('td');
-            td2.innerHTML = 'x' + order[i].item_count;
+			
+			var td2 = document.createElement('td');
+            td2.innerHTML = order[i].item_option;
 
             var td3 = document.createElement('td');
-            td3.innerHTML = '$' + order[i].item_price; 
+            td3.innerHTML = 'x' + order[i].item_quantity;
+
+            var td4 = document.createElement('td');
+            td4.innerHTML = '$' + order[i].item_price; 
             
             row.appendChild(td1);
             row.appendChild(td2);
             row.appendChild(td3);
+            row.appendChild(td4);
 
             tbody.appendChild(row);
         }

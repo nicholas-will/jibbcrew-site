@@ -2,7 +2,7 @@ var post_type = 'all';
 
 //router
 routie({
-    '': function() {
+	'': function() {
         //console.log(window.location.hash);
         
         ga('set', 'page', '/' + window.location.hash);
@@ -136,53 +136,6 @@ routie({
         window.location.href = "login.html";
     }
 });
-
-function buildCarousel()
-{
-    
-    var div = document.createElement('div');
-    div.className = "news-item";
-    
-    var heading = document.createElement('h4');
-    heading.className = "news-item-title";
-    heading.innerHTML = "recent instagram feed";
-    
-    var outerdiv  = document.createElement('div');
-    outerdiv.id = "jibb-carousel";
-    outerdiv.className = "carousel center-block img-responsive"; //slide taken out
-    outerdiv.style.width = "640px";
-    
-    var innerdiv  = document.createElement('div');
-    innerdiv.id = "instafeed";
-    innerdiv.className = "carousel-inner";
-    innerdiv.setAttribute("role", "listbox");
-
-    outerdiv.appendChild(innerdiv);
-    
-    //controls
-    var lefta  = document.createElement('a');
-    lefta.className = "left carousel-control";
-    lefta.href = "#jibb-carousel";
-    lefta.setAttribute("role", "button");
-    lefta.setAttribute("data-slide", "prev");
-    lefta.innerHTML = "<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span><span class='sr-only'>Previous</span>";
-    
-    var righta  = document.createElement('a');
-    righta.className = "right carousel-control";
-    righta.href = "#jibb-carousel";
-    righta.setAttribute("role", "button");
-    righta.setAttribute("data-slide", "next");
-    righta.innerHTML = "<span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span><span class='sr-only'>Next</span>";
-    
-    outerdiv.appendChild(lefta);
-    outerdiv.appendChild(righta);
-    
-    div.appendChild(heading);
-    
-    div.appendChild(outerdiv);
-    
-    return div;
-}
 
 //function getInstagramPosts(limit)
 //{
@@ -584,7 +537,7 @@ function addToCart(item, qty, option)
 {
 	
 	//look at
-	var key_id = (item.id + ":" + item.name + ":" + option + ":" + item.price);
+	var key_id = (item.id + ":" + item.name + ":" + item.slug + ":" + option + ":" + item.price);
 	
 	if(window.sessionStorage.getItem(key_id))
 	{
@@ -623,12 +576,18 @@ function addToCart(item, qty, option)
 function removeFromCart(key)
 {
 	
-	
 	if(window.sessionStorage.getItem(key))
 	{
 		
 		window.sessionStorage.removeItem(key);
+		
 		getCart();
+		
+		if(window.sessionStorage.getItem('total') == 0)
+		{
+			
+			emptyCart();
+		}
 	}
 }
 
@@ -639,7 +598,7 @@ function emptyCart()
 	getCart();
 }
 
-function updateCart(id, qty, option)
+function updateCart(key, qty)
 {
 	
 	//todo
@@ -702,11 +661,18 @@ function getCart()
 
 		var tbody = document.createElement('tbody')
 
+		var total = 0;
+		
 		for(var key in window.sessionStorage) 
 		{
 
-			//split key id : name : option : price = qty
+			//split key id : name : slug : option : price = qty
 			var cart_item = key.split(":");
+			
+			if(key == 'total')
+			{
+				continue;
+			}
 
 			var row = document.createElement('tr');
 			//row.className = '';
@@ -715,16 +681,16 @@ function getCart()
 			td1.innerHTML = cart_item[1];
 			
 			var td2 = document.createElement('td');
-			td2.innerHTML = cart_item[2];
+			td2.innerHTML = cart_item[3];
 
 			var td3 = document.createElement('td');
 			td3.innerHTML = 'x'+ window.sessionStorage.getItem(key);
 
 			var td4 = document.createElement('td');
-			td4.innerHTML = '$' + cart_item[3]; 
+			td4.innerHTML = '$' + cart_item[4]; 
 
 			var td5 = document.createElement('td');
-			td5.innerHTML = "<button id='delete_"+cart_item[1]+"' type='button' class='btn btn-danger' onclick='removeFromCart(&quot;"+key+"&quot;)'>remove item</button>";
+			td5.innerHTML = "<strong><a id='remove-"+cart_item[0]+"' style='text-decoration: none; cursor: pointer; float: right; padding-right: 20px; font-size: large;' onclick='removeFromCart(&quot;"+key+"&quot;)'>&times;</a></strong>";
 
 			row.appendChild(td1);
 			row.appendChild(td2);
@@ -733,9 +699,31 @@ function getCart()
 			row.appendChild(td5);
 
 			tbody.appendChild(row);
+			
+			total += parseFloat(cart_item[4]) * parseInt(window.sessionStorage.getItem(key));
 		}
 		
-		//todo add total row
+		//should over write every time func called
+		window.sessionStorage.setItem('total', total);
+		
+		//add total row to bottom of cart
+		var total_row = document.createElement('tr');
+		
+		var ttd1 = document.createElement('td');
+		var ttd2 = document.createElement('td');
+		var ttd3 = document.createElement('td');
+		ttd3.innerHTML = "<p style='float: right;'>total: </p>";
+		var ttd4 = document.createElement('td');
+		ttd4.innerHTML = '<strong>$' + total.toFixed(2) + '</strong>';
+		var ttd5 = document.createElement('td');
+		
+		total_row.appendChild(ttd1);
+		total_row.appendChild(ttd2);
+		total_row.appendChild(ttd3);
+		total_row.appendChild(ttd4);
+		total_row.appendChild(ttd5);
+
+		tbody.appendChild(total_row);
 
 		table.appendChild(tbody);
 
@@ -781,14 +769,447 @@ function getCart()
 function getCheckout()
 {
 	
+	var states = [
+    {
+        "name": "Alabama",
+        "abbreviation": "AL"
+    },
+    {
+        "name": "Alaska",
+        "abbreviation": "AK"
+    },
+    {
+        "name": "Arizona",
+        "abbreviation": "AZ"
+    },
+    {
+        "name": "Arkansas",
+        "abbreviation": "AR"
+    },
+    {
+        "name": "California",
+        "abbreviation": "CA"
+    },
+    {
+        "name": "Colorado",
+        "abbreviation": "CO"
+    },
+    {
+        "name": "Connecticut",
+        "abbreviation": "CT"
+    },
+    {
+        "name": "Delaware",
+        "abbreviation": "DE"
+    },
+    {
+        "name": "District Of Columbia",
+        "abbreviation": "DC"
+    },
+    {
+        "name": "Florida",
+        "abbreviation": "FL"
+    },
+    {
+        "name": "Georgia",
+        "abbreviation": "GA"
+    },
+    {
+        "name": "Guam",
+        "abbreviation": "GU"
+    },
+    {
+        "name": "Hawaii",
+        "abbreviation": "HI"
+    },
+    {
+        "name": "Idaho",
+        "abbreviation": "ID"
+    },
+    {
+        "name": "Illinois",
+        "abbreviation": "IL"
+    },
+    {
+        "name": "Indiana",
+        "abbreviation": "IN"
+    },
+    {
+        "name": "Iowa",
+        "abbreviation": "IA"
+    },
+    {
+        "name": "Kansas",
+        "abbreviation": "KS"
+    },
+    {
+        "name": "Kentucky",
+        "abbreviation": "KY"
+    },
+    {
+        "name": "Louisiana",
+        "abbreviation": "LA"
+    },
+    {
+        "name": "Maine",
+        "abbreviation": "ME"
+    },
+    {
+        "name": "Maryland",
+        "abbreviation": "MD"
+    },
+    {
+        "name": "Massachusetts",
+        "abbreviation": "MA"
+    },
+    {
+        "name": "Michigan",
+        "abbreviation": "MI"
+    },
+    {
+        "name": "Minnesota",
+        "abbreviation": "MN"
+    },
+    {
+        "name": "Mississippi",
+        "abbreviation": "MS"
+    },
+    {
+        "name": "Missouri",
+        "abbreviation": "MO"
+    },
+    {
+        "name": "Montana",
+        "abbreviation": "MT"
+    },
+    {
+        "name": "Nebraska",
+        "abbreviation": "NE"
+    },
+    {
+        "name": "Nevada",
+        "abbreviation": "NV"
+    },
+    {
+        "name": "New Hampshire",
+        "abbreviation": "NH"
+    },
+    {
+        "name": "New Jersey",
+        "abbreviation": "NJ"
+    },
+    {
+        "name": "New Mexico",
+        "abbreviation": "NM"
+    },
+    {
+        "name": "New York",
+        "abbreviation": "NY"
+    },
+    {
+        "name": "North Carolina",
+        "abbreviation": "NC"
+    },
+    {
+        "name": "North Dakota",
+        "abbreviation": "ND"
+    },
+    {
+        "name": "Ohio",
+        "abbreviation": "OH"
+    },
+    {
+        "name": "Oklahoma",
+        "abbreviation": "OK"
+    },
+    {
+        "name": "Oregon",
+        "abbreviation": "OR"
+    },
+    {
+        "name": "Pennsylvania",
+        "abbreviation": "PA"
+    },
+    {
+        "name": "Rhode Island",
+        "abbreviation": "RI"
+    },
+    {
+        "name": "South Carolina",
+        "abbreviation": "SC"
+    },
+    {
+        "name": "South Dakota",
+        "abbreviation": "SD"
+    },
+    {
+        "name": "Tennessee",
+        "abbreviation": "TN"
+    },
+    {
+        "name": "Texas",
+        "abbreviation": "TX"
+    },
+    {
+        "name": "Utah",
+        "abbreviation": "UT"
+    },
+    {
+        "name": "Vermont",
+        "abbreviation": "VT"
+    },
+    {
+        "name": "Virginia",
+        "abbreviation": "VA"
+    },
+    {
+        "name": "Washington",
+        "abbreviation": "WA"
+    },
+    {
+        "name": "West Virginia",
+        "abbreviation": "WV"
+    },
+    {
+        "name": "Wisconsin",
+        "abbreviation": "WI"
+    },
+    {
+        "name": "Wyoming",
+        "abbreviation": "WY"
+    }
+];
+	
 	$('#posts').html(""); //clear div
     
 	var div = document.createElement('div');
 	div.className = "news-item";
 	
-	//todo
+	var outer_div = document.createElement('div');
+	//outer_div.className = 'form-group';
+	outer_div.id = "checkout-container";
+	outer_div.style = "padding-top: 40px; padding-right: 20px; padding-left: 20px;";
+	
+	var section_1 = document.createElement('div');
+	section_1.id = "section-1";
+	
+	var row_div_1 = document.createElement('div');
+	row_div_1.className = 'form-row';
+	var row_div_2 = document.createElement('div');
+	row_div_2.className = 'form-row';
+	var col_div_1 = document.createElement('div');
+	col_div_1.className = 'form-group col-sm-6';
+	var col_div_2 = document.createElement('div');
+	col_div_2.className = 'form-group col-sm-6';
+	var col_div_3 = document.createElement('div');
+	col_div_3.className = 'form-group col-sm-12';
+	
+	//buyer info
+	var firstname_textbox = document.createElement('input');
+	firstname_textbox.setAttribute('type', "text");
+	firstname_textbox.setAttribute('placeholder', "first name");
+	firstname_textbox.id = "first-name";
+	firstname_textbox.className = 'form-control';
+	
+	col_div_1.appendChild(firstname_textbox);
+	row_div_1.appendChild(col_div_1);
+	
+	var lastname_textbox = document.createElement('input');
+	lastname_textbox.setAttribute('type', "text");
+	lastname_textbox.setAttribute('placeholder', "last name");
+	lastname_textbox.id = "last-name";
+	lastname_textbox.className = 'form-control';
+	
+	col_div_2.appendChild(lastname_textbox);
+	row_div_1.appendChild(col_div_2);
+	section_1.appendChild(row_div_1);
+	//outer_div.appendChild(row_div_1);
+	
+	var email_textbox = document.createElement('input');
+	email_textbox.setAttribute('type', "text");
+	email_textbox.setAttribute('placeholder', "email");
+	email_textbox.id = "email";
+	email_textbox.className = 'form-control';
+	
+	col_div_3.appendChild(email_textbox);
+	row_div_2.appendChild(col_div_3);
+	section_1.appendChild(row_div_2);
+	//outer_div.appendChild(row_div_2);
+	
+	outer_div.appendChild(section_1);
+	
+	//next section button
+	var next_section_div_1 = document.createElement('div');
+	next_section_div_1.style = "text-align: center; padding: 20px;";
+	next_section_div_1.id = "next-section-1";
+	
+	var next_section_button_1 = document.createElement('input');
+	next_section_button_1.setAttribute("type", "button");
+	next_section_button_1.className = 'btn outline';
+	next_section_button_1.setAttribute('value', 'next');
+
+	next_section_button_1.onclick = function(){
+
+		//un hide shipping info
+		//disable fields above
+		$('#next-section-1').hide();
+		
+		$('#section-2').show();
+		$('#next-section-2').show();
+		
+	}
+	
+	next_section_div_1.appendChild(next_section_button_1);
+	outer_div.appendChild(next_section_div_1);
+	
+	var section_2 = document.createElement('div');
+	section_2.id = "section-2";
+	section_2.style = "display: none;";
+	
+	var row_div_3 = document.createElement('div');
+	row_div_3.className = 'form-row';
+	var row_div_4 = document.createElement('div');
+	row_div_4.className = 'form-row';
+	var row_div_5 = document.createElement('div');
+	row_div_5.className = 'form-row';
+	var row_div_6 = document.createElement('div');
+	row_div_6.className = 'form-row';
+	
+	var col_div_4 = document.createElement('div');
+	col_div_4.className = 'form-group col-sm-12';
+	var col_div_5 = document.createElement('div');
+	col_div_5.className = 'form-group col-sm-12';
+	var col_div_6 = document.createElement('div');
+	col_div_6.className = 'form-group col-sm-6';
+	var col_div_7 = document.createElement('div');
+	col_div_7.className = 'form-group col-sm-6';
+	var col_div_8 = document.createElement('div');
+	col_div_8.className = 'form-group col-sm-6';
+	var col_div_9 = document.createElement('div');
+	col_div_9.className = 'form-group col-sm-6';
+	
+	//shipping info
+	//address address 2 city state zip country
+	var address_1_textbox = document.createElement('input');
+	address_1_textbox.setAttribute('type', "text");
+	address_1_textbox.setAttribute('placeholder', "address");
+	address_1_textbox.id = "address-1";
+	address_1_textbox.className = 'form-control';
+	
+	col_div_4.appendChild(address_1_textbox);
+	row_div_3.appendChild(col_div_4);
+	section_2.appendChild(row_div_3);
+	//outer_div.appendChild(row_div_3);
+	
+	var address_2_textbox = document.createElement('input');
+	address_2_textbox.setAttribute('type', "text");
+	address_2_textbox.setAttribute('placeholder', "address 2");
+	address_2_textbox.id = "address-2";
+	address_2_textbox.className = 'form-control';
+	
+	col_div_5.appendChild(address_2_textbox);
+	row_div_4.appendChild(col_div_5);
+	section_2.appendChild(row_div_4);
+	//outer_div.appendChild(row_div_4);
+	
+	var city_textbox = document.createElement('input');
+	city_textbox.setAttribute('type', "text");
+	city_textbox.setAttribute('placeholder', "city");
+	city_textbox.id = "city";
+	city_textbox.className = 'form-control';
+	
+	col_div_6.appendChild(city_textbox);
+	row_div_5.appendChild(col_div_6);
+	
+	//state
+	var state_select = document.createElement('select');
+	state_select.id = "state-select";
+	state_select.className = 'form-control';
+	
+	col_div_7.appendChild(state_select);
+	row_div_5.appendChild(col_div_7);
+	section_2.appendChild(row_div_5);
+	//outer_div.appendChild(row_div_5);
+	
+	//zip
+	var zipcode_textbox = document.createElement('input');
+	zipcode_textbox.setAttribute('type', "text");
+	zipcode_textbox.setAttribute('placeholder', "zip code");
+	zipcode_textbox.id = "zipcode";
+	zipcode_textbox.className = 'form-control';
+	
+	col_div_8.appendChild(zipcode_textbox);
+	row_div_6.appendChild(col_div_8);
+	
+	//country US
+	var country_select = document.createElement('select');
+	country_select.id = "country-select";
+	country_select.className = 'form-control';
+	
+	col_div_9.appendChild(country_select);
+	row_div_6.appendChild(col_div_9);
+	section_2.appendChild(row_div_6);
+	//outer_div.appendChild(row_div_6);
+	
+	outer_div.appendChild(section_2);
+	
+	//next section button
+	var next_section_div_2 = document.createElement('div');
+	next_section_div_2.style = "text-align: center; padding: 20px; display: none;";
+	next_section_div_2.id = "next-section-2";
+	
+	var next_section_button_2 = document.createElement('input');
+	next_section_button_2.setAttribute("type", "button");
+	next_section_button_2.className = 'btn outline';
+	next_section_button_2.setAttribute('value', 'next');
+
+	next_section_button_2.onclick = function(){
+
+		//un hide shipping info
+		//disable fields above
+		$('#next-section-2').hide();
+		
+		$('#section-3').show();
+		//$('#next-section-3').show();
+	}
+	
+	next_section_div_2.appendChild(next_section_button_2);
+	outer_div.appendChild(next_section_div_2);
+	
+	var section_3 = document.createElement('div');
+	section_3.id = "section-3";
+	section_3.style = "display: none;";
+	
+	//payment (paypal)
+	var pp_button_div = document.createElement('div');
+	pp_button_div.id = "paypal-button-div";
+	pp_button_div.style = "padding: 20px; text-align: center;";
+	
+	var pp_button = document.createElement('div');
+	pp_button.id = "paypal-button";
+	
+	pp_button_div.appendChild(pp_button);
+	
+	section_3.appendChild(pp_button_div);
+	
+	outer_div.appendChild(section_3);
+	
+	div.appendChild(outer_div);
+	
+	//summary
+	//totals
 	
 	$('#posts').append(div);
+	
+	addPayPalButton();
+	
+	//add state values
+	$.each(states, function (key, value) {
+		$('<option>').val(value.abbreviation).text(value.name).appendTo("#state-select");
+	});
+	
+	//add country value
+	$('<option>').val('US').text('United States').appendTo("#country-select");
 }
 
 var loaded = 5;
@@ -798,7 +1219,7 @@ function addLoadMoreButton()
 	
 	if(!document.getElementById('load-more-button'))
 	{
-		
+
 		var button = document.createElement('input');
 		button.setAttribute("type", "button");
 		button.setAttribute("data-num-loaded", "5");
@@ -855,4 +1276,268 @@ function addLoadMoreButton()
 
 		$('#load-more').append(button);
 	}	
+}
+
+function addPayPalButton()
+{
+	
+	if(document.getElementById('paypal-button'))
+   	{
+		
+	   paypal.Button.render({
+
+		env: 'sandbox', // Or 'sandbox', production
+		   
+	   client: {
+            sandbox:    'AcuRDLytnBkUVIPd9r-sITwtKVxSFVo-as8SjXzCds3Nsy8co03OQP_R3Q3uzdgnE6jE0e-3ubnbJg8v',
+            production: 'ATyWF7wMmiK0jOIP80WxE9WNyO4PycP9k3bmicFRusluHLV3nXAswZpJc-3KiZCX-crgyoBVJeu-fDCS'
+        },
+
+		commit: true, // Show a 'Pay Now' button
+
+		style: {
+            label: 'paypal',  // checkout | credit | pay | buynow | generic
+            size:  'small', // small | medium | large | responsive
+            shape: 'pill',   // pill | rect
+            color: 'black'   // gold | blue | silver | black
+        },
+
+		payment: function(data, actions) {
+			
+			//build item list made up of items and shipping address
+			var item_list = {};
+			var items = [];
+			
+			for(var key in window.sessionStorage) 
+			{
+
+				//split key id : name : slug : option : price = qty
+				var cart_item = key.split(":");
+				
+				if(key == 'total')
+				{
+					continue;
+				}
+				
+				items.push({
+					name: cart_item[1],
+					description: cart_item[3],
+					quantity: window.sessionStorage.getItem(key),
+					price: cart_item[4],
+					sku: cart_item[0],
+					currency: "USD"
+				});
+			}
+			
+			item_list.items = items;
+			item_list.shipping_address = {
+				  recipient_name: $('#first-name').val() + " " + $('#last-name').val(),
+				  line1: $('#address-1').val(),
+				  line2: $('#address-2').val(),
+				  city: $('#city').val(),
+				  country_code: $('#country-select').val(),
+				  postal_code: $('#zipcode').val(),
+				  state: $('#state-select').val()
+			};
+			
+			//console.log(item_list);
+			
+			//create invoice number
+			var invoice_number = Math.floor((Math.random() * 1000000) + 1);
+			
+			return actions.payment.create({
+				payment: {
+					transactions: [{
+						amount: {
+							total: Number(window.sessionStorage.getItem('total')).toFixed(2), 
+							currency: 'USD' 
+						},
+						description: "Purchased from jibbcrew.com",
+						invoice_number: invoice_number,
+						item_list: item_list
+					}]
+				}
+			});
+    	},
+
+		onAuthorize: function(data, actions) {
+			
+//			var payment = {
+//					  "id":"PAY-0WE61920H6707341VLIVB5AA",
+//					  "intent":"sale",
+//					  "state":"approved",
+//					  "cart":"4Y476081UC542354U",
+//					  "create_time":"2017-12-08T05:15:11Z",
+//					  "payer":{
+//						  "payment_method":"paypal",
+//						  "status":"VERIFIED",
+//						  "payer_info":{
+//							  "email":"jibbcrewatl-buyer@gmail.com",
+//							  "first_name":"test",
+//							  "middle_name":"test",
+//							  "last_name":"buyer",
+//							  "payer_id":"ZSBJPRYJTLCZJ",
+//							  "country_code":"US",
+//							  "shipping_address":{
+//								  "recipient_name":"testy testerson",
+//								  "line1":"880 glendale ter ne",
+//								  "city":"atlanta",
+//								  "state":"GA",
+//								  "postal_code":"30308",
+//								  "country_code":"US"
+//							  }
+//						  }
+//					  },
+//					  "transactions":[{
+//						  "invoice_number":"304454",
+//						  "amount":{
+//							  "total":"33.00",
+//							  "currency":"USD",
+//							  "details":{}
+//						  },
+//						  "item_list":{
+//							  "items":[{
+//								  "name":"test 2",
+//								  "sku":"2",
+//								  "price":"15.00",
+//								  "currency":"USD",
+//								  "quantity":2,
+//								  "description":"L"
+//						  		},
+//							   {
+//								   "name":"blahhhshd 3",
+//								   "sku":"5",
+//								   "price":"1.00",
+//								   "currency":"USD",
+//								   "quantity":3,
+//								   "description":""
+//							   }]
+//						  },
+//						  "related_resources":[{
+//							  "sale":{
+//								  "id":"5WR73135LJ5390746",
+//								  "state":"completed",
+//								  "payment_mode":"INSTANT_TRANSFER",
+//								  "protection_eligibility":"ELIGIBLE",
+//								  "parent_payment":"PAY-0WE61920H6707341VLIVB5AA",
+//								  "create_time":"2017-12-08T05:15:11Z",
+//								  "update_time":"2017-12-08T05:15:11Z",
+//								  "amount":{
+//									  "total":"33.00",
+//									  "currency":"USD",
+//									  "details":{
+//										  "subtotal":"33.00"
+//									  }
+//								  }
+//							  }
+//						  }]
+//					  }]
+//				  };
+				
+		  return actions.payment.execute().then(function(payment) {
+			  	
+			  	//build order
+			  	for(var i = 0; i < payment.transactions[0].item_list.items.length; i++)
+				{
+
+					$.ajax({
+					method: 'POST',
+					url: 'shop-router.php',
+					dataType: 'json',
+					data: {
+							route: 'add-item-to-order',
+							first_name: payment.payer.payer_info.first_name,
+							last_name: payment.payer.payer_info.last_name,
+							email: payment.payer.payer_info.email,
+							address: payment.payer.payer_info.shipping_address.line1,
+							address_2: (payment.payer.payer_info.shipping_address.line2 || ''),
+							city: payment.payer.payer_info.shipping_address.city,
+							state: payment.payer.payer_info.shipping_address.state,
+							zip_code: payment.payer.payer_info.shipping_address.postal_code,
+							country: payment.payer.payer_info.country_code,
+							order_number: payment.transactions[0].invoice_number,
+							order_date: payment.transactions[0].related_resources[0].sale.create_time,
+							order_total: payment.transactions[0].amount.total,
+							item_price: payment.transactions[0].item_list.items[i].price,
+							item_name: payment.transactions[0].item_list.items[i].name,
+							item_option: payment.transactions[0].item_list.items[i].description,
+							item_quantity: payment.transactions[0].item_list.items[i].quantity,
+							item_id: payment.transactions[0].item_list.items[i].sku
+						},
+					}).done(function(data) {
+
+						if(data.resp)
+						{
+
+							console.log('added item to order');
+						}
+					});
+				}
+			  
+			  	emptyCart();
+		  });
+		},
+
+		onCancel: function(data, actions) {
+			/* 
+			 * Buyer cancelled the payment 
+			 */
+		},
+
+		onError: function(err) {
+			/* 
+			 * An error occurred during the transaction 
+			 */
+			console.log(err);
+		}
+
+		}, '#paypal-button');
+   	}
+}
+
+function buildCarousel()
+{
+    
+    var div = document.createElement('div');
+    div.className = "news-item";
+    
+    var heading = document.createElement('h4');
+    heading.className = "news-item-title";
+    heading.innerHTML = "recent instagram feed";
+    
+    var outerdiv  = document.createElement('div');
+    outerdiv.id = "jibb-carousel";
+    outerdiv.className = "carousel center-block img-responsive"; //slide taken out
+    outerdiv.style.width = "640px";
+    
+    var innerdiv  = document.createElement('div');
+    innerdiv.id = "instafeed";
+    innerdiv.className = "carousel-inner";
+    innerdiv.setAttribute("role", "listbox");
+
+    outerdiv.appendChild(innerdiv);
+    
+    //controls
+    var lefta  = document.createElement('a');
+    lefta.className = "left carousel-control";
+    lefta.href = "#jibb-carousel";
+    lefta.setAttribute("role", "button");
+    lefta.setAttribute("data-slide", "prev");
+    lefta.innerHTML = "<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span><span class='sr-only'>Previous</span>";
+    
+    var righta  = document.createElement('a');
+    righta.className = "right carousel-control";
+    righta.href = "#jibb-carousel";
+    righta.setAttribute("role", "button");
+    righta.setAttribute("data-slide", "next");
+    righta.innerHTML = "<span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span><span class='sr-only'>Next</span>";
+    
+    outerdiv.appendChild(lefta);
+    outerdiv.appendChild(righta);
+    
+    div.appendChild(heading);
+    
+    div.appendChild(outerdiv);
+    
+    return div;
 }
