@@ -1194,10 +1194,21 @@ function getCheckout()
 	
 	outer_div.appendChild(section_3);
 	
-	div.appendChild(outer_div);
+	//summary maybe eventually
+	//totals maybe eventually
 	
-	//summary
-	//totals
+	//paypal message
+	var section_4 = document.createElement('div');
+	section_4.id = "section-4";
+
+	var pp_message_div = document.createElement('div');
+	pp_message_div.id = "paypal-message";
+	
+	section_4.appendChild(pp_message_div);
+	
+	outer_div.appendChild(section_4);
+	
+	div.appendChild(outer_div);
 	
 	$('#posts').append(div);
 	
@@ -1362,6 +1373,8 @@ function addPayPalButton()
 
 		onAuthorize: function(data, actions) {
 			
+			console.log('onAuthorize');
+			
 //			var payment = {
 //					  "id":"PAY-0WE61920H6707341VLIVB5AA",
 //					  "intent":"sale",
@@ -1433,6 +1446,7 @@ function addPayPalButton()
 //						  }]
 //					  }]
 //				  };
+			
 				
 		  return actions.payment.execute().then(function(payment) {
 			  	
@@ -1471,8 +1485,11 @@ function addPayPalButton()
 
 							console.log('added item to order');
 						}
+						
 					});
 				}
+			  
+			  	buildPPNotification("checkout success", 'success');
 			  
 			  	emptyCart();
 		  });
@@ -1482,17 +1499,58 @@ function addPayPalButton()
 			/* 
 			 * Buyer cancelled the payment 
 			 */
+			
+			buildPPNotification("checkout cancelled", 'warning');
 		},
 
 		onError: function(err) {
-			/* 
-			 * An error occurred during the transaction 
-			 */
-			console.log(err);
+			
+			console.log('onError');
+				
+			buildPPNotification(err, 'error');
 		}
 
 		}, '#paypal-button');
    	}
+}
+
+function buildPPNotification(message, type)
+{
+	
+	//add paypal message
+	var notification_div = document.createElement('div');
+	//notification_div.id = "notification";
+	
+	switch(type)
+	{
+			
+		case 'error' :
+			notification_div.className = "alert alert-danger alert-dismissable";
+			break;
+			
+		case 'success' :
+			notification_div.className = "alert alert-success alert-dismissable";
+			break;
+			
+		case 'warning' :
+			notification_div.className = "alert alert-warning alert-dismissable";
+			break;		
+	}	
+
+	var close = document.createElement('a');
+	close.className = "close";
+	close.setAttribute('data-dismiss', "alert");
+	close.setAttribute('aria-label', "close");
+	close.innerHTML = "&times;";
+
+	notification_div.appendChild(close);
+
+	var notification_mess = document.createElement('p');
+	notification_mess.innerHTML = message;
+
+	notification_div.appendChild(notification_mess);
+
+	$('#paypal-message').append(notification_div);
 }
 
 function buildCarousel()
