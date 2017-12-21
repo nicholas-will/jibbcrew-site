@@ -612,7 +612,7 @@ function getCart()
 	var div = document.createElement('div');
 	div.className = "news-item";
 	
-	if(sessionStorage.length == 0)
+	if(window.sessionStorage.length == 0)
 	{
 		
 		//check if cart is empty - display message
@@ -663,13 +663,13 @@ function getCart()
 
 		var total = 0;
 		
-		for(var key in window.sessionStorage) 
+		for(var i = 0; i<window.sessionStorage.length; i++)
 		{
 
 			//split key id : name : slug : option : price = qty
-			var cart_item = key.split(":");
+			var cart_item = window.sessionStorage.key(i).split(":");
 			
-			if(key == 'total')
+			if(window.sessionStorage.key(i) == 'total')
 			{
 				continue;
 			}
@@ -684,13 +684,13 @@ function getCart()
 			td2.innerHTML = cart_item[3];
 
 			var td3 = document.createElement('td');
-			td3.innerHTML = 'x'+ window.sessionStorage.getItem(key);
+			td3.innerHTML = 'x'+ window.sessionStorage.getItem(window.sessionStorage.key(i));
 
 			var td4 = document.createElement('td');
 			td4.innerHTML = '$' + cart_item[4]; 
 
 			var td5 = document.createElement('td');
-			td5.innerHTML = "<strong><a id='remove-"+cart_item[0]+"' style='text-decoration: none; cursor: pointer; float: right; padding-right: 20px; font-size: large;' onclick='removeFromCart(&quot;"+key+"&quot;)'>&times;</a></strong>";
+			td5.innerHTML = "<strong><a id='remove-"+cart_item[0]+"' style='text-decoration: none; cursor: pointer; float: right; padding-right: 20px; font-size: large;' onclick='removeFromCart(&quot;"+window.sessionStorage.key(i)+"&quot;)'>&times;</a></strong>";
 
 			row.appendChild(td1);
 			row.appendChild(td2);
@@ -700,7 +700,7 @@ function getCart()
 
 			tbody.appendChild(row);
 			
-			total += parseFloat(cart_item[4]) * parseInt(window.sessionStorage.getItem(key));
+			total += parseFloat(cart_item[4]) * parseInt(window.sessionStorage.getItem(window.sessionStorage.key(i)));
 		}
 		
 		//should over write every time func called
@@ -1034,7 +1034,17 @@ function getCheckout()
 	col_div_3.appendChild(email_textbox);
 	row_div_2.appendChild(col_div_3);
 	section_1.appendChild(row_div_2);
+	
+	var validation_row_div_1 = document.createElement('div');
+	validation_row_div_1.className = 'form-row';
+	
+	var validation_div_1 = document.createElement('div');
+	validation_div_1.id = "validation-section-1";
+	validation_div_1.className = "form-group col-sm-12";
 	//outer_div.appendChild(row_div_2);
+	
+	validation_row_div_1.appendChild(validation_div_1);
+	section_1.appendChild(validation_row_div_1);
 	
 	outer_div.appendChild(section_1);
 	
@@ -1051,12 +1061,86 @@ function getCheckout()
 	next_section_button_1.onclick = function(){
 
 		//un hide shipping info
-		//disable fields above
-		$('#next-section-1').hide();
+		//validate fields
 		
-		$('#section-2').show();
-		$('#next-section-2').show();
+		if(isEmpty($('#first-name').val()))
+		{
+			
+			//console.log('missing field: first-name');
+			var notification_div = document.createElement('div');
+			//notification_div.id = "notification";
+			notification_div.className = "alert alert-danger alert-dismissable";
+			//notification_div.style = "display:none;";
+
+			var close = document.createElement('a');
+			close.className = "close";
+			close.setAttribute('data-dismiss', "alert");
+			close.setAttribute('aria-label', "close");
+			close.innerHTML = "&times;";
+
+			notification_div.appendChild(close);
+
+			var notification_mess = document.createElement('p');
+			notification_mess.innerHTML = "missing first name";
+			notification_div.appendChild(notification_mess);
+			
+			document.getElementById('validation-section-1').appendChild(notification_div);
+		}
+		else if(isEmpty($('#last-name').val()))
+		{
+			
+			//console.log('missing field: last-name');
+			var notification_div = document.createElement('div');
+			//notification_div.id = "notification";
+			notification_div.className = "alert alert-danger alert-dismissable";
+			//notification_div.style = "display:none;";
+
+			var close = document.createElement('a');
+			close.className = "close";
+			close.setAttribute('data-dismiss', "alert");
+			close.setAttribute('aria-label', "close");
+			close.innerHTML = "&times;";
+
+			notification_div.appendChild(close);
+
+			var notification_mess = document.createElement('p');
+			notification_mess.innerHTML = "missing last name";
+			notification_div.appendChild(notification_mess);
+			
+			document.getElementById('validation-section-1').appendChild(notification_div);
+		}
+		else if(isEmpty($('#email').val()))
+		{
+				
+			//console.log('missing field: email');
+			var notification_div = document.createElement('div');
+			//notification_div.id = "notification";
+			notification_div.className = "alert alert-danger alert-dismissable";
+			//notification_div.style = "display:none;";
+
+			var close = document.createElement('a');
+			close.className = "close";
+			close.setAttribute('data-dismiss', "alert");
+			close.setAttribute('aria-label', "close");
+			close.innerHTML = "&times;";
+
+			notification_div.appendChild(close);
+
+			var notification_mess = document.createElement('p');
+			notification_mess.innerHTML = "missing email";
+			notification_div.appendChild(notification_mess);
+			
+			document.getElementById('validation-section-1').appendChild(notification_div);
+		}
+		else
+		{
+			
+			$('#next-section-1').hide();
+			$('#validation-section-1').html("");
 		
+			$('#section-2').show();
+			$('#next-section-2').show();
+		}
 	}
 	
 	next_section_div_1.appendChild(next_section_button_1);
@@ -1151,6 +1235,17 @@ function getCheckout()
 	section_2.appendChild(row_div_6);
 	//outer_div.appendChild(row_div_6);
 	
+	var validation_row_div_2 = document.createElement('div');
+	validation_row_div_2.className = 'form-row';
+	
+	var validation_div_2 = document.createElement('div');
+	validation_div_2.id = "validation-section-2";
+	validation_div_2.className = "form-group col-sm-12";
+	//outer_div.appendChild(row_div_2);
+	
+	validation_row_div_2.appendChild(validation_div_2);
+	section_2.appendChild(validation_row_div_2);
+	
 	outer_div.appendChild(section_2);
 	
 	//next section button
@@ -1165,12 +1260,84 @@ function getCheckout()
 
 	next_section_button_2.onclick = function(){
 
-		//un hide shipping info
-		//disable fields above
-		$('#next-section-2').hide();
+		if(isEmpty($('#address-1').val()))
+		{
+			
+			//console.log('missing field: address');
+			var notification_div = document.createElement('div');
+			//notification_div.id = "notification";
+			notification_div.className = "alert alert-danger alert-dismissable";
+			//notification_div.style = "display:none;";
+
+			var close = document.createElement('a');
+			close.className = "close";
+			close.setAttribute('data-dismiss', "alert");
+			close.setAttribute('aria-label', "close");
+			close.innerHTML = "&times;";
+
+			notification_div.appendChild(close);
+
+			var notification_mess = document.createElement('p');
+			notification_mess.innerHTML = "missing address";
+			notification_div.appendChild(notification_mess);
+			
+			document.getElementById('validation-section-2').appendChild(notification_div);
+		}
+		else if(isEmpty($('#city').val()))
+		{
+				
+			//console.log('missing field: city');
+			var notification_div = document.createElement('div');
+			//notification_div.id = "notification";
+			notification_div.className = "alert alert-danger alert-dismissable";
+			//notification_div.style = "display:none;";
+
+			var close = document.createElement('a');
+			close.className = "close";
+			close.setAttribute('data-dismiss', "alert");
+			close.setAttribute('aria-label', "close");
+			close.innerHTML = "&times;";
+
+			notification_div.appendChild(close);
+
+			var notification_mess = document.createElement('p');
+			notification_mess.innerHTML = "missing city";
+			notification_div.appendChild(notification_mess);
+			
+			document.getElementById('validation-section-2').appendChild(notification_div);
+		}
+		else if(isEmpty($('#zipcode').val()))
+		{
+				
+			//console.log('missing field: city');
+			var notification_div = document.createElement('div');
+			//notification_div.id = "notification";
+			notification_div.className = "alert alert-danger alert-dismissable";
+			//notification_div.style = "display:none;";
+
+			var close = document.createElement('a');
+			close.className = "close";
+			close.setAttribute('data-dismiss', "alert");
+			close.setAttribute('aria-label', "close");
+			close.innerHTML = "&times;";
+
+			notification_div.appendChild(close);
+
+			var notification_mess = document.createElement('p');
+			notification_mess.innerHTML = "missing zip code";
+			notification_div.appendChild(notification_mess);
+			
+			document.getElementById('validation-section-2').appendChild(notification_div);
+		}
+		else
+		{
+			
+			$('#next-section-2').hide();
+			$('#validation-section-2').html("");
 		
-		$('#section-3').show();
-		//$('#next-section-3').show();
+			$('#section-3').show();
+			//$('#next-section-3').show();
+		}
 	}
 	
 	next_section_div_2.appendChild(next_section_button_2);
@@ -1221,6 +1388,20 @@ function getCheckout()
 	
 	//add country value
 	$('<option>').val('US').text('United States').appendTo("#country-select");
+}
+
+function isEmpty(value)
+{
+	
+//    return ((value !== '') && (value !== undefined) && (value.length > 0) && (value !== null));
+	
+	if(jQuery.trim(value).length > 0)
+	{
+	   
+		return false;
+	}
+
+	return true;
 }
 
 var loaded = 5;
@@ -1315,17 +1496,19 @@ function addPayPalButton()
 
 		payment: function(data, actions) {
 			
+			console.log("payment");
+			
 			//build item list made up of items and shipping address
 			var item_list = {};
 			var items = [];
 			
-			for(var key in window.sessionStorage) 
+			for(var i = 0; i<window.sessionStorage.length; i++)
 			{
 
 				//split key id : name : slug : option : price = qty
-				var cart_item = key.split(":");
-				
-				if(key == 'total')
+				var cart_item = window.sessionStorage.key(i).split(":");
+			
+				if(window.sessionStorage.key(i) == 'total')
 				{
 					continue;
 				}
@@ -1333,7 +1516,7 @@ function addPayPalButton()
 				items.push({
 					name: cart_item[1],
 					description: cart_item[3],
-					quantity: window.sessionStorage.getItem(key),
+					quantity: window.sessionStorage.getItem(window.sessionStorage.key(i)),
 					price: cart_item[4],
 					sku: cart_item[0],
 					currency: "USD"
@@ -1491,6 +1674,7 @@ function addPayPalButton()
 			  
 			  	buildPPNotification("checkout success", 'success');
 			  
+			  //todo build success page then empty cart
 			  	emptyCart();
 		  });
 		},
@@ -1507,7 +1691,12 @@ function addPayPalButton()
 			
 			console.log('onError');
 				
-			buildPPNotification(err, 'error');
+			if(err)
+		   	{
+				
+				buildPPNotification('PayPal error, check address and user information is correct', 'error');
+		   	}
+			
 		}
 
 		}, '#paypal-button');
