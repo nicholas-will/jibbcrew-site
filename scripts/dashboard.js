@@ -847,13 +847,82 @@ function getOrderByOrderNumber(order_number)
             tbody.appendChild(row);
         }
 
+		//probably get from call in future
+		var shipping_amount = 7;
+		
+		//sub total
+		var trow2 = document.createElement('tr');
+
+		var tt2d1 = document.createElement('td');
+		tt2d1.innerHTML = "";
+
+		var tt2d2 = document.createElement('td');
+		tt2d2.innerHTML = "";
+
+		var tt2d3 = document.createElement('td');
+		tt2d3.innerHTML = "<span style='float:right;'>subtotal: </span>";
+
+		var tt2d4 = document.createElement('td');
+		tt2d4.innerHTML = '$' + (Number(order[0].order_total) - shipping_amount).toFixed(2); 
+
+		trow2.appendChild(tt2d1);
+		trow2.appendChild(tt2d2);
+		trow2.appendChild(tt2d3);
+		trow2.appendChild(tt2d4);
+
+		tbody.appendChild(trow2);
+		
+		//shipping
+		var trow1 = document.createElement('tr');
+
+		var tt1d1 = document.createElement('td');
+		tt1d1.innerHTML = "";
+
+		var tt1d2 = document.createElement('td');
+		tt1d2.innerHTML = "";
+
+		var tt1d3 = document.createElement('td');
+		tt1d3.innerHTML = "<span style='float:right;'>shipping: </span>";
+
+		var tt1d4 = document.createElement('td');
+		tt1d4.innerHTML = '$' + Number(shipping_amount).toFixed(2); 
+
+		trow1.appendChild(tt1d1);
+		trow1.appendChild(tt1d2);
+		trow1.appendChild(tt1d3);
+		trow1.appendChild(tt1d4);
+
+		tbody.appendChild(trow1);
+		
+		//total
+		var trow3 = document.createElement('tr');
+
+		var tt3d1 = document.createElement('td');
+		tt3d1.innerHTML = "";
+
+		var tt3d2 = document.createElement('td');
+		tt3d2.innerHTML = "";
+
+		var tt3d3 = document.createElement('td');
+		tt3d3.innerHTML = "<span style='float:right;'>total: </span>";
+
+		var tt3d4 = document.createElement('td');
+		tt3d4.innerHTML = '<strong>$' + order[0].order_total + '</strong>'; 
+
+		trow3.appendChild(tt3d1);
+		trow3.appendChild(tt3d2);
+		trow3.appendChild(tt3d3);
+		trow3.appendChild(tt3d4);
+
+		tbody.appendChild(trow3);
+		
         table.appendChild(tbody);
 
         $('#items_table').append(table);
 		
-		$("#order_total").html("");
-
-		$("#order_total").html("$" + order[0].order_total);
+//		$("#order_total").html("");
+//
+//		$("#order_total").html("$" + order[0].order_total);
 
 		$("#notes").html("");
 

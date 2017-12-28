@@ -1518,7 +1518,7 @@ function getCheckoutSuccess(order_number)
 		tbody.appendChild(trow1);
 		
 		//probably get from call in future
-		var shipping_amount = 6;
+		var shipping_amount = 7;
 		
 		//add shipping
 		var trow2 = document.createElement('tr');
@@ -1739,7 +1739,7 @@ function addPayPalButton()
 			var invoice_number = Math.floor((Math.random() * 1000000) + 1);
 			
 			//shipping amount
-			var shipping_amount = 6;
+			var shipping_amount = 7;
 			
 			return actions.payment.create({
 				payment: {

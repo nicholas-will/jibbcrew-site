@@ -501,9 +501,29 @@ class shopRouter
         if($query->execute())
         {
             
-            $data = array(
-				'resp' => true
-			);
+			//update inventory
+			$uquery = $this->dbh->prepare("UPDATE `shop` SET item_remaining = item_remaining - :item_quantity WHERE `id` = :item_id");
+			
+			$uquery->bindParam(':item_id', $item_id);
+			$uquery->bindParam(':item_quantity', $item_quantity);
+			
+			if($uquery->execute())
+			{
+				
+				$data = array(
+					'resp' => true
+				);
+			}
+			else
+			{
+            
+				$uarr = $uquery->errorInfo();
+
+				$data = array(
+					'resp' => false,
+					'message' => "error execute failed: " . $uarr[2]
+				);
+        	}
         }
         else 
         {
