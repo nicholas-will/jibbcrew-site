@@ -552,7 +552,7 @@ function addToCart(item, qty, option)
 	
 	//for add to cart notification
 	var notification_div = document.createElement('div');
-	notification_div.id = "notification";
+	//notification_div.id = "notification";
 	notification_div.className = "alert alert-success alert-dismissable";
 	//notification_div.style = "display:none;";
 
@@ -988,10 +988,17 @@ function getCheckout()
 	var outer_div = document.createElement('div');
 	//outer_div.className = 'form-group';
 	outer_div.id = "checkout-container";
-	outer_div.style = "padding-top: 40px; padding-right: 20px; padding-left: 20px;";
+	outer_div.style = "padding-top: 40px;"; //padding-right: 40px; padding-left: 40px;
 	
 	var section_1 = document.createElement('div');
 	section_1.id = "section-1";
+	
+	//title
+	var section_1_title = document.createElement('div');
+	section_1_title.id = "section-1-title";
+	section_1_title.style = "padding-left: 16px; margin-bottom: 16px;";
+	section_1_title.innerHTML = "<h4>buyer information</h4>";
+	section_1.appendChild(section_1_title);
 	
 	var row_div_1 = document.createElement('div');
 	row_div_1.className = 'form-row';
@@ -1149,6 +1156,13 @@ function getCheckout()
 	var section_2 = document.createElement('div');
 	section_2.id = "section-2";
 	section_2.style = "display: none;";
+	
+	//title
+	var section_2_title = document.createElement('div');
+	section_2_title.id = "section-2-title";
+	section_2_title.style = "padding-left: 16px; margin-bottom: 16px;";
+	section_2_title.innerHTML = "<h4>shipping information</h4>";
+	section_2.appendChild(section_2_title);
 	
 	var row_div_3 = document.createElement('div');
 	row_div_3.className = 'form-row';
@@ -1390,6 +1404,191 @@ function getCheckout()
 	$('<option>').val('US').text('United States').appendTo("#country-select");
 }
 
+function getCheckoutSuccess(order_number)
+{
+	
+	emptyCart();
+	
+	//get order from db and build table
+	
+	$.ajax({
+        method: 'POST',
+        url: '/shop-router.php',
+        dataType: 'json',
+        data: {
+            route: 'get-order-by-order-number',
+            order_number: order_number
+        },
+	}).done(function(order) {
+		
+		$('#posts').html(""); //clear div
+    
+		var div = document.createElement('div');
+		div.className = "news-item";
+	
+		var outer_div = document.createElement('div');
+		outer_div.id = "checkout-container";
+		outer_div.style = "padding-top: 40px;"; //padding-right: 40px; padding-left: 40px;
+		
+		var inner_div = document.createElement('div');
+		inner_div.id = "inner-checkout-container";
+		
+		//order number header
+		var order_header_div = document.createElement('div');
+		order_header_div.id = "order-header";
+		order_header_div.style = "border-bottom: solid 2px; overflow: hidden; padding-bottom: 6px; margin-bottom: 6px;";
+		order_header_div.innerHTML = "<h4><span style='float:left;'>order number</span></h4><h4><span style='float:right;'>#"+ order_number +"</span></h4>";
+		
+		inner_div.appendChild(order_header_div);
+		
+		var table = document.createElement('table');
+        table.className = 'table dataTable no-footer';
+        table.style = "table-layout:fixed";
+
+        var thead = document.createElement('thead');
+        var tr = document.createElement('tr');
+        
+        var th1 = document.createElement('th');
+        th1.style = "width:40%";
+        th1.innerHTML = "name";
+        
+        var th2 = document.createElement('th');
+        th2.style = "width:20%";
+        th2.innerHTML = "option";
+        
+        var th3 = document.createElement('th');
+        th3.style = "width:20%";
+        th3.innerHTML = "quantity";
+        
+		var th4 = document.createElement('th');
+        th4.style = "width:20%";
+        th4.innerHTML = "price";
+		
+        tr.appendChild(th1);
+        tr.appendChild(th2);
+        tr.appendChild(th3);
+        tr.appendChild(th4);
+        thead.appendChild(tr);
+        table.appendChild(thead);
+
+        var tbody = document.createElement('tbody')
+
+        for(var i = 0; i < order.length; i++)
+        {
+
+            var row = document.createElement('tr');
+            //row.className = '';
+
+            var td1 = document.createElement('td');
+            td1.innerHTML = order[i].item_name;
+			
+			var td2 = document.createElement('td');
+            td2.innerHTML = order[i].item_option;
+
+            var td3 = document.createElement('td');
+            td3.innerHTML = 'x' + order[i].item_quantity;
+
+            var td4 = document.createElement('td');
+            td4.innerHTML = '$' + order[i].item_price; 
+            
+            row.appendChild(td1);
+            row.appendChild(td2);
+            row.appendChild(td3);
+            row.appendChild(td4);
+
+            tbody.appendChild(row);
+        }
+
+		//add subtotal
+		var trow1 = document.createElement('tr');
+		var tt1d1 = document.createElement('td');
+		tt1d1.innerHTML = "";
+		var tt1d2 = document.createElement('td');
+		tt1d2.innerHTML = "";
+		var tt1d3 = document.createElement('td');
+		tt1d3.innerHTML = "<span style='float:right;'>subtotal: </span>";
+		var tt1d4 = document.createElement('td');
+		tt1d4.innerHTML = "$" + order[0].order_total; 
+
+		trow1.appendChild(tt1d1);
+		trow1.appendChild(tt1d2);
+		trow1.appendChild(tt1d3);
+		trow1.appendChild(tt1d4);
+
+		tbody.appendChild(trow1);
+		
+		//probably get from call in future
+		var shipping_amount = 6;
+		
+		//add shipping
+		var trow2 = document.createElement('tr');
+		var tt2d1 = document.createElement('td');
+		tt2d1.innerHTML = "";
+		var tt2d2 = document.createElement('td');
+		tt2d2.innerHTML = "";
+		var tt2d3 = document.createElement('td');
+		tt2d3.innerHTML = "<span style='float:right;'>shipping: </span>";
+		var tt2d4 = document.createElement('td');
+		tt2d4.innerHTML = "$" + Number(shipping_amount).toFixed(2); 
+
+		trow2.appendChild(tt2d1);
+		trow2.appendChild(tt2d2);
+		trow2.appendChild(tt2d3);
+		trow2.appendChild(tt2d4);
+
+		tbody.appendChild(trow2);
+		
+		//add total
+		var trow3 = document.createElement('tr');
+		var tt3d1 = document.createElement('td');
+		tt3d1.innerHTML = "";
+		var tt3d2 = document.createElement('td');
+		tt3d2.innerHTML = "";
+		var tt3d3 = document.createElement('td');
+		tt3d3.innerHTML = "<span style='float:right;'>total: </span>";
+		var tt3d4 = document.createElement('td');
+		tt3d4.innerHTML = "<strong>$" + (Number(order[0].order_total) + Number(shipping_amount)).toFixed(2) + "</strong>"; 
+
+		trow3.appendChild(tt3d1);
+		trow3.appendChild(tt3d2);
+		trow3.appendChild(tt3d3);
+		trow3.appendChild(tt3d4);
+
+		tbody.appendChild(trow3);
+		
+        table.appendChild(tbody);
+		
+		inner_div.appendChild(table);
+		
+		outer_div.appendChild(inner_div);
+		
+		//add success message
+		var notification_div = document.createElement('div');
+		notification_div.className = "alert alert-info alert-dismissable";
+		
+		var close = document.createElement('a');
+		close.className = "close";
+		close.setAttribute('data-dismiss', "alert");
+		close.setAttribute('aria-label', "close");
+		close.innerHTML = "&times;";
+
+		notification_div.appendChild(close);
+		
+		var notification_mess = document.createElement('p');
+		notification_mess.innerHTML = "thank you, your order has been received!";
+
+		notification_div.appendChild(notification_mess);
+		
+		outer_div.appendChild(notification_div);
+		
+		div.appendChild(outer_div);
+	
+		$('#posts').append(div);
+	});
+	
+	
+}
+
 function isEmpty(value)
 {
 	
@@ -1539,12 +1738,19 @@ function addPayPalButton()
 			//create invoice number
 			var invoice_number = Math.floor((Math.random() * 1000000) + 1);
 			
+			//shipping amount
+			var shipping_amount = 6;
+			
 			return actions.payment.create({
 				payment: {
 					transactions: [{
 						amount: {
-							total: Number(window.sessionStorage.getItem('total')).toFixed(2), 
-							currency: 'USD' 
+							total: (Number(window.sessionStorage.getItem('total')) + shipping_amount).toFixed(2), 
+							currency: 'USD',
+							details: {
+								subtotal: Number(window.sessionStorage.getItem('total')).toFixed(2),
+								shipping: Number(shipping_amount).toFixed(2)
+							}
 						},
 						description: "Purchased from jibbcrew.com",
 						invoice_number: invoice_number,
@@ -1672,10 +1878,9 @@ function addPayPalButton()
 					});
 				}
 			  
-			  	buildPPNotification("checkout success", 'success');
+			  	//buildPPNotification("checkout success", 'success');
 			  
-			  //todo build success page then empty cart
-			  	emptyCart();
+			  getCheckoutSuccess(payment.transactions[0].invoice_number);
 		  });
 		},
 
