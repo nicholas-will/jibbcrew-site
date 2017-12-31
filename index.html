@@ -7,10 +7,12 @@
         <title>jibbcrew.com | atlanta bmx </title>
         
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+<!--        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<!--        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
+        <script src="scripts/bootstrap.min.js"></script>
         <link rel="stylesheet" href="css/main.css" >
         
         <!-- For Facebook to recognize image -->
@@ -20,6 +22,7 @@
         <meta property="og:image" content="http://www.jibbcrew.com/img/jibbcrew-bw-double-jibb-small.png" />
         
         <script src="scripts/routie.js"></script>
+		<script src="https://www.paypalobjects.com/api/checkout.js" data-version-4></script>
 <!--        <script src="scripts/instafeed.js"></script>-->
         
         <script>
@@ -103,15 +106,15 @@
         </nav>
         <div class="container">
             <div id="main-row" class="row">
-                <div class="sidebar-module">
-                    <h3 id="title">news</h3>
+                <div class="sidebar-module" style="overflow: hidden;">
+                    <h3 id="title" style="float: left;">news</h3>
+					<a href="#cart" style="float: right; margin-top: 24px; padding-right: 2px;"><img src="img/cart.png" width="24" /></a>
                 </div>
                 <div id="posts">
                     <!-- content here -->
                 </div>
                 <br/>
-                <div class="text-center">
-                    <input type="button" id="load-more" data-num-loaded="5" class="btn outline" value="show more" />
+                <div id="load-more" class="text-center">
                 </div>
             </div>
         </div>

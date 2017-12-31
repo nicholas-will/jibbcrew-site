@@ -92,6 +92,13 @@ a:hover {
     border: 2px solid black;
     color: black;
 }
+
+.btn.outline:hover {
+	font-weight: bold;
+	border: 2px solid #fff;
+	background: black;
+	color: #fff;
+}
     
 /* taken from bootstrap 4 */
 

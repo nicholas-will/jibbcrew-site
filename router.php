@@ -93,22 +93,22 @@ class router
         {
 
             case 'video' :
-                $query = $this->dbh->prepare("SELECT * FROM `postings` WHERE `type` = 'video' ORDER BY `id` DESC LIMIT :start, 5");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `type` = 'video' ORDER BY `id` DESC LIMIT :start, 5");
                 $query->bindParam(':start', intval(trim($start)));
                 break;
                 
             case 'gallery' :
-                $query = $this->dbh->prepare("SELECT * FROM `postings` WHERE `type` = 'gallery' ORDER BY `id` DESC LIMIT :start, 5");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `type` = 'gallery' ORDER BY `id` DESC LIMIT :start, 5");
                 $query->bindParam(':start', intval(trim($start)));
                 break;
                 
             case 'all' :
-                $query = $this->dbh->prepare("SELECT * FROM `postings` ORDER BY `id` DESC LIMIT :start, 5");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT :start, 5");
                 $query->bindParam(':start', intval(trim($start)));
                 break;
                 
             default :
-                $query = $this->dbh->prepare("SELECT * FROM `postings` ORDER BY `id` DESC LIMIT :start, 5");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT :start, 5");
                 $query->bindParam(':start', intval(trim($start)));
         }
 
@@ -123,7 +123,7 @@ class router
                     'id' => $row['id'],
                     'slug' => $row['slug'],
                     'title' => $row['title'],
-                    'description' => (!$row['description'] ? "" : $row['description']),
+                    'description' => ($row['description'] ?: ""),
                     'content' => $row['content'],
                     'type' => $row['type'],
                     'timestamp' => $row['timestamp']
@@ -140,7 +140,7 @@ class router
         $slug = $_POST['slug'];
 
         //build post
-        $query = $this->dbh->prepare("SELECT * FROM `postings` WHERE `slug` = :slug ");
+        $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `slug` = :slug ");
         $query->bindParam(':slug', $slug);
         $query->execute();
 
@@ -172,7 +172,7 @@ class router
                     'id' => $row['id'],
                     'slug' => $row['slug'],
                     'title' => $row['title'],
-                    'description' => (!$row['description'] ? "" : $row['description']),
+                    'description' => ($row['description'] ?: ""),
                     'content' => $row['content'],
                     'type' => $row['type'],
                     'timestamp' => $row['timestamp']
@@ -198,7 +198,7 @@ class router
 
         $name = $this->getUserName($this->dbh);
 
-        $query = $this->dbh->prepare("INSERT INTO postings (name, title, type, content, slug, timestamp, description)
+        $query = $this->dbh->prepare("INSERT INTO posts (name, title, type, content, slug, timestamp, description)
         VALUES (:name, :title, :type, :content, :slug, :date, :description)");
 
         $query->bindParam(':name', $name);
@@ -228,7 +228,7 @@ class router
 
         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $query = $this->dbh->prepare("DELETE FROM `postings` WHERE `id` = :id LIMIT 1");
+        $query = $this->dbh->prepare("DELETE FROM `posts` WHERE `id` = :id LIMIT 1");
         
         $query->bindParam(':id', intval(trim($id)));
 
@@ -252,20 +252,20 @@ class router
         $date = date('Y-m-d H:i:s');
         $title = $_POST['title'];
         $description = $_POST['description'];
-        //$slug = slug($title);
         //$name = getUserName($dbh);
         $id = $_POST['id'];
+		$slug = $this->slug($title);
 
         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $query = $this->dbh->prepare("UPDATE `postings` SET `title` = :title, `content` = :content, `timestamp` = :date, `description` = :description WHERE `id` = :id LIMIT 1");
+        $query = $this->dbh->prepare("UPDATE `posts` SET `title` = :title, `content` = :content, `slug` = :slug, `timestamp` = :date, `description` = :description WHERE `id` = :id LIMIT 1");
 
         //$query->bindParam(':name', $name);
         $query->bindParam(':title', $title);
         $query->bindParam(':description', $description);
         //$query->bindParam(':type', $type);
         $query->bindParam(':content', $content);
-        //$query->bindParam(':slug', $slug);
+        $query->bindParam(':slug', $slug);
         $query->bindParam(':date', $date);
         $query->bindParam(':id', intval(trim($id)));
 
@@ -294,12 +294,12 @@ class router
         {
                 
             case 'all' :
-                $query = $this->dbh->prepare("SELECT * FROM `postings` ORDER BY `id` DESC LIMIT :start, 1000");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT :start, 1000");
                 $query->bindParam(':start', intval(trim($start)));
                 break;
                 
             default :
-                $query = $this->dbh->prepare("SELECT * FROM `postings` ORDER BY `id` DESC LIMIT :start, 1000");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT :start, 1000");
                 $query->bindParam(':start', intval(trim($start)));
         }
 
@@ -314,7 +314,7 @@ class router
                     'id' => $row['id'],
                     'slug' => $row['slug'],
                     'title' => $row['title'],
-                    'description' => (!$row['description'] ? "" : $row['description']),
+                    'description' => ($row['description'] ?: ""),
                     'stripped_content' => str_replace(array("<", "</", ">"), " ", $row['content']),
                     'content' => $row['content'],
                     'type' => $row['type'],
@@ -334,7 +334,7 @@ class router
         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
         //build post
-        $query = $this->dbh->prepare("SELECT * FROM `postings` WHERE `id` = :id LIMIT 1");
+        $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `id` = :id LIMIT 1");
         
         $query->bindParam(':id', intval(trim($id)));
 
@@ -347,7 +347,7 @@ class router
         $post_data = array(
                     'id' => $row['id'],
                     'title' => $row['title'],
-                    'description' => (!$row['description'] ? "" : $row['description']),
+                    'description' => ($row['description'] ?: ""),
                     'content' => $row['content'],
                     'type' => $row['type']
         );
