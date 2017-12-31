@@ -1677,7 +1677,7 @@ function addPayPalButton()
 		
 	   paypal.Button.render({
 
-		env: 'sandbox', // Or 'sandbox', production
+		env: 'production', // Or 'sandbox', production
 		   
 	   client: {
             sandbox:    'AcuRDLytnBkUVIPd9r-sITwtKVxSFVo-as8SjXzCds3Nsy8co03OQP_R3Q3uzdgnE6jE0e-3ubnbJg8v',
@@ -1899,7 +1899,7 @@ function addPayPalButton()
 			if(err)
 		   	{
 				
-				buildPPNotification('PayPal error, check address and user information is correct', 'error');
+				buildPPNotification('PayPal error, check if address and user information is correct', 'error');
 		   	}
 			
 		}
