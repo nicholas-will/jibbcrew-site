@@ -518,7 +518,11 @@ function getShopItem(item_slug)
 		
             media_body.appendChild(paragraph3);
             media_body.appendChild(hr);
-            media_body.appendChild(button);
+		
+			if(item.in_stock == 1)
+		   	{
+			   media_body.appendChild(button);
+		    }
         
             media_left.appendChild(img);
         
