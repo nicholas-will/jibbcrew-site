@@ -420,7 +420,7 @@ function getShopItem(item_slug)
 
             var media_div = document.createElement('div');
             media_div.className = "media";
-            media_div.style = 'padding-top: 20px';
+            media_div.style = 'padding-top: 20px;';
         
             var media_left = document.createElement('div');
             media_left.className = 'media-left';
@@ -432,7 +432,7 @@ function getShopItem(item_slug)
         
             var media_body = document.createElement('div');
             media_body.className = 'media-body';
-            media_body.style = 'padding-left: 20px';
+            media_body.style = 'padding-left: 20px;';
                 
             var paragraph1 = document.createElement('p');
             paragraph1.innerHTML = item.description;

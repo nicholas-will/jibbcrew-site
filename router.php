@@ -277,7 +277,7 @@ class router
         else
         {
 
-            echo "successfully updated post.";
+            echo "successfully updated post: ". $title;
         }
     }
     
@@ -461,7 +461,7 @@ class router
         else
         {
 
-            echo "successfully updated user.";
+            echo "successfully updated user: ". $name;
         }
     }
     

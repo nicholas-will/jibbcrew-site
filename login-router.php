@@ -95,7 +95,7 @@ class loginRouter
             
             $_SESSION['user_name'] = $hash['name'];
             
-            header("Location: pages/dashboard.html");
+            header("Location: manager/dashboard.html");
         } 
         else 
         {	

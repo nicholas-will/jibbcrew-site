@@ -15,10 +15,10 @@ function addPost()
         data: {
             route: 'add-post',
             //user: '',
-            content: $('#content').val(),
-            description: $('#description').val(),
-            type: $('#type').val(),
-            title: $('#title').val(),
+            content: $('#post-content').val(),
+            description: $('#post-description').val(),
+            type: $('#post-type').val(),
+            title: $('#post-title').val(),
             date: formattedDate
         }
     }).done(function(result) {
@@ -36,9 +36,9 @@ function addPost()
 function clearTextboxes()
 {
 
-    $('#description').val("");
-    $('#content').val("");
-    $('#title').val("");
+    $('#post-description').val("");
+    $('#post-content').val("");
+    $('#post-title').val("");
 }
 
 function uploadFile()
@@ -77,21 +77,21 @@ function updatePost(id)
         data: {
             route: 'update-post',
             //user: '',
-            title: $('#post_title').val(),
-            description: $('#post_description').val(),
-            content: $('#post_content').val(),
+            title: $('#post-title').val(),
+            description: $('#post-description').val(),
+            content: $('#post-content').val(),
             date: formattedDate,
             id: id
         }
     }).done(function(result) {
 
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getPostsToEdit();
     }).fail(function(result) {
 
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 
@@ -211,23 +211,23 @@ function getPostToEdit(id)
     }).done(function(post) {
 //        $('.modal-body #edit_post').html(""); //clear div
         
-        $("#post_title").val('');
+        $("#post-title").val('');
         
-        $("#post_title").val(post.title);
+        $("#post-title").val(post.title);
         
-        $("#post_description").val('');
+        $("#post-description").val('');
         
-        $("#post_description").val(post.description);
+        $("#post-description").val(post.description);
         
-        $("#post_content").val('');
+        $("#post-content").val('');
         
-        $("#post_content").val(post.content);
+        $("#post-content").val(post.content);
         
 //        $('.modal-body #edit_post').append(post);
     }).fail(function() {
         
-        $('.modal-body #edit_post').html(""); //clear div
-        $('.modal-body #edit_post').append("<div>Error</div>");
+        $('.modal-body #edit-post').html(""); //clear div
+        $('.modal-body #edit-post').append("<div>Error</div>");
     });
 }
 
@@ -338,19 +338,17 @@ function getUser(id)
     }).done(function(user) {
 //        $('.modal-body #edit_user').html(""); //clear div
         
-        $("#user_name").val('');
+        $("#user-username").val(user.name);
         
-        $("#user_name").val(user.name);
+        $("#user-type").val(user.type);
         
-        $("#user_type").val(user.type);
-        
-        $("#user_status").val(user.status);
+        $("#user-status").val(user.status);
         
 //        $('.modal-body #edit_user').append(div);
     }).fail(function() {
         
-        $('.modal-body #edit_user').html(""); //clear div
-        $('.modal-body #edit_user').append("<div>Error</div>");
+        $('.modal-body #edit-user').html(""); //clear div
+        $('.modal-body #edit-user').append("<div>Error</div>");
     });
 }
 
@@ -362,20 +360,20 @@ function updateUser(id)
         url: '/router.php',
         data: {
             route: 'update-user',
-            name: $('#user_name').val(),
-            type: $('#user_type').val(),
-            status: $('#user_status').val(),
+            name: $('#user-username').val(),
+            type: $('#user-type').val(),
+            status: $('#user-status').val(),
             id: id
         }
     }).done(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getUsers();
     }).fail(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 

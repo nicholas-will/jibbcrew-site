@@ -11,14 +11,11 @@
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
-<!--
-        <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
-        <script>tinymce.init({selector:'textarea'});</script>
--->
+
         <link rel="stylesheet" href="/css/main.css" >
         
-        <script src="/scripts/dashboard.js"></script>
-        
+        <script src="/scripts/manager.js"></script>
+		        
     </head>
     <body style="margin: 60px;">
             <!-- Fixed navbar -->
@@ -31,11 +28,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-<!--
-                    <ul class="list-inline" style="float:left; margin-left:-26px;">
-                        <li><a href="/"><img src="/img/jibbcrew-block-full.png" height="60" width="250"></a></li>
-                    </ul>
--->
+
                     <ul class="list-inline" style="float:left; margin-left:-22px;">
                         <li>
                             <a style="text-decoration: none;" href="/">
@@ -59,25 +52,25 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="dashboard.html">dashboard</a></li>
-                        <li><a href="edit.html">edit posts</a></li>
-                        <li><a href="manage-users.html">manage users</a></li>
-                        <li><a href="manage-shop.html">manage shop</a></li>
-						<li><a href="manage-orders.html">manage orders</a></li>
+                        <li><a href="/manager/dashboard.html">dashboard</a></li>
+                        <li><a href="/manager/manage-posts.html">edit posts</a></li>
+                        <li><a href="/manager/manage-users.html">manage users</a></li>
+                        <li><a href="/manager/manage-shop.html">manage shop</a></li>
+						<li><a href="/manager/manage-orders.html">manage orders</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         <div class="container" style="max-width:960px;">
             <div class="row">
-                <div class="sidebar-module">
-                    <h3>post</h3>
-                    <h5 style="float:right;">User: <span id="user-name"></span></h5>
+                <div class="sidebar-module" style="overflow: hidden;">
+                    <h3 id="title" style="float: left;">post</h3>
+                    <h5 style="float:right; margin-top: 30px;">User: <span id="user-name"></span></h5>
                 </div>
                 <div class="jibb-container">
                     <div class="jibb-inner-container">
 
-                        <input type="text" class="form-control" id="title" placeholder="title"> 
+                        <input type="text" class="form-control" id="post-title" placeholder="title"> 
                         <h6>image upload, post type</h6>
                         <form class="form-inline">
                             <div class="form-group">
@@ -85,7 +78,7 @@
                                 <input class="btn btn-default" type="button" value="Upload" onclick="uploadFile()">
                             </div>
                             <div class="form-group"> 
-                                <select class="form-control" name="type" id="type">
+                                <select class="form-control" name="type" id="post-type">
                                     <option value="news">News</option>
                                     <option value="video">Video</option>
                                     <option value="gallery">Gallery</option>
@@ -94,12 +87,12 @@
                             </div>
                         </form>
                         <br/>
-                        <input type="text" class="form-control" id="description" placeholder="description"> 
+                        <input type="text" class="form-control" id="post-description" placeholder="description"> 
                         <h6>type post below, html is allowed</h6>
 
-                        <textarea class="form-control" rows="14" id="content" name="content"></textarea>
+                        <textarea class="form-control" rows="14" id="post-content" name="content"></textarea>
                         <hr/>
-                        <button type="button" class="btn outline"  onclick="addPost()" style="float: right;">Post</button>
+                        <button type="button" class="btn outline" onclick="addPost()" style="float: right;">Post</button>
                         <br/>
                     </div>
                 </div>
