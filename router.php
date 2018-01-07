@@ -354,14 +354,6 @@ class router
         
         header ("Content-type: application/json");
         echo json_encode($post_data);
-
-//        echo "<div>";
-//        echo "<input type='text' class='form-control' id='title' value='".$row['title']."'>";
-//        echo "<br/>";
-//        echo "<input type='text' class='form-control' id='description' value='".$row['description']."'>";
-//        echo "<br/>";
-//        echo "<textarea class='form-control' rows='14' id='content' name='content'>".$row['content']."</textarea>";
-//        echo "</div>";
     }
     
     private function getUsers()
@@ -552,7 +544,7 @@ class router
             setcookie('user_id', '', time() - 9999999); // empty value and old timestamp
         }
 
-        header("Location: /login.html"); // Redirecting To Home Page
+        header("Location: /"); // Redirecting To Home Page
     }
 }
 

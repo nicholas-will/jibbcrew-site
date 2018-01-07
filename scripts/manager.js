@@ -524,35 +524,35 @@ function getShopItemById(id)
     }).done(function(item) {
 //        $('.modal-body #edit_user').html(""); //clear div
         
-        $("#item_name").val('');
+        $("#item-name").val('');
         
-        $("#item_name").val(item.name);
+        $("#item-name").val(item.name);
         
-        $("#item_description").val('');
+        $("#item-description").val('');
         
-        $("#item_description").val(item.description);
+        $("#item-description").val(item.description);
         
-        $("#item_price").val('');
+        $("#item-price").val('');
         
-        $("#item_price").val(item.price);
+        $("#item-price").val(item.price);
         
-        $("#item_type").val(item.type);
+        $("#item-type").val(item.type);
         
-        $("#item_count").val('');
+        $("#item-count").val('');
         
-        $("#item_count").val(item.count);
+        $("#item-count").val(item.count);
         
-        $("#item_remaining").val('');
+        $("#item-remaining").val('');
         
-        $("#item_remaining").val(item.remaining);
+        $("#item-remaining").val(item.remaining);
         
-        $("#item_available").val(item.in_stock);
+        $("#item-available").val(item.in_stock);
         
 //        $('.modal-body #edit_user').append(div);
     }).fail(function() {
         
-        $('.modal-body #edit_item').html(""); //clear div
-        $('.modal-body #edit_item').append("<div>Error</div>");
+        $('.modal-body #edit-item').html(""); //clear div
+        $('.modal-body #edit-item').append("<div>Error</div>");
     });
 }
 
@@ -564,25 +564,25 @@ function addItem()
         url: '/shop-router.php',
         data: {
             route: 'add-item',
-            name: $('#add_item_name').val(),
-            description: $("#add_item_description").val(),
-            image_path: $("#add_item_image_path").val(),
-            price: $("#add_item_price").val(),
-            type: $('#add_item_type').val(),
-            options: $('#add_item_options').val(),
-            count: $("#add_item_count").val(),
-            remaining: $("#add_item_remaining").val(),
-            in_stock: $("#add_item_available").val()
+            name: $('#add-item-name').val(),
+            description: $("#add-item-description").val(),
+            image_path: $("#add-item-image-path").val(),
+            price: $("#add-item-price").val(),
+            type: $('#add-item-type').val(),
+            options: $('#add-item-options').val(),
+            count: $("#add-item-count").val(),
+            remaining: $("#add-item-remaining").val(),
+            in_stock: $("#add-item-available").val()
         }
     }).done(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getShopItems();
     }).fail(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 
@@ -594,24 +594,24 @@ function updateItem(id)
         url: '/shop-router.php',
         data: {
             route: 'update-item',
-            name: $('#item_name').val(),
-            description: $("#item_description").val(),
-            price: $("#item_price").val(),
-            type: $('#item_type').val(),
-            count: $("#item_count").val(),
-            remaining: $("#item_remaining").val(),
-            in_stock: $("#item_available").val(),
+            name: $('#item-name').val(),
+            description: $("#item-description").val(),
+            price: $("#item-price").val(),
+            type: $('#item-type').val(),
+            count: $("#item-count").val(),
+            remaining: $("#item-remaining").val(),
+            in_stock: $("#item-available").val(),
             id: id
         }
     }).done(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getShopItems();
     }).fail(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 
@@ -1006,7 +1006,7 @@ function checkLogin()
         {
             console.log("logged in");
             
-            $('#user-name').html(""); //clear div
+            $('#user-name').empty(); //clear div
             $('#user-name').append(data.name);
         }
         else
@@ -1014,7 +1014,7 @@ function checkLogin()
             
             console.log("logged out");
             
-            location.replace("/login.html");
+            location.replace("/#login");
         }
     });
 }
@@ -1033,6 +1033,6 @@ function logout()
         
         console.log("logged out");
         
-        location.replace("/login.html");
+        location.replace("/#login");
     });
 }

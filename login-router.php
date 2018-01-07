@@ -100,7 +100,7 @@ class loginRouter
         else 
         {	
             
-            header("Location: login.html");
+            header("Location: /#login");
             
 //            $data = array(
 //                'resp' => false,
