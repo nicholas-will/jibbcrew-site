@@ -95,12 +95,12 @@ class loginRouter
             
             $_SESSION['user_name'] = $hash['name'];
             
-            header("Location: pages/dashboard.html");
+            header("Location: manager/dashboard.html");
         } 
         else 
         {	
             
-            header("Location: login.html");
+            header("Location: /#login");
             
 //            $data = array(
 //                'resp' => false,

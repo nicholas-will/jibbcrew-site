@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <head>
+        <title>jibbcrew.com | atlanta bmx </title>
+        
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="/css/main.css" >
+        
+        <script src="/scripts/manager.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                
+                getPostsToEdit();
+            });
+            
+            $(document).on("click", ".edit_modal", function () {
+                var post_id = $(this).data('id');
+                
+                getPostToEdit(post_id);
+                
+                $('.modal-footer').html("");
+                
+                //create update button and add to modal
+                var update_button = $('<button type="button" class="btn btn-default" data-dismiss="modal">Update</button>').click(function () {
+                    
+                    //update post
+                    updatePost(post_id);
+                });
+                
+                $('.modal-footer').append(update_button);
+
+            }); 
+        </script>
+        
+    </head>
+    <body style="margin: 60px;">
+            <!-- Fixed navbar -->
+        <nav class="navbar navbar-fixed-top jibb-navbar">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+					
+                    <ul class="list-inline" style="float:left; margin-left:-22px;">
+                        <li>
+                            <a style="text-decoration: none;" href="/">
+                                <div style="border: 4px solid black; margin-top: 8px;">
+                                    <div style="padding-left: 4px; padding-right: 4px; margin-bottom: -8px; margin-top: -8px; font-size: 40px;">
+                                        <strong><i>JIBB</i></strong>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a style="text-decoration: none;" href="/">
+                                <div style="margin-left: -10px;">
+                                    <div style="font-size: 38px;">
+                                        <i>CREW</i>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/manager/dashboard.html">dashboard</a></li>
+                        <li><a href="/manager/manage-posts.html">manage posts</a></li>
+                        <li><a href="/manager/manage-users.html">manage users</a></li>
+                        <li><a href="/manager/manage-shop.html">manage shop</a></li>
+						<li><a href="/manager/manage-orders.html">manage orders</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container" style="max-width:960px;">
+            <div class="row">
+                <div class="sidebar-module" style="overflow: hidden;">
+                    <h3 id="title" style="float: left;">edit posts</h3>
+                    <h5 style="float:right; margin-top: 30px;">User: <span id="user-name"></span></h5>
+                </div>
+                <div class="jibb-container">
+                    <div class="jibb-inner-container">
+                        <div id="posts">
+                            <!-- content here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="jibb-inner-container">
+                    <div id="result"></div>
+                </div>
+
+            </div>
+        </div>
+        
+        <!-- Modal -->
+        <div id="editModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                      <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">edit post</h4>
+                      </div>
+                      <div class="modal-body">
+                          <div id="edit-post" class="form-group">
+                              <input type='text' class='form-control' id='post-title' value=''>
+                              <br/>
+                              <input type='text' class='form-control' id='post-description' value=''>
+                              <br/>
+                              <textarea class='form-control' rows='14' id='post-content' name='post-content'></textarea>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                <!--            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+                      </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -237,7 +237,7 @@ class shopRouter
         else
         {
 
-            echo "successfully updated item.";
+            echo "successfully updated item: ". $name;
         }
     }
     

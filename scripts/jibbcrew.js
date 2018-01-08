@@ -1,3 +1,11 @@
+$(document).on('click','.navbar-collapse.in',function(e) {
+
+    if( $(e.target).is('a') && ( $(e.target).attr('class') != 'dropdown-toggle' ) ) {
+        $(this).collapse('hide');
+    }
+
+});
+
 var post_type = 'all';
 
 //router
@@ -103,8 +111,8 @@ routie({
     },
 	'cart': function() {
 		
-		//ga('set', 'page', '/' + window.location.hash);
-        //ga('send', 'pageview');
+		ga('set', 'page', '/' + window.location.hash);
+        ga('send', 'pageview');
 		
 		$("#title").html("");
         
@@ -118,8 +126,8 @@ routie({
 	},
 	'checkout': function() {
 	
-		//ga('set', 'page', '/' + window.location.hash);
-        //ga('send', 'pageview');
+		ga('set', 'page', '/' + window.location.hash);
+        ga('send', 'pageview');
 		
 		$("#title").html("");
         
@@ -133,34 +141,309 @@ routie({
 	},
     'login': function() {
         
-        window.location.href = "login.html";
-    }
+		$('#title').html("");
+        
+        $('#title').html("login");
+		
+		getLogin();
+        
+        $("#load-more-button").remove();
+        
+        $("#comments").remove();
+		
+        //window.location.href = "login.html";
+    },
+	'new-user': function() {
+        
+		$('#title').html("");
+        
+        $('#title').html("new user");
+		
+		getNewUser();
+        
+        $("#load-more-button").remove();
+        
+        $("#comments").remove();
+		
+        //window.location.href = "login.html";
+    },
 });
 
-//function getInstagramPosts(limit)
-//{
-//    
-//    var carousel = buildCarousel();
-//    
-//    $('#posts').html(""); //clear div
-//    
-//    $('#posts').append(carousel);
-//    
-//    var userFeed = new Instafeed({
-//        get: 'user',
-//        userId: '4629847913',
-//        limit: limit,
-//        clientId: 'f4001fdcf1574ee6a47b248fc54ae4e6',
-//        accessToken: '4629847913.1677ed0.647cfc4ef7a64a2680ea99f42f1e5078',
-//        resolution: 'standard_resolution',
-//        template: '<div class="item"><a href="{{link}}"><img class="img-responsive center-block" src="{{image}}" /></a></div>' //height="{{height}}" width="{{width}}"
-//    });
-//    userFeed.run();
-//    
-//    setTimeout(function(){
-//        $('#instafeed .item:nth-child(1)').addClass('active');
-//    }, 1000); //1 sec
-//}
+function getLogin()
+{
+    
+	var div = document.createElement('div');
+	div.className = "news-item";
+	
+	var container_div = document.createElement('div');
+	container_div.style = "padding-top: 20px;";
+	
+	var form = document.createElement('form');
+	form.className = "form-horizontal";
+	form.id = "form-login";
+	form.setAttribute('role', "form");
+	form.setAttribute('method', "post");
+	form.setAttribute('action', "login-router.php");
+	
+	var inner_div_1 = document.createElement('div');
+	inner_div_1.className = "form-group";
+	
+	var col_div_1 = document.createElement('div');
+	col_div_1.className = "col-sm-10";
+	
+	var input_1 = document.createElement('input');
+	input_1.className = "form-control";
+	input_1.setAttribute('type', "text");
+	input_1.id = "email";
+	input_1.setAttribute('name', "email");
+	input_1.setAttribute('placeholder', "email");
+	
+	col_div_1.appendChild(input_1);
+	
+	inner_div_1.appendChild(col_div_1);
+	
+	var inner_div_2 = document.createElement('div');
+	inner_div_2.className = "form-group";
+	
+	var col_div_2 = document.createElement('div');
+	col_div_2.className = "col-sm-10";
+	
+	var input_2 = document.createElement('input');
+	input_2.className = "form-control";
+	input_2.setAttribute('type', "password");
+	input_2.id = "password";
+	input_2.setAttribute('name', "password");
+	input_2.setAttribute('placeholder', "password");
+	
+	col_div_2.appendChild(input_2);
+	
+	inner_div_2.appendChild(col_div_2);
+	
+	var inner_div_3 = document.createElement('div');
+	inner_div_3.className = "form-group";
+	
+	var col_div_3 = document.createElement('div');
+	col_div_3.className = "col-sm-8";
+	
+	var text_div = document.createElement('div');
+	text_div.innerHTML = "new user? <a href='#new-user'>create login here</a>";
+	
+	col_div_3.appendChild(text_div);
+	
+	inner_div_3.appendChild(col_div_3);
+	
+	var col_div_4 = document.createElement('div');
+	col_div_4.className = "col-sm-2";
+	
+	var input_3 = document.createElement('input');
+	input_3.className = "btn outline";
+	input_3.style = "float: right;";
+	input_3.setAttribute('type', "submit");
+	input_3.id = "login-btn";
+	input_3.setAttribute('value', "login");
+	
+	col_div_4.appendChild(input_3);
+	
+	inner_div_3.appendChild(col_div_4);
+	
+	//hidden
+	var input_4 = document.createElement('input');
+	input_4.setAttribute('type', "hidden");
+	input_4.setAttribute('name', "route");
+	input_4.setAttribute('value', "login");
+	
+	form.appendChild(inner_div_1);
+	form.appendChild(inner_div_2);
+	form.appendChild(inner_div_3);
+	form.appendChild(input_4);
+	
+	container_div.appendChild(form);
+	container_div.appendChild(document.createElement('br'));
+	
+	var error_div = document.createElement('div');
+	error_div.id = "error";
+	
+	container_div.appendChild(error_div);
+	
+	div.appendChild(container_div);
+	
+	if (document.readyState === 'complete') 
+	{
+		
+		//console.log(document.readyState);
+		
+		$('#posts').empty(); //clear div
+	
+		$('#posts').append(div);
+	}
+	else
+	{
+		
+		window.onload = function () { 
+			
+			$("#title").empty();
+        
+        	$("#title").html('login');
+			
+			$('#posts').empty(); //clear div
+	
+			$('#posts').append(div);
+		}
+	}
+}
+
+function getNewUser()
+{
+	
+	var div = document.createElement('div');
+	div.className = "news-item";
+	
+	var container_div = document.createElement('div');
+	container_div.style = "padding-top: 20px;";
+	
+	var inner_container_div = document.createElement('div');
+	inner_container_div.className = "form-horizontal";
+	
+	//
+	var p1 = document.createElement('p');
+	p1.innerHTML = "enter your full name";
+	
+	var inner_div_1 = document.createElement('div');
+	inner_div_1.className = "form-group";
+	
+	var col_div_1 = document.createElement('div');
+	col_div_1.className = "col-sm-10";
+	
+	var input_1 = document.createElement('input');
+	input_1.className = "form-control";
+	input_1.setAttribute('type', "text");
+	input_1.id = "fullname";
+	input_1.setAttribute('name', "fullname");
+	input_1.setAttribute('placeholder', "name");
+	
+	col_div_1.appendChild(input_1);
+	inner_div_1.appendChild(col_div_1);
+	
+	//
+	var p2 = document.createElement('p');
+	p2.innerHTML = "enter your email you wish to login with, then again";
+	
+	var inner_div_2 = document.createElement('div');
+	inner_div_2.className = "form-group";
+	
+	var col_div_2 = document.createElement('div');
+	col_div_2.className = "col-sm-10";
+	
+	var input_2 = document.createElement('input');
+	input_2.className = "form-control";
+	input_2.setAttribute('type', "text");
+	input_2.id = "email1";
+	input_2.setAttribute('name', "email1");
+	input_2.setAttribute('placeholder', "email");
+	
+	col_div_2.appendChild(input_2);
+	inner_div_2.appendChild(col_div_2);
+	
+	var inner_div_3 = document.createElement('div');
+	inner_div_3.className = "form-group";
+	
+	var col_div_3 = document.createElement('div');
+	col_div_3.className = "col-sm-10";
+	
+	var input_3 = document.createElement('input');
+	input_3.className = "form-control";
+	input_3.setAttribute('type', "text");
+	input_3.id = "email2";
+	input_3.setAttribute('name', "email2");
+	input_3.setAttribute('placeholder', "email");
+	
+	col_div_3.appendChild(input_3);
+	inner_div_3.appendChild(col_div_3);
+	
+	//
+	var p3 = document.createElement('p');
+	p3.innerHTML = "enter your password you wish to login with, then again";
+	
+	var inner_div_4 = document.createElement('div');
+	inner_div_4.className = "form-group";
+	
+	var col_div_4 = document.createElement('div');
+	col_div_4.className = "col-sm-10";
+	
+	var input_4 = document.createElement('input');
+	input_4.className = "form-control";
+	input_4.setAttribute('type', "password");
+	input_4.id = "password1";
+	input_4.setAttribute('name', "password1");
+	input_4.setAttribute('placeholder', "password");
+	
+	col_div_4.appendChild(input_4);
+	inner_div_4.appendChild(col_div_4);
+	
+	var inner_div_5 = document.createElement('div');
+	inner_div_5.className = "form-group";
+	
+	var col_div_5 = document.createElement('div');
+	col_div_5.className = "col-sm-10";
+	
+	var input_5 = document.createElement('input');
+	input_5.className = "form-control";
+	input_5.setAttribute('type', "password");
+	input_5.id = "password2";
+	input_5.setAttribute('name', "password2");
+	input_5.setAttribute('placeholder', "password");
+	
+	col_div_5.appendChild(input_5);
+	inner_div_5.appendChild(col_div_5);
+	
+	//
+	var inner_div_6 = document.createElement('div');
+	inner_div_6.className = "form-group";
+	
+	var col_div_6 = document.createElement('div');
+	col_div_6.className = "col-sm-10";
+	
+	var input_6 = document.createElement('input');
+	input_6.className = "btn outline";
+	input_6.style = "float: right;";
+	input_6.setAttribute('type', "button");
+	input_6.setAttribute('value', "create");
+
+	input_6.onclick = function(){
+		//create user
+		createUser();
+	}
+	
+	col_div_6.appendChild(input_6);
+	inner_div_6.appendChild(col_div_6);
+	
+	inner_container_div.appendChild(p1);
+	inner_container_div.appendChild(inner_div_1);
+	inner_container_div.appendChild(p2);
+	inner_container_div.appendChild(inner_div_2);
+	inner_container_div.appendChild(inner_div_3);
+	inner_container_div.appendChild(p3);
+	inner_container_div.appendChild(inner_div_4);
+	inner_container_div.appendChild(inner_div_5);
+	inner_container_div.appendChild(inner_div_6);
+	
+	container_div.appendChild(inner_container_div);
+	
+	container_div.appendChild(document.createElement('br'));
+	
+	var error_div = document.createElement('div');
+	error_div.id = "error";
+	
+	container_div.appendChild(error_div);
+	
+	div.appendChild(container_div);
+	
+//	window.onload = function () { 
+		$('#posts').empty(); //clear div
+	
+		$('#posts').append(div);
+//	}
+}
 
 function getPosts(post_type)
 {
@@ -420,7 +703,7 @@ function getShopItem(item_slug)
 
             var media_div = document.createElement('div');
             media_div.className = "media";
-            media_div.style = 'padding-top: 20px';
+            media_div.style = 'padding-top: 20px;';
         
             var media_left = document.createElement('div');
             media_left.className = 'media-left';
@@ -432,7 +715,7 @@ function getShopItem(item_slug)
         
             var media_body = document.createElement('div');
             media_body.className = 'media-body';
-            media_body.style = 'padding-left: 20px';
+            media_body.style = 'padding-left: 20px;';
                 
             var paragraph1 = document.createElement('p');
             paragraph1.innerHTML = item.description;
@@ -610,8 +893,6 @@ function updateCart(key, qty)
 
 function getCart()
 {
-	
-	$('#posts').html(""); //clear div
     
 	var div = document.createElement('div');
 	div.className = "news-item";
@@ -767,7 +1048,29 @@ function getCart()
 	
 	div.appendChild(button_div);
 	
-	$('#posts').append(div);
+	if (document.readyState === 'complete') 
+	{
+		
+		//console.log(document.readyState);
+		
+		$('#posts').empty(); //clear div
+	
+		$('#posts').append(div);
+	}
+	else
+	{
+		
+		window.onload = function () { 
+			
+			$("#title").empty();
+        
+        	$("#title").html('cart');
+			
+			$('#posts').empty(); //clear div
+	
+			$('#posts').append(div);
+		}
+	}
 }
 
 function getCheckout()
@@ -1951,49 +2254,145 @@ function buildPPNotification(message, type)
 	$('#paypal-message').append(notification_div);
 }
 
-function buildCarousel()
+//function buildCarousel()
+//{
+//    
+//    var div = document.createElement('div');
+//    div.className = "news-item";
+//    
+//    var heading = document.createElement('h4');
+//    heading.className = "news-item-title";
+//    heading.innerHTML = "recent instagram feed";
+//    
+//    var outerdiv  = document.createElement('div');
+//    outerdiv.id = "jibb-carousel";
+//    outerdiv.className = "carousel center-block img-responsive"; //slide taken out
+//    outerdiv.style.width = "640px";
+//    
+//    var innerdiv  = document.createElement('div');
+//    innerdiv.id = "instafeed";
+//    innerdiv.className = "carousel-inner";
+//    innerdiv.setAttribute("role", "listbox");
+//
+//    outerdiv.appendChild(innerdiv);
+//    
+//    //controls
+//    var lefta  = document.createElement('a');
+//    lefta.className = "left carousel-control";
+//    lefta.href = "#jibb-carousel";
+//    lefta.setAttribute("role", "button");
+//    lefta.setAttribute("data-slide", "prev");
+//    lefta.innerHTML = "<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span><span class='sr-only'>Previous</span>";
+//    
+//    var righta  = document.createElement('a');
+//    righta.className = "right carousel-control";
+//    righta.href = "#jibb-carousel";
+//    righta.setAttribute("role", "button");
+//    righta.setAttribute("data-slide", "next");
+//    righta.innerHTML = "<span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span><span class='sr-only'>Next</span>";
+//    
+//    outerdiv.appendChild(lefta);
+//    outerdiv.appendChild(righta);
+//    
+//    div.appendChild(heading);
+//    
+//    div.appendChild(outerdiv);
+//    
+//    return div;
+//}
+
+//function getInstagramPosts(limit)
+//{
+//    
+//    var carousel = buildCarousel();
+//    
+//    $('#posts').html(""); //clear div
+//    
+//    $('#posts').append(carousel);
+//    
+//    var userFeed = new Instafeed({
+//        get: 'user',
+//        userId: '4629847913',
+//        limit: limit,
+//        clientId: 'f4001fdcf1574ee6a47b248fc54ae4e6',
+//        accessToken: '4629847913.1677ed0.647cfc4ef7a64a2680ea99f42f1e5078',
+//        resolution: 'standard_resolution',
+//        template: '<div class="item"><a href="{{link}}"><img class="img-responsive center-block" src="{{image}}" /></a></div>' //height="{{height}}" width="{{width}}"
+//    });
+//    userFeed.run();
+//    
+//    setTimeout(function(){
+//        $('#instafeed .item:nth-child(1)').addClass('active');
+//    }, 1000); //1 sec
+//}
+
+function createUser()
 {
     
-    var div = document.createElement('div');
-    div.className = "news-item";
+    var fullname = $('#fullname').val();
     
-    var heading = document.createElement('h4');
-    heading.className = "news-item-title";
-    heading.innerHTML = "recent instagram feed";
-    
-    var outerdiv  = document.createElement('div');
-    outerdiv.id = "jibb-carousel";
-    outerdiv.className = "carousel center-block img-responsive"; //slide taken out
-    outerdiv.style.width = "640px";
-    
-    var innerdiv  = document.createElement('div');
-    innerdiv.id = "instafeed";
-    innerdiv.className = "carousel-inner";
-    innerdiv.setAttribute("role", "listbox");
+    if(validate($('#email1').val(), $('#email2').val()))
+    {
+        
+        var email = validate($('#email1').val(), $('#email2').val());
+        
+        if(validate($('#password1').val(), $('#password2').val()))
+        {
+        
+            var password = validate($('#password1').val(), $('#password2').val());
+            
+            $.ajax({
+                method: 'POST',
+                url: 'login-router.php',
+                data: {
+                    route: 'create-user',
+                    fullname: fullname,
+                    email: email,
+                    password: password
+                }
+            }).done(function(data) {
 
-    outerdiv.appendChild(innerdiv);
+                if(data.resp)
+                {
+                            
+                     location.replace("/#login");
+                }
+                else
+                {
+                    
+                    $('#error').html(""); //clear div
+                    $('#error').append("<div class='alert alert-danger alert-dismissable' role='alert'><a class='close' data-dismiss='alert'>&times;</a><p>"+data.message+"</p></div>");
+                }
+            });
+        }
+        else
+        {
+        
+            $('#error').html(""); //clear div
+            $('#error').append("<div class='alert alert-danger alert-dismissable' role='alert'><a class='close' data-dismiss='alert'>&times;</a><p>password does not match.</p></div>");
+        }
+    }
+    else
+    {
+        
+        $('#error').html(""); //clear div
+        $('#error').append("<div class='alert alert-danger alert-dismissable' role='alert'><a class='close' data-dismiss='alert'>&times;</a><p>email does not match.</p></div>");
+    }
     
-    //controls
-    var lefta  = document.createElement('a');
-    lefta.className = "left carousel-control";
-    lefta.href = "#jibb-carousel";
-    lefta.setAttribute("role", "button");
-    lefta.setAttribute("data-slide", "prev");
-    lefta.innerHTML = "<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span><span class='sr-only'>Previous</span>";
+}
+
+function validate(value_1, value_2)
+{
     
-    var righta  = document.createElement('a');
-    righta.className = "right carousel-control";
-    righta.href = "#jibb-carousel";
-    righta.setAttribute("role", "button");
-    righta.setAttribute("data-slide", "next");
-    righta.innerHTML = "<span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span><span class='sr-only'>Next</span>";
-    
-    outerdiv.appendChild(lefta);
-    outerdiv.appendChild(righta);
-    
-    div.appendChild(heading);
-    
-    div.appendChild(outerdiv);
-    
-    return div;
+    if(value_1 && value_2)
+    {
+        
+        if(value_1 == value_2)
+        {
+        
+            return value_1;
+        }
+    }
+      
+    return false;
 }

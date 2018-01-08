@@ -3,6 +3,14 @@ $(document).ready(function() {
     checkLogin();
 });
 
+$(document).on('click','.navbar-collapse.in',function(e) {
+
+    if( $(e.target).is('a') && ( $(e.target).attr('class') != 'dropdown-toggle' ) ) {
+        $(this).collapse('hide');
+    }
+
+});
+
 function addPost()
 {
 
@@ -15,10 +23,10 @@ function addPost()
         data: {
             route: 'add-post',
             //user: '',
-            content: $('#content').val(),
-            description: $('#description').val(),
-            type: $('#type').val(),
-            title: $('#title').val(),
+            content: $('#post-content').val(),
+            description: $('#post-description').val(),
+            type: $('#post-type').val(),
+            title: $('#post-title').val(),
             date: formattedDate
         }
     }).done(function(result) {
@@ -36,9 +44,21 @@ function addPost()
 function clearTextboxes()
 {
 
-    $('#description').val("");
-    $('#content').val("");
-    $('#title').val("");
+    $('#post-description').val("");
+    $('#post-content').val("");
+    $('#post-title').val("");
+}
+
+function addVideoCode()
+{
+	
+	$('#post-content').val( $('#post-content').val() + '<div class="video-container"></div>');
+}
+
+function addImageCode()
+{
+	
+	$('#post-content').val( $('#post-content').val() + '<img class="img-responsive center-block" src="" />');
 }
 
 function uploadFile()
@@ -77,21 +97,21 @@ function updatePost(id)
         data: {
             route: 'update-post',
             //user: '',
-            title: $('#post_title').val(),
-            description: $('#post_description').val(),
-            content: $('#post_content').val(),
+            title: $('#post-title').val(),
+            description: $('#post-description').val(),
+            content: $('#post-content').val(),
             date: formattedDate,
             id: id
         }
     }).done(function(result) {
 
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getPostsToEdit();
     }).fail(function(result) {
 
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 
@@ -130,6 +150,9 @@ function getPostsToEdit()
         
         $('#posts').html(""); //clear div
 
+		var scrollable_div = document.createElement('div');
+		scrollable_div.style = "overflow-y: scroll; height: 600px;";
+		
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
         table.style = "table-layout:fixed";
@@ -174,7 +197,7 @@ function getPostsToEdit()
             td2.innerHTML = posts[i].description;
 
             var td3 = document.createElement('td');
-            td3.innerHTML = posts[i].stripped_content.substr(0,100); //may have to change
+            td3.innerHTML = posts[i].stripped_content.substr(0,90); //may have to change
 
             var td4 = document.createElement('td');
             td4.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+posts[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+posts[i].id+"' type='button' class='btn btn-danger' onclick='deletePost("+posts[i].id+")'>Delete</button>";
@@ -188,8 +211,10 @@ function getPostsToEdit()
         }
 
         table.appendChild(tbody);
+		
+		scrollable_div.appendChild(table);
 
-        $('#posts').append(table);
+        $('#posts').append(scrollable_div);
     }).fail(function() {
         
         $('#posts').html(""); //clear div
@@ -211,23 +236,23 @@ function getPostToEdit(id)
     }).done(function(post) {
 //        $('.modal-body #edit_post').html(""); //clear div
         
-        $("#post_title").val('');
+        $("#post-title").val('');
         
-        $("#post_title").val(post.title);
+        $("#post-title").val(post.title);
         
-        $("#post_description").val('');
+        $("#post-description").val('');
         
-        $("#post_description").val(post.description);
+        $("#post-description").val(post.description);
         
-        $("#post_content").val('');
+        $("#post-content").val('');
         
-        $("#post_content").val(post.content);
+        $("#post-content").val(post.content);
         
 //        $('.modal-body #edit_post').append(post);
     }).fail(function() {
         
-        $('.modal-body #edit_post').html(""); //clear div
-        $('.modal-body #edit_post').append("<div>Error</div>");
+        $('.modal-body #edit-post').html(""); //clear div
+        $('.modal-body #edit-post').append("<div>Error</div>");
     });
 }
 
@@ -246,6 +271,9 @@ function getUsers()
     }).done(function(users) {
         
         $('#users').html(""); //clear div
+		
+		var scrollable_div = document.createElement('div');
+		scrollable_div.style = "overflow-y: scroll; height: 600px;";
 
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
@@ -316,7 +344,9 @@ function getUsers()
 
         table.appendChild(tbody);
 
-        $('#users').append(table);
+		scrollable_div.appendChild(table);
+		
+        $('#users').append(scrollable_div);
     }).fail(function() {
         
         $('#users').html(""); //clear div
@@ -338,19 +368,17 @@ function getUser(id)
     }).done(function(user) {
 //        $('.modal-body #edit_user').html(""); //clear div
         
-        $("#user_name").val('');
+        $("#user-username").val(user.name);
         
-        $("#user_name").val(user.name);
+        $("#user-type").val(user.type);
         
-        $("#user_type").val(user.type);
-        
-        $("#user_status").val(user.status);
+        $("#user-status").val(user.status);
         
 //        $('.modal-body #edit_user').append(div);
     }).fail(function() {
         
-        $('.modal-body #edit_user').html(""); //clear div
-        $('.modal-body #edit_user').append("<div>Error</div>");
+        $('.modal-body #edit-user').html(""); //clear div
+        $('.modal-body #edit-user').append("<div>Error</div>");
     });
 }
 
@@ -362,20 +390,20 @@ function updateUser(id)
         url: '/router.php',
         data: {
             route: 'update-user',
-            name: $('#user_name').val(),
-            type: $('#user_type').val(),
-            status: $('#user_status').val(),
+            name: $('#user-username').val(),
+            type: $('#user-type').val(),
+            status: $('#user-status').val(),
             id: id
         }
     }).done(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getUsers();
     }).fail(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 
@@ -416,6 +444,9 @@ function getShopItems()
     }).done(function(items) {
         
         $('#items').html(""); //clear div
+		
+		var scrollable_div = document.createElement('div');
+		scrollable_div.style = "overflow-y: scroll; height: 538px;";
 
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
@@ -503,8 +534,10 @@ function getShopItems()
         }
 
         table.appendChild(tbody);
+		
+		scrollable_div.appendChild(table);
 
-        $('#items').append(table);
+        $('#items').append(scrollable_div);
     }).fail(function() {
         
         $('#items').html(""); //clear div
@@ -526,35 +559,35 @@ function getShopItemById(id)
     }).done(function(item) {
 //        $('.modal-body #edit_user').html(""); //clear div
         
-        $("#item_name").val('');
+        $("#item-name").val('');
         
-        $("#item_name").val(item.name);
+        $("#item-name").val(item.name);
         
-        $("#item_description").val('');
+        $("#item-description").val('');
         
-        $("#item_description").val(item.description);
+        $("#item-description").val(item.description);
         
-        $("#item_price").val('');
+        $("#item-price").val('');
         
-        $("#item_price").val(item.price);
+        $("#item-price").val(item.price);
         
-        $("#item_type").val(item.type);
+        $("#item-type").val(item.type);
         
-        $("#item_count").val('');
+        $("#item-count").val('');
         
-        $("#item_count").val(item.count);
+        $("#item-count").val(item.count);
         
-        $("#item_remaining").val('');
+        $("#item-remaining").val('');
         
-        $("#item_remaining").val(item.remaining);
+        $("#item-remaining").val(item.remaining);
         
-        $("#item_available").val(item.in_stock);
+        $("#item-available").val(item.in_stock);
         
 //        $('.modal-body #edit_user').append(div);
     }).fail(function() {
         
-        $('.modal-body #edit_item').html(""); //clear div
-        $('.modal-body #edit_item').append("<div>Error</div>");
+        $('.modal-body #edit-item').html(""); //clear div
+        $('.modal-body #edit-item').append("<div>Error</div>");
     });
 }
 
@@ -566,25 +599,25 @@ function addItem()
         url: '/shop-router.php',
         data: {
             route: 'add-item',
-            name: $('#add_item_name').val(),
-            description: $("#add_item_description").val(),
-            image_path: $("#add_item_image_path").val(),
-            price: $("#add_item_price").val(),
-            type: $('#add_item_type').val(),
-            options: $('#add_item_options').val(),
-            count: $("#add_item_count").val(),
-            remaining: $("#add_item_remaining").val(),
-            in_stock: $("#add_item_available").val()
+            name: $('#add-item-name').val(),
+            description: $("#add-item-description").val(),
+            image_path: $("#add-item-image-path").val(),
+            price: $("#add-item-price").val(),
+            type: $('#add-item-type').val(),
+            options: $('#add-item-options').val(),
+            count: $("#add-item-count").val(),
+            remaining: $("#add-item-remaining").val(),
+            in_stock: $("#add-item-available").val()
         }
     }).done(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getShopItems();
     }).fail(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 
@@ -596,24 +629,24 @@ function updateItem(id)
         url: '/shop-router.php',
         data: {
             route: 'update-item',
-            name: $('#item_name').val(),
-            description: $("#item_description").val(),
-            price: $("#item_price").val(),
-            type: $('#item_type').val(),
-            count: $("#item_count").val(),
-            remaining: $("#item_remaining").val(),
-            in_stock: $("#item_available").val(),
+            name: $('#item-name').val(),
+            description: $("#item-description").val(),
+            price: $("#item-price").val(),
+            type: $('#item-type').val(),
+            count: $("#item-count").val(),
+            remaining: $("#item-remaining").val(),
+            in_stock: $("#item-available").val(),
             id: id
         }
     }).done(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getShopItems();
     }).fail(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 
@@ -654,6 +687,9 @@ function getOrders()
     }).done(function(orders) {
         
         $('#orders').html(""); //clear div
+		
+		var scrollable_div = document.createElement('div');
+		scrollable_div.style = "overflow-y: scroll; height: 600px;";
 
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
@@ -732,7 +768,9 @@ function getOrders()
 
         table.appendChild(tbody);
 
-        $('#orders').append(table);
+		scrollable_div.appendChild(table);
+		
+        $('#orders').append(scrollable_div);
     }).fail(function() {
         
         $('#orders').html(""); //clear div
@@ -754,13 +792,13 @@ function getOrderByOrderNumber(order_number)
 	}).done(function(order) {
 //        $('.modal-body #edit_user').html(""); //clear div
 
-		$("#order_number").html("");
+		$("#order-number").html("");
 
-		$("#order_number").html("#" + order[0].order_number);
+		$("#order-number").html("#" + order[0].order_number);
 
-		$("#order_date").html("");
-
-		$("#order_date").html(order[0].order_date.substr(0,10));
+//		$("#order-date").html("");
+//
+//		$("#order-date").html(order[0].order_date.substr(0,10));
 
 		$("#name").html("");
 
@@ -787,7 +825,7 @@ function getOrderByOrderNumber(order_number)
 		$("#zip").html(order[0].zip);
 		
 		//build table
-		$('#items_table').html(""); //clear div
+		$('#items-table').html(""); //clear div
 
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
@@ -918,7 +956,7 @@ function getOrderByOrderNumber(order_number)
 		
         table.appendChild(tbody);
 
-        $('#items_table').append(table);
+        $('#items-table').append(table);
 		
 //		$("#order_total").html("");
 //
@@ -928,9 +966,9 @@ function getOrderByOrderNumber(order_number)
 
 		$("#notes").html(order[0].notes);
 
-		$("#shipping_date").val('');
+		$("#shipping-date").val('');
 
-		$("#shipping_date").val(order[0].shipping_date);
+		$("#shipping-date").val(order[0].shipping_date);
 
 		$("#tracking").val('');
 
@@ -939,8 +977,8 @@ function getOrderByOrderNumber(order_number)
 //        $('.modal-body #edit_user').append(div);
 	}).fail(function() {
 
-			$('.modal-body #view_order').html(""); //clear div
-			$('.modal-body #view_order').append("<div>Error</div>");
+			$('.modal-body #view-order').html(""); //clear div
+			$('.modal-body #view-order').append("<div>Error</div>");
 		});
 	
 }
@@ -953,19 +991,19 @@ function updateOrder(order_number)
         url: '/shop-router.php',
         data: {
             route: 'update-order',
-            shipping_date: $("#shipping_date").val(),
+            shipping_date: $("#shipping-date").val(),
             tracking: $("#tracking").val(),
             order_number: order_number
         }
     }).done(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getOrders();
     }).fail(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 
@@ -1008,7 +1046,7 @@ function checkLogin()
         {
             console.log("logged in");
             
-            $('#user-name').html(""); //clear div
+            $('#user-name').empty(); //clear div
             $('#user-name').append(data.name);
         }
         else
@@ -1016,7 +1054,7 @@ function checkLogin()
             
             console.log("logged out");
             
-            location.replace("/login.html");
+            location.replace("/#login");
         }
     });
 }
@@ -1035,6 +1073,6 @@ function logout()
         
         console.log("logged out");
         
-        location.replace("/login.html");
+        location.replace("/#login");
     });
 }
