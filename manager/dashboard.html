@@ -53,7 +53,7 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/manager/dashboard.html">dashboard</a></li>
-                        <li><a href="/manager/manage-posts.html">edit posts</a></li>
+                        <li><a href="/manager/manage-posts.html">manage posts</a></li>
                         <li><a href="/manager/manage-users.html">manage users</a></li>
                         <li><a href="/manager/manage-shop.html">manage shop</a></li>
 						<li><a href="/manager/manage-orders.html">manage orders</a></li>
@@ -69,28 +69,35 @@
                 </div>
                 <div class="jibb-container">
                     <div class="jibb-inner-container">
+						<div style="min-height: 538px;">
+							<input type="text" class="form-control" id="post-title" placeholder="title"> 
+							<h6>image upload, post type</h6>
+							<form class="form-inline">
+								<div class="form-group">
+									<input name="fileInput" id="fileInput" type="file" class="form-control">
+								</div>
+								<div class="form-group">
+									<input class="btn btn-default form-control" type="button" value="Upload" onclick="uploadFile()">
+								</div>
+								<div class="form-group"> 
+									<select class="form-control" name="type" id="post-type">
+										<option value="news">News</option>
+										<option value="video">Video</option>
+										<option value="gallery">Gallery</option>
+										<option value="other">Other</option>
+									</select>
+								</div>
+							</form>
+							<br/>
+							<input type="text" class="form-control" id="post-description" placeholder="description"> 
+							<h6>type post below, html is allowed</h6>
 
-                        <input type="text" class="form-control" id="post-title" placeholder="title"> 
-                        <h6>image upload, post type</h6>
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <input name="fileInput" id="fileInput" type="file" class="form-control">
-                                <input class="btn btn-default" type="button" value="Upload" onclick="uploadFile()">
-                            </div>
-                            <div class="form-group"> 
-                                <select class="form-control" name="type" id="post-type">
-                                    <option value="news">News</option>
-                                    <option value="video">Video</option>
-                                    <option value="gallery">Gallery</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                        </form>
-                        <br/>
-                        <input type="text" class="form-control" id="post-description" placeholder="description"> 
-                        <h6>type post below, html is allowed</h6>
-
-                        <textarea class="form-control" rows="14" id="post-content" name="content"></textarea>
+							<textarea class="form-control" rows="14" id="post-content" name="content"></textarea>
+							<div style="padding-top: 8px;">
+								<button type="button" class="btn btn-default" onclick="addVideoCode()">Video</button>
+								<button type="button" class="btn btn-default" onclick="addImageCode()">Image</button>
+							</div>
+						</div>
                         <hr/>
                         <button type="button" class="btn outline" onclick="addPost()" style="float: right;">Post</button>
                         <br/>

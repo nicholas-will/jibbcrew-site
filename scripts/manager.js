@@ -41,6 +41,18 @@ function clearTextboxes()
     $('#post-title').val("");
 }
 
+function addVideoCode()
+{
+	
+	$('#post-content').val( $('#post-content').val() + '<div class="video-container"></div>');
+}
+
+function addImageCode()
+{
+	
+	$('#post-content').val( $('#post-content').val() + '<img class="img-responsive center-block" src="" />');
+}
+
 function uploadFile()
 {
 
@@ -130,6 +142,9 @@ function getPostsToEdit()
         
         $('#posts').html(""); //clear div
 
+		var scrollable_div = document.createElement('div');
+		scrollable_div.style = "overflow-y: scroll; height: 600px;";
+		
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
         table.style = "table-layout:fixed";
@@ -174,7 +189,7 @@ function getPostsToEdit()
             td2.innerHTML = posts[i].description;
 
             var td3 = document.createElement('td');
-            td3.innerHTML = posts[i].stripped_content.substr(0,100); //may have to change
+            td3.innerHTML = posts[i].stripped_content.substr(0,90); //may have to change
 
             var td4 = document.createElement('td');
             td4.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+posts[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+posts[i].id+"' type='button' class='btn btn-danger' onclick='deletePost("+posts[i].id+")'>Delete</button>";
@@ -188,8 +203,10 @@ function getPostsToEdit()
         }
 
         table.appendChild(tbody);
+		
+		scrollable_div.appendChild(table);
 
-        $('#posts').append(table);
+        $('#posts').append(scrollable_div);
     }).fail(function() {
         
         $('#posts').html(""); //clear div
@@ -246,6 +263,9 @@ function getUsers()
     }).done(function(users) {
         
         $('#users').html(""); //clear div
+		
+		var scrollable_div = document.createElement('div');
+		scrollable_div.style = "overflow-y: scroll; height: 600px;";
 
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
@@ -316,7 +336,9 @@ function getUsers()
 
         table.appendChild(tbody);
 
-        $('#users').append(table);
+		scrollable_div.appendChild(table);
+		
+        $('#users').append(scrollable_div);
     }).fail(function() {
         
         $('#users').html(""); //clear div
@@ -414,6 +436,9 @@ function getShopItems()
     }).done(function(items) {
         
         $('#items').html(""); //clear div
+		
+		var scrollable_div = document.createElement('div');
+		scrollable_div.style = "overflow-y: scroll; height: 538px;";
 
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
@@ -501,8 +526,10 @@ function getShopItems()
         }
 
         table.appendChild(tbody);
+		
+		scrollable_div.appendChild(table);
 
-        $('#items').append(table);
+        $('#items').append(scrollable_div);
     }).fail(function() {
         
         $('#items').html(""); //clear div
@@ -652,6 +679,9 @@ function getOrders()
     }).done(function(orders) {
         
         $('#orders').html(""); //clear div
+		
+		var scrollable_div = document.createElement('div');
+		scrollable_div.style = "overflow-y: scroll; height: 600px;";
 
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
@@ -730,7 +760,9 @@ function getOrders()
 
         table.appendChild(tbody);
 
-        $('#orders').append(table);
+		scrollable_div.appendChild(table);
+		
+        $('#orders').append(scrollable_div);
     }).fail(function() {
         
         $('#orders').html(""); //clear div
@@ -752,13 +784,13 @@ function getOrderByOrderNumber(order_number)
 	}).done(function(order) {
 //        $('.modal-body #edit_user').html(""); //clear div
 
-		$("#order_number").html("");
+		$("#order-number").html("");
 
-		$("#order_number").html("#" + order[0].order_number);
+		$("#order-number").html("#" + order[0].order_number);
 
-		$("#order_date").html("");
-
-		$("#order_date").html(order[0].order_date.substr(0,10));
+//		$("#order-date").html("");
+//
+//		$("#order-date").html(order[0].order_date.substr(0,10));
 
 		$("#name").html("");
 
@@ -785,7 +817,7 @@ function getOrderByOrderNumber(order_number)
 		$("#zip").html(order[0].zip);
 		
 		//build table
-		$('#items_table').html(""); //clear div
+		$('#items-table').html(""); //clear div
 
         var table = document.createElement('table');
         table.className = 'table dataTable no-footer';
@@ -916,7 +948,7 @@ function getOrderByOrderNumber(order_number)
 		
         table.appendChild(tbody);
 
-        $('#items_table').append(table);
+        $('#items-table').append(table);
 		
 //		$("#order_total").html("");
 //
@@ -926,9 +958,9 @@ function getOrderByOrderNumber(order_number)
 
 		$("#notes").html(order[0].notes);
 
-		$("#shipping_date").val('');
+		$("#shipping-date").val('');
 
-		$("#shipping_date").val(order[0].shipping_date);
+		$("#shipping-date").val(order[0].shipping_date);
 
 		$("#tracking").val('');
 
@@ -937,8 +969,8 @@ function getOrderByOrderNumber(order_number)
 //        $('.modal-body #edit_user').append(div);
 	}).fail(function() {
 
-			$('.modal-body #view_order').html(""); //clear div
-			$('.modal-body #view_order').append("<div>Error</div>");
+			$('.modal-body #view-order').html(""); //clear div
+			$('.modal-body #view-order').append("<div>Error</div>");
 		});
 	
 }
@@ -951,19 +983,19 @@ function updateOrder(order_number)
         url: '/shop-router.php',
         data: {
             route: 'update-order',
-            shipping_date: $("#shipping_date").val(),
+            shipping_date: $("#shipping-date").val(),
             tracking: $("#tracking").val(),
             order_number: order_number
         }
     }).done(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-success' role='alert'>"+result+"</div>");
         getOrders();
     }).fail(function(result) {
         
-        $("#update_result").html(""); //clear div
-        $("#update_result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
+        $("#result").html(""); //clear div
+        $("#result").append("<div class='alert alert-danger' role='alert'>"+result+"</div>");
     });
 }
 
