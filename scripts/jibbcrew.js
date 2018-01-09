@@ -80,8 +80,9 @@ routie({
         $("#comments").remove();
     },
     'shop': function() {
-        //ga('set', 'page', '/' + window.location.hash);
-        //ga('send', 'pageview');
+		
+        ga('set', 'page', '/' + window.location.hash);
+        ga('send', 'pageview');
 
         $("#title").html("");
         
@@ -95,8 +96,8 @@ routie({
     },
     'shop/:item': function(item_slug) {
 		
-        //ga('set', 'page', '/' + window.location.hash);
-        //ga('send', 'pageview');
+        ga('set', 'page', '/' + window.location.hash);
+        ga('send', 'pageview');
         
         getShopItem(item_slug);   
         
@@ -1898,8 +1899,6 @@ function getCheckoutSuccess(order_number)
 
 function isEmpty(value)
 {
-	
-//    return ((value !== '') && (value !== undefined) && (value.length > 0) && (value !== null));
 	
 	if(jQuery.trim(value).length > 0)
 	{

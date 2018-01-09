@@ -544,7 +544,7 @@ class router
             setcookie('user_id', '', time() - 9999999); // empty value and old timestamp
         }
 
-        header("Location: /"); // Redirecting To Home Page
+        header("Location: /#login"); // Redirecting To Home Page
     }
 }
 
