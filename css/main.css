@@ -421,6 +421,8 @@ a:hover {
     }
     
     .list-inline {padding-left: 20px;}
+	
+	.navbar-toggle { margin-right: 5px;}
 }
 
 /*
