@@ -22,7 +22,7 @@ a:hover {
 }
 
 .container {
-    max-width:960px;
+    max-width: 960px;
 }
 
 .jibb-container {
@@ -323,6 +323,8 @@ a:hover {
     }
     
     .list-inline {padding-left: 20px;}
+	
+	.navbar-toggle { margin-right: 5px;}
 }
 
 @media only screen and (max-width: 740px) {
