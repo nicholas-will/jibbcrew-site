@@ -58,16 +58,23 @@
         
     </head>
     <body style="margin: 60px;">
-            <!-- Fixed navbar -->
+		<!-- Fixed navbar -->
         <nav class="navbar navbar-fixed-top jibb-navbar">
             <div class="container">
                 <div class="navbar-header">
+<!--
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
+-->
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" onclick="openSideNav()">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
 
                     <ul class="list-inline" style="float:left; margin-left:-22px;">
                         <li>
@@ -90,6 +97,28 @@
                         </li>
                     </ul>
                 </div>
+
+				<div id="side-nav" class="jibb-side-nav">
+				  	<a href="javascript:void(0)" class="close-btn" onclick="closeSideNav()">&times;</a>
+
+				  	<a href="/manager/dashboard.html">dashboard</a>
+                   	<a href="/manager/manage-posts.html">manage posts</a>
+                    <a href="/manager/manage-users.html">manage users</a>
+                    <a href="/manager/manage-shop.html">manage shop</a>
+					<a href="/manager/manage-orders.html">manage orders</a>
+				</div>
+				
+				<div class="navbar-collapse collapse">
+					<div class="nav navbar-nav navbar-right" style="margin-right: -37px;">
+						<button type="button" class="jibb-menu-icon" onclick="openSideNav()">
+							<span></span>
+							<span></span>
+							<span></span>
+						</button>
+					</div>
+				</div>
+									
+<!--
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/manager/dashboard.html">dashboard</a></li>
@@ -99,6 +128,7 @@
 						<li><a href="/manager/manage-orders.html">manage orders</a></li>
                     </ul>
                 </div>
+-->
             </div>
         </nav>
         <div class="container" style="max-width:960px;">

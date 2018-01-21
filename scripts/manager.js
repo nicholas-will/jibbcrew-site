@@ -11,6 +11,28 @@ $(document).on('click','.navbar-collapse.in',function(e) {
 
 });
 
+function openSideNav() 
+{
+	
+	if(jQuery(window).width() < 768)
+	{
+
+		document.getElementById("side-nav").style = "width: 100%;";
+	}
+	else
+	{
+
+		document.getElementById("side-nav").style = "width: 268px;";
+//		document.getElementById("main").style.marginLeft = "268px";
+	}
+}
+
+function closeSideNav() 
+{
+	document.getElementById("side-nav").style = "width: 0px;";
+//	document.getElementById("main").style.marginLeft = "0";
+}
+
 function addPost()
 {
 
