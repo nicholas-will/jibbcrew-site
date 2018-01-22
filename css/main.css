@@ -16,13 +16,14 @@ a:hover {
     background-color: white;
 }
 
+.jibb-logo {
+	float: left;
+    margin-left: -22px;
+}
+
 .news-item {
     border-top: solid 2px;
     padding-bottom: 16px;
-}
-
-.container {
-    max-width: 960px;
 }
 
 .jibb-container {
@@ -309,49 +310,51 @@ a:hover {
     }
 }
 
+
+@media only screen and (max-width : 1200px) {
+	.container {
+	    max-width: 960px;
+	}
+}
+
+@media only screen and (max-width : 1024px) {
+	.container {
+	    max-width: 900px;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+    .container {
+	    max-width: 750px;
+	}
+    
+    .row {
+        padding: 0px;
+        margin-left: -60px;
+        margin-right: -60px;
+    }
+	
+	.jibb-logo {
+		float: left;
+    	margin-left: 8px;
+	}
+	
+	.navbar-toggle { margin-right: 5px;}
+}
+
 @media only screen and (max-width: 480px) {
-    body { font-size:90%;}
-    
-    .blog-sidebar {
-        display: none;
-    }
+    body { font-size:92%;}
     
     .row {
         padding: 0px;
         margin-left: -60px;
         margin-right: -60px;
     }
-    
-    .list-inline {padding-left: 20px;}
+	
+	.jibb-logo {
+		float: left;
+    	margin-left: 8px;
+	}
 	
 	.navbar-toggle { margin-right: 5px;}
 }
-
-@media only screen and (max-width: 740px) {
-    body { font-size:90%;}
-    
-    .blog-sidebar {
-        display: none;
-    }
-    
-    .row {
-        padding: 0px;
-        margin-left: -60px;
-        margin-right: -60px;
-    }
-    
-    .list-inline {padding-left: 20px;}
-	
-	.navbar-toggle { margin-right: 5px;}
-}
-
-/*
-@media only screen and (max-width: 800px) {
-    body { font-size:120%;}
-}  
-*/
-     
-/*
-@media only screen and (max-width: 2400px) {
-    body { font-size:140%;}
-} */
