@@ -2,15 +2,17 @@
 <html lang="en">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
     <head>
         <title>jibbcrew.com | atlanta bmx </title>
         
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+<!--        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<!--        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
+        <script src="/scripts/bootstrap.min.js"></script>
 
         <link rel="stylesheet" href="/css/main.css" >
         
@@ -20,15 +22,13 @@
     <body style="margin: 60px;">
 		<!-- Fixed navbar -->
         <nav class="navbar navbar-fixed-top jibb-navbar">
-            <div class="container">
+            <div class="container jibb-outer-container">
                 <div class="navbar-header">
-					
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" onclick="openSideNav()">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-
                     <ul class="list-inline jibb-logo">
                         <li>
                             <a style="text-decoration: none;" href="/">
@@ -50,7 +50,6 @@
                         </li>
                     </ul>
                 </div>
-
 				<div id="side-nav" class="jibb-side-nav">
 				  	<a href="javascript:void(0)" class="close-btn" onclick="closeSideNav()">&times;</a>
 
@@ -59,8 +58,8 @@
                     <a href="/manager/manage-users.html">manage users</a>
                     <a href="/manager/manage-shop.html">manage shop</a>
 					<a href="/manager/manage-orders.html">manage orders</a>
+					<a href="#" onclick="logout()" >logout</a>
 				</div>
-				
 				<div class="navbar-collapse collapse">
 					<div class="nav navbar-nav navbar-right" style="margin-right: -37px;">
 						<button type="button" class="jibb-menu-icon" onclick="openSideNav()">
@@ -69,20 +68,19 @@
 							<span></span>
 						</button>
 					</div>
-				</div>
-									
+				</div>				
             </div>
         </nav>
 		
-        <div class="container" style="max-width:960px;">
+        <div class="container jibb-outer-container">
             <div class="row">
                 <div class="sidebar-module" style="overflow: hidden;">
-                    <h3 id="title" style="float: left;">post</h3>
+                    <h3 id="title" style="float: left;">new post</h3>
                     <h5 style="float:right; margin-top: 30px;">User: <span id="user-name"></span></h5>
                 </div>
                 <div class="jibb-container">
                     <div class="jibb-inner-container">
-						<div style="min-height: 538px;">
+						<div style="min-height: 616px;">
 							<input type="text" class="form-control" id="post-title" placeholder="title"> 
 							<h6>image upload, post type</h6>
 							<form class="form-inline">
@@ -105,23 +103,20 @@
 							<input type="text" class="form-control" id="post-description" placeholder="description"> 
 							<h6>type post below, html is allowed</h6>
 
-							<textarea class="form-control" rows="14" id="post-content" name="content"></textarea>
+							<textarea class="form-control" rows="12" id="post-content" name="content"></textarea>
 							<div style="padding-top: 8px;">
 								<button type="button" class="btn btn-default" onclick="addVideoCode()">Video</button>
 								<button type="button" class="btn btn-default" onclick="addImageCode()">Image</button>
+								<button type="button" class="btn outline" onclick="addPost()" style="float: right;">Post</button>
 							</div>
 						</div>
-                        <hr/>
-                        <button type="button" class="btn outline" onclick="addPost()" style="float: right;">Post</button>
-                        <br/>
                     </div>
+					<div class="jibb-inner-container">
+                    	<div id="result"></div>
+                	</div>
                 </div>
                 
-                <div class="jibb-inner-container">
-                    <div id="result"></div>
-                </div>
-                
-                <div style="float: right;"><h4><span class="label label-default"><a style="text-decoration: none; color:white;" onclick="logout()" href="#">logout</a></span></h4></div>
+                <div style="float: right; margin-right: 8px;"><h4></h4></div>
             </div>
         </div>
     </body>

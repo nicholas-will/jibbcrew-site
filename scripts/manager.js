@@ -14,7 +14,7 @@ $(document).on('click','.navbar-collapse.in',function(e) {
 function openSideNav() 
 {
 	
-	if(jQuery(window).width() < 768)
+	if($(window).width() < 768)
 	{
 
 		document.getElementById("side-nav").style = "width: 100%;";
@@ -22,7 +22,7 @@ function openSideNav()
 	else
 	{
 
-		document.getElementById("side-nav").style = "width: 268px;";
+		document.getElementById("side-nav").style = "width: 50%;";
 //		document.getElementById("main").style.marginLeft = "268px";
 	}
 }
@@ -173,33 +173,43 @@ function getPostsToEdit()
         $('#posts').html(""); //clear div
 
 		var scrollable_div = document.createElement('div');
-		scrollable_div.style = "overflow-y: scroll; height: 600px;";
+		
+		if($(window).height() > 812)
+	   	{
+			scrollable_div.style = "overflow-y: scroll; height: 600px;"; 
+		}
+		else
+		{
+			var hpx = ($(window).height() - 260);
+		   	scrollable_div.style.overflowY = "scroll";
+			scrollable_div.style.height =  hpx + "px";
+	   	}
 		
         var table = document.createElement('table');
-        table.className = 'table dataTable no-footer';
+        table.className = 'table';
         table.style = "table-layout:fixed";
 
         var thead = document.createElement('thead');
         var tr = document.createElement('tr');
 
         var th1 = document.createElement('th');
-        th1.style = "width:20%";
+//        th1.style = "width:25%";
         th1.innerHTML = "title";
         
         var th2 = document.createElement('th');
-        th2.style = "width:25%";
+//        th2.style = "width:35%";
         th2.innerHTML = "description";
         
-        var th3 = document.createElement('th');
-        th3.style = "width:40%";
-        th3.innerHTML = "content";
+//        var th3 = document.createElement('th');
+//        th3.style = "width:40%";
+//        th3.innerHTML = "content";
         
         var th4 = document.createElement('th');
-        th4.style = "width:15%";
+//        th4.style = "width:35%";
 
         tr.appendChild(th1);
         tr.appendChild(th2);
-        tr.appendChild(th3);
+//        tr.appendChild(th3);
         tr.appendChild(th4);
         thead.appendChild(tr);
         table.appendChild(thead);
@@ -218,15 +228,28 @@ function getPostsToEdit()
             var td2 = document.createElement('td');
             td2.innerHTML = posts[i].description;
 
-            var td3 = document.createElement('td');
-            td3.innerHTML = posts[i].stripped_content.substr(0,90); //may have to change
+//            var td3 = document.createElement('td');
+//            td3.innerHTML = posts[i].stripped_content.substr(0,90); //may have to change
 
             var td4 = document.createElement('td');
-            td4.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+posts[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+posts[i].id+"' type='button' class='btn btn-danger' onclick='deletePost("+posts[i].id+")'>Delete</button>";
-
+			td4.style.whiteSpace = "nowrap";
+			
+			if($(window).width() < 768)
+			{
+			
+            	td4.innerHTML = "<button type='button' class='btn btn-default btn-sm edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+posts[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+posts[i].id+"' type='button' class='btn btn-danger btn-sm' onclick='deletePost("+posts[i].id+")'>Delete</button>";
+			}
+			else
+			{
+				
+				td4.style.textAlign = "right";
+			
+            	td4.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+posts[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+posts[i].id+"' type='button' class='btn btn-danger' onclick='deletePost("+posts[i].id+")'>Delete</button>";
+			}
+			
             row.appendChild(td1);
             row.appendChild(td2);
-            row.appendChild(td3);
+//            row.appendChild(td3);
             row.appendChild(td4);
 
             tbody.appendChild(row);
@@ -295,35 +318,45 @@ function getUsers()
         $('#users').html(""); //clear div
 		
 		var scrollable_div = document.createElement('div');
-		scrollable_div.style = "overflow-y: scroll; height: 600px;";
-
+		
+		if($(window).height() > 812)
+	   	{
+			scrollable_div.style = "overflow-y: scroll; height: 600px;"; 
+		}
+		else
+		{
+			var hpx = ($(window).height() - 260);
+		   	scrollable_div.style.overflowY = "scroll";
+			scrollable_div.style.height =  hpx + "px";
+	   	}
+		
         var table = document.createElement('table');
-        table.className = 'table dataTable no-footer';
+        table.className = 'table';
         table.style = "table-layout:fixed";
 
         var thead = document.createElement('thead');
         var tr = document.createElement('tr');
 
-        var th1 = document.createElement('th');
-        th1.style = "width:20%";
-        th1.innerHTML = "name";
+//        var th1 = document.createElement('th');
+////        th1.style = "width:20%";
+//        th1.innerHTML = "name";
         
         var th2 = document.createElement('th');
-        th2.style = "width:35%";
+//        th2.style = "width:35%";
         th2.innerHTML = "email";
         
         var th3 = document.createElement('th');
-        th3.style = "width:15%";
+		th3.style = "text-align: center;"; //width:15%; 
         th3.innerHTML = "type";
         
         var th4 = document.createElement('th');
-        th4.style = "width:15%; text-align: center;";
+        th4.style = "text-align: center;"; //width:15%; 
         th4.innerHTML = "status";
         
         var th5 = document.createElement('th');
-        th5.style = "width:15%";
+//        th5.style = "width:15%";
 
-        tr.appendChild(th1);
+//        tr.appendChild(th1);
         tr.appendChild(th2);
         tr.appendChild(th3);
         tr.appendChild(th4);
@@ -339,23 +372,37 @@ function getUsers()
             var row = document.createElement('tr');
             //row.className = '';
 
-            var td1 = document.createElement('td');
-            td1.innerHTML = users[i].name;
+//            var td1 = document.createElement('td');
+//            td1.innerHTML = users[i].name;
 
             var td2 = document.createElement('td');
+			td2.style.wordWrap = "break-word";
             td2.innerHTML = users[i].email;
 
             var td3 = document.createElement('td');
+			td3.style = "text-align:center";
             td3.innerHTML = users[i].type; 
             
             var td4 = document.createElement('td');
             td4.style = "text-align:center";
             td4.innerHTML = (users[i].status == 1 ? "<p class='alert-success' style='border-radius:10px;'>active</p>" : "<p class='alert-danger' style='border-radius:10px;'>inactive</p>");
 
-            var td5 = document.createElement('td');
-            td5.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+users[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+users[i].id+"' type='button' class='btn btn-danger' onclick='deleteUser("+users[i].id+")'>Delete</button>";
+			var td5 = document.createElement('td');
+			
+			if($(window).width() < 768)
+			{
+				
+				td5.innerHTML = "<button type='button' class='btn btn-default btn-sm edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+users[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+users[i].id+"' type='button' class='btn btn-danger btn-sm' onclick='deleteUser("+users[i].id+")'>Delete</button>";
+			}
+			else
+			{
+				
+				td5.style.textAlign = "right";
+				
+				td5.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+users[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+users[i].id+"' type='button' class='btn btn-danger' onclick='deleteUser("+users[i].id+")'>Delete</button>";
+			}
 
-            row.appendChild(td1);
+//            row.appendChild(td1);
             row.appendChild(td2);
             row.appendChild(td3);
             row.appendChild(td4);
@@ -468,47 +515,57 @@ function getShopItems()
         $('#items').html(""); //clear div
 		
 		var scrollable_div = document.createElement('div');
-		scrollable_div.style = "overflow-y: scroll; height: 538px;";
 
+        if($(window).height() > 812)
+	   	{
+			scrollable_div.style = "overflow-y: scroll; height: 538px;"; 
+		}
+		else
+		{
+			var hpx = ($(window).height() - 322);
+		   	scrollable_div.style.overflowY = "scroll";
+			scrollable_div.style.height =  hpx + "px";
+	   	}
+		
         var table = document.createElement('table');
-        table.className = 'table dataTable no-footer';
+        table.className = 'table';
         table.style = "table-layout:fixed";
 
         var thead = document.createElement('thead');
         var tr = document.createElement('tr');
 
         var th1 = document.createElement('th');
-        th1.style = "width:20%";
+//        th1.style = "width:20%";
         th1.innerHTML = "name";
         
         var th2 = document.createElement('th');
-        th2.style = "width:10%";
+//        th2.style = "width:10%";
         th2.innerHTML = "price";
         
-        var th3 = document.createElement('th');
-        th3.style = "width:10%";
-        th3.innerHTML = "type";
+//        var th3 = document.createElement('th');
+////        th3.style = "width:10%";
+//        th3.innerHTML = "type";
         
         var th4 = document.createElement('th');
-        th4.style = "width:15%";
+//        th4.style = "width:15%";
         th4.innerHTML = "count";
         
-        var th5 = document.createElement('th');
-        th5.style = "width:10%";
-        th5.innerHTML = "remaining";
+//        var th5 = document.createElement('th');
+////        th5.style = "width:10%";
+//        th5.innerHTML = "remaining";
         
         var th6 = document.createElement('th');
-        th6.style = "width:15%; text-align: center;";
+        th6.style = "text-align: center;"; //width:15%;
         th6.innerHTML = "avaliable";
         
         var th7 = document.createElement('th');
-        th7.style = "width:20%";
+//        th7.style = "width:20%";
 
         tr.appendChild(th1);
         tr.appendChild(th2);
-        tr.appendChild(th3);
+//        tr.appendChild(th3);
         tr.appendChild(th4);
-        tr.appendChild(th5);
+//        tr.appendChild(th5);
         tr.appendChild(th6);
         tr.appendChild(th7);
         thead.appendChild(tr);
@@ -528,27 +585,38 @@ function getShopItems()
             var td2 = document.createElement('td');
             td2.innerHTML = '$' + items[i].price;
 
-            var td3 = document.createElement('td');
-            td3.innerHTML = items[i].type; 
+//            var td3 = document.createElement('td');
+//            td3.innerHTML = items[i].type; 
             
             var td4 = document.createElement('td');
             td4.innerHTML = items[i].count; 
             
-            var td5 = document.createElement('td');
-            td5.innerHTML = items[i].remaining; 
+//            var td5 = document.createElement('td');
+//            td5.innerHTML = items[i].remaining; 
             
             var td6 = document.createElement('td');
             td6.style = "text-align:center";
             td6.innerHTML = (items[i].in_stock == 1 ? "<p class='alert-success' style='border-radius:10px;'>in stock</p>" : "<p class='alert-danger' style='border-radius:10px;'>out of stock</p>");
 
             var td7 = document.createElement('td');
-            td7.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger' onclick='deleteItem("+items[i].id+")'>Delete</button>";
+			
+			if($(window).width() < 768)
+			{
+				
+            	td7.innerHTML = "<button type='button' class='btn btn-default btn-sm edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger btn-sm' onclick='deleteItem("+items[i].id+")'>Delete</button>";
+			}
+			else
+			{
+				
+				td7.style.textAlign = "right";
+            	td7.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger' onclick='deleteItem("+items[i].id+")'>Delete</button>";
+			}
 
             row.appendChild(td1);
             row.appendChild(td2);
-            row.appendChild(td3);
+//            row.appendChild(td3);
             row.appendChild(td4);
-            row.appendChild(td5);
+//            row.appendChild(td5);
             row.appendChild(td6);
             row.appendChild(td7);
 
@@ -711,43 +779,53 @@ function getOrders()
         $('#orders').html(""); //clear div
 		
 		var scrollable_div = document.createElement('div');
-		scrollable_div.style = "overflow-y: scroll; height: 600px;";
-
+		
+		if($(window).height() > 812)
+	   	{
+			scrollable_div.style = "overflow-y: scroll; height: 600px;"; 
+		}
+		else
+		{
+			var hpx = ($(window).height() - 260);
+		   	scrollable_div.style.overflowY = "scroll";
+			scrollable_div.style.height =  hpx + "px";
+	   	}
+		
         var table = document.createElement('table');
-        table.className = 'table dataTable no-footer';
+        table.className = 'table';
         table.style = "table-layout:fixed";
 
         var thead = document.createElement('thead');
         var tr = document.createElement('tr');
 
         var th1 = document.createElement('th');
-        th1.style = "width:20%";
+//        th1.style = "width:20%";
         th1.innerHTML = "order number";
         
         var th2 = document.createElement('th');
-        th2.style = "width:10%";
+//        th2.style = "width:10%";
         th2.innerHTML = "order date";
         
         var th3 = document.createElement('th');
-        th3.style = "width:10%";
+//        th3.style = "width:10%";
         th3.innerHTML = "order total";
         
         var th4 = document.createElement('th');
-        th4.style = "width:20%";
+//        th4.style = "width:20%";
         th4.innerHTML = "shipping date";
         
-        var th5 = document.createElement('th');
-        th5.style = "width:20%";
-        th5.innerHTML = "tracking";
+//        var th5 = document.createElement('th');
+////        th5.style = "width:20%";
+//        th5.innerHTML = "tracking";
         
         var th6 = document.createElement('th');
-        th6.style = "width:20%;";
+//        th6.style = "width:20%;";
 
         tr.appendChild(th1);
         tr.appendChild(th2);
         tr.appendChild(th3);
         tr.appendChild(th4);
-        tr.appendChild(th5);
+//        tr.appendChild(th5);
         tr.appendChild(th6);
         thead.appendChild(tr);
         table.appendChild(thead);
@@ -772,17 +850,28 @@ function getOrders()
             var td4 = document.createElement('td');
             td4.innerHTML = (orders[i].shipping_date ? orders[i].shipping_date.substr(0,10) : 'not shipped yet'); 
             
-            var td5 = document.createElement('td');
-            td5.innerHTML = orders[i].tracking; 
+//            var td5 = document.createElement('td');
+//            td5.innerHTML = orders[i].tracking; 
             
             var td6 = document.createElement('td');
-            td6.innerHTML = "<button type='button' class='btn btn-default view_modal' data-toggle='modal' data-target='#viewModal' data-id='"+orders[i].order_number+"'>View</button>&nbsp&nbsp<button id='delete_"+orders[i].order_number+"' type='button' class='btn btn-danger' onclick='deleteOrder("+orders[i].order_number+")'>Delete</button>";
+
+			if($(window).width() < 768)
+			{
+				
+				td6.innerHTML = "<button type='button' class='btn btn-default btn-sm view_modal' data-toggle='modal' data-target='#viewModal' data-id='"+orders[i].order_number+"'>View</button>&nbsp&nbsp<button id='delete_"+orders[i].order_number+"' type='button' class='btn btn-danger btn-sm' onclick='deleteOrder("+orders[i].order_number+")'>Delete</button>";
+			}
+			else
+			{
+			
+				td6.style.textAlign = "right";
+				td6.innerHTML = "<button type='button' class='btn btn-default view_modal' data-toggle='modal' data-target='#viewModal' data-id='"+orders[i].order_number+"'>View</button>&nbsp&nbsp<button id='delete_"+orders[i].order_number+"' type='button' class='btn btn-danger' onclick='deleteOrder("+orders[i].order_number+")'>Delete</button>";
+			}
 
             row.appendChild(td1);
             row.appendChild(td2);
             row.appendChild(td3);
             row.appendChild(td4);
-            row.appendChild(td5);
+//            row.appendChild(td5);
             row.appendChild(td6);
 
             tbody.appendChild(row);

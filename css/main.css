@@ -22,8 +22,12 @@ a:hover {
 }
 
 .news-item {
-    border-top: solid 2px;
+    border-top: 2px solid black;
     padding-bottom: 16px;
+}
+
+.jibb-outer-container {
+	max-width: 960px;
 }
 
 .jibb-container {
@@ -32,11 +36,13 @@ a:hover {
 }
 
 .jibb-inner-container {
-	border-top: solid 2px;
+	border-top: 2px solid black;
     padding-top: 16px;
     padding-bottom: 16px;
+/*
     padding-left: 8px;
     padding-right: 8px;
+*/
 }
 
 .jibb-card {
@@ -101,6 +107,13 @@ a:hover {
 	color: #fff;
 }
     
+.navbar-toggle .icon-bar {
+    display: block;
+    width: 22px;
+    height: 3px;
+/*    border-radius: 1px;*/
+}
+
 .jibb-menu-icon {
 	position: relative;
 	float: right;
@@ -121,11 +134,10 @@ a:hover {
 	background-color: #000;
 	display: block;
 	width: 22px;
-	height: 2px;
-	border-radius: 1px;
+	height: 3px;
+/*	border-radius: 1px;*/
 	margin-bottom: 4px;
 }
-
 
 /* The side navigation menu */
 .jibb-side-nav {
@@ -134,19 +146,20 @@ a:hover {
 	position: fixed; /* Stay in place */
 	z-index: 1; /* Stay on top */
 	top: 0; /* Stay at the top */
-	left: 0;
-	background-color: #fff;
+	right: 0;
+	background-color: #000;
 	overflow-x: hidden; /* Disable horizontal scroll */
-	padding-top: 60px; /* Place content 60px from the top */
+	padding-top: 116px; 
 	transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
 /* The navigation menu links */
 .jibb-side-nav a {
-	padding: 8px 8px 8px 32px;
+	padding-left: 86px;
 	text-decoration: none;
-	font-size: 24px;
-	color: #000;
+	font-size: 58px;
+	font-weight: 600;
+	color: #fff;
 	display: block;
 	transition: 0.3s;
 }
@@ -154,8 +167,6 @@ a:hover {
 /* When you mouse over the navigation links, change their color */
 .jibb-side-nav a:hover {
 	color: #f1f1f1;
-/*	color: #fff;*/
-/*	background-color: #000;*/
 }
 
 /* Position and style the close button (top right corner) */
@@ -163,7 +174,7 @@ a:hover {
 	position: absolute;
 	top: 0;
 	right: 22px;
-	font-size: 36px;
+	font-size: 40px;
 	margin-left: 50px;
 }
 
@@ -174,10 +185,17 @@ a:hover {
 
 	.jibb-side-nav {
 		text-align: center;
+		padding-top: 60px; 
 	}
 	
 	.jibb-side-nav a {
 		padding: 8px 8px 8px 8px;
+		font-size: 36px;
+	}
+	
+	.jibb-side-nav .close-btn {
+		right: 10px;
+    	margin-top: -12px;
 	}
 }
 
@@ -423,7 +441,7 @@ a:hover {
 }
 
 @media only screen and (max-width: 480px) {
-    body { font-size:92%;}
+/*    body { font-size:92%;}*/
     
     .row {
         padding: 0px;

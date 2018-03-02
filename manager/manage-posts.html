@@ -2,15 +2,17 @@
 <html lang="en">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
     <head>
         <title>jibbcrew.com | atlanta bmx </title>
         
         <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+<!--        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">-->
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<!--        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
+        <script src="/scripts/bootstrap.min.js"></script>
 
         <link rel="stylesheet" href="/css/main.css" >
         
@@ -45,16 +47,9 @@
     <body style="margin: 60px;">
 		<!-- Fixed navbar -->
         <nav class="navbar navbar-fixed-top jibb-navbar">
-            <div class="container">
+            <div class="container jibb-outer-container">
                 <div class="navbar-header">
-<!--
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
--->
+
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" onclick="openSideNav()">
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
@@ -91,6 +86,7 @@
                     <a href="/manager/manage-users.html">manage users</a>
                     <a href="/manager/manage-shop.html">manage shop</a>
 					<a href="/manager/manage-orders.html">manage orders</a>
+					<a href="#" onclick="logout()" >logout</a>
 				</div>
 				
 				<div class="navbar-collapse collapse">
@@ -103,20 +99,9 @@
 					</div>
 				</div>
 									
-<!--
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="/manager/dashboard.html">dashboard</a></li>
-                        <li><a href="/manager/manage-posts.html">manage posts</a></li>
-                        <li><a href="/manager/manage-users.html">manage users</a></li>
-                        <li><a href="/manager/manage-shop.html">manage shop</a></li>
-						<li><a href="/manager/manage-orders.html">manage orders</a></li>
-                    </ul>
-                </div>
--->
             </div>
         </nav>
-        <div class="container" style="max-width:960px;">
+        <div class="container jibb-outer-container">
             <div class="row">
                 <div class="sidebar-module" style="overflow: hidden;">
                     <h3 id="title" style="float: left;">edit posts</h3>
