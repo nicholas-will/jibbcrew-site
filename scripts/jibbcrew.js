@@ -6,6 +6,27 @@ $(document).on('click','.navbar-collapse.in',function(e) {
 
 });
 
+function openSideNav() 
+{
+	
+	if($(window).width() < 768)
+	{
+
+		document.getElementById("side-nav").style = "width: 100%;";
+	}
+	else
+	{
+
+		document.getElementById("side-nav").style = "width: 50%;";
+	}
+}
+
+function closeSideNav() 
+{
+	
+	document.getElementById("side-nav").style = "width: 0px;";
+}
+
 var post_type = 'all';
 
 //router
