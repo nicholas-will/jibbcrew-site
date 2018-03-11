@@ -198,20 +198,20 @@ function getLogin()
 	div.className = "news-item";
 	
 	var container_div = document.createElement('div');
-	container_div.style = "padding-top: 20px;";
+	container_div.style = "padding-top: 24px;";
 	
 	var form = document.createElement('form');
-	form.className = "form-horizontal";
+//	form.className = "form-horizontal";
 	form.id = "form-login";
 	form.setAttribute('role', "form");
 	form.setAttribute('method', "post");
 	form.setAttribute('action', "login-router.php");
 	
 	var inner_div_1 = document.createElement('div');
-	inner_div_1.className = "form-group";
+	inner_div_1.className = "form-group row"; //align-items-center justify-content-center
 	
 	var col_div_1 = document.createElement('div');
-	col_div_1.className = "col-sm-10";
+	col_div_1.className = "col-sm-8";
 	
 	var input_1 = document.createElement('input');
 	input_1.className = "form-control";
@@ -225,10 +225,10 @@ function getLogin()
 	inner_div_1.appendChild(col_div_1);
 	
 	var inner_div_2 = document.createElement('div');
-	inner_div_2.className = "form-group";
+	inner_div_2.className = "form-group row"; //align-items-center justify-content-center
 	
 	var col_div_2 = document.createElement('div');
-	col_div_2.className = "col-sm-10";
+	col_div_2.className = "col-sm-8";
 	
 	var input_2 = document.createElement('input');
 	input_2.className = "form-control";
@@ -242,20 +242,16 @@ function getLogin()
 	inner_div_2.appendChild(col_div_2);
 	
 	var inner_div_3 = document.createElement('div');
-	inner_div_3.className = "form-group";
+	inner_div_3.className = "form-group row"; //align-items-center justify-content-center
 	
 	var col_div_3 = document.createElement('div');
-	col_div_3.className = "col-sm-8";
-	
-	var text_div = document.createElement('div');
-	text_div.innerHTML = "new user? <a href='#new-user'>create login here</a>";
-	
-	col_div_3.appendChild(text_div);
+	col_div_3.className = "col-10 col-md-6";
+	col_div_3.innerHTML = "new user? <a href='#new-user'>create login here</a>";
 	
 	inner_div_3.appendChild(col_div_3);
 	
 	var col_div_4 = document.createElement('div');
-	col_div_4.className = "col-sm-2";
+	col_div_4.className = "col-2 col-md-2";
 	
 	var input_3 = document.createElement('input');
 	input_3.className = "btn outline";
@@ -324,14 +320,15 @@ function getNewUser()
 	container_div.style = "padding-top: 20px;";
 	
 	var inner_container_div = document.createElement('div');
-	inner_container_div.className = "form-horizontal";
+//	inner_container_div.className = "form-horizontal";
 	
 	//
-	var p1 = document.createElement('p');
-	p1.innerHTML = "enter your full name";
-	
 	var inner_div_1 = document.createElement('div');
-	inner_div_1.className = "form-group";
+	inner_div_1.className = "form-group row";
+
+	var p1 = document.createElement('label');
+	p1.innerHTML = "enter your full name";
+	p1.setAttribute('for', "fullname");
 	
 	var col_div_1 = document.createElement('div');
 	col_div_1.className = "col-sm-10";
@@ -343,38 +340,42 @@ function getNewUser()
 	input_1.setAttribute('name', "fullname");
 	input_1.setAttribute('placeholder', "name");
 	
+	col_div_1.appendChild(p1);
 	col_div_1.appendChild(input_1);
 	inner_div_1.appendChild(col_div_1);
 	
 	//
-	var p2 = document.createElement('p');
-	p2.innerHTML = "enter your email you wish to login with, then again";
-	
 	var inner_div_2 = document.createElement('div');
-	inner_div_2.className = "form-group";
+	inner_div_2.className = "form-group row";
+
+	var p2 = document.createElement('label');
+	p2.innerHTML = "enter your email you wish to login with, then again";
+	p2.setAttribute('for', "email1");
 	
 	var col_div_2 = document.createElement('div');
 	col_div_2.className = "col-sm-10";
 	
 	var input_2 = document.createElement('input');
 	input_2.className = "form-control";
-	input_2.setAttribute('type', "text");
+	input_2.setAttribute('type', "email");
 	input_2.id = "email1";
 	input_2.setAttribute('name', "email1");
 	input_2.setAttribute('placeholder', "email");
 	
+	col_div_2.appendChild(p2);
 	col_div_2.appendChild(input_2);
 	inner_div_2.appendChild(col_div_2);
 	
+	//
 	var inner_div_3 = document.createElement('div');
-	inner_div_3.className = "form-group";
+	inner_div_3.className = "form-group row";
 	
 	var col_div_3 = document.createElement('div');
 	col_div_3.className = "col-sm-10";
 	
 	var input_3 = document.createElement('input');
 	input_3.className = "form-control";
-	input_3.setAttribute('type', "text");
+	input_3.setAttribute('type', "email");
 	input_3.id = "email2";
 	input_3.setAttribute('name', "email2");
 	input_3.setAttribute('placeholder', "email");
@@ -383,11 +384,12 @@ function getNewUser()
 	inner_div_3.appendChild(col_div_3);
 	
 	//
-	var p3 = document.createElement('p');
-	p3.innerHTML = "enter your password you wish to login with, then again";
-	
 	var inner_div_4 = document.createElement('div');
-	inner_div_4.className = "form-group";
+	inner_div_4.className = "form-group row";
+	
+	var p3 = document.createElement('label');
+	p3.innerHTML = "enter your password you wish to login with, then again";
+	p3.setAttribute('for', "password1");
 	
 	var col_div_4 = document.createElement('div');
 	col_div_4.className = "col-sm-10";
@@ -399,11 +401,12 @@ function getNewUser()
 	input_4.setAttribute('name', "password1");
 	input_4.setAttribute('placeholder', "password");
 	
+	col_div_4.appendChild(p3);
 	col_div_4.appendChild(input_4);
 	inner_div_4.appendChild(col_div_4);
 	
 	var inner_div_5 = document.createElement('div');
-	inner_div_5.className = "form-group";
+	inner_div_5.className = "form-group row";
 	
 	var col_div_5 = document.createElement('div');
 	col_div_5.className = "col-sm-10";
@@ -420,7 +423,7 @@ function getNewUser()
 	
 	//
 	var inner_div_6 = document.createElement('div');
-	inner_div_6.className = "form-group";
+	inner_div_6.className = "form-group row";
 	
 	var col_div_6 = document.createElement('div');
 	col_div_6.className = "col-sm-10";
@@ -439,12 +442,12 @@ function getNewUser()
 	col_div_6.appendChild(input_6);
 	inner_div_6.appendChild(col_div_6);
 	
-	inner_container_div.appendChild(p1);
+//	inner_container_div.appendChild(p1);
 	inner_container_div.appendChild(inner_div_1);
-	inner_container_div.appendChild(p2);
+//	inner_container_div.appendChild(p2);
 	inner_container_div.appendChild(inner_div_2);
 	inner_container_div.appendChild(inner_div_3);
-	inner_container_div.appendChild(p3);
+//	inner_container_div.appendChild(p3);
 	inner_container_div.appendChild(inner_div_4);
 	inner_container_div.appendChild(inner_div_5);
 	inner_container_div.appendChild(inner_div_6);
@@ -489,7 +492,7 @@ function getPosts(post_type)
                 var div = document.createElement('div');
                 div.className = "news-item";
 
-                var heading = document.createElement('h4');
+                var heading = document.createElement('h5');
                 heading.className = "news-item-title";
                 //heading.innerHTML = posts[i].title;
 
@@ -547,7 +550,7 @@ function getPost(slug)
             var div = document.createElement('div');
             div.className = "news-item";
 
-            var heading = document.createElement('h4');
+            var heading = document.createElement('h5');
             heading.className = "news-item-title";
 
             var a = document.createElement('a');
@@ -600,7 +603,7 @@ function getContact()
     var div = document.createElement('div');
     div.className = "news-item";
     
-    var heading = document.createElement('h4');
+    var heading = document.createElement('h5');
     heading.className = "news-item-title";
     heading.innerHTML = "<br />";
     
@@ -669,7 +672,7 @@ function getShop()
                 img.style = 'width: 100%; height: 200px;';
                 
                 var card_body = document.createElement('div');
-                card_body.className = 'card-body';
+                card_body.className = 'card-block';
                 
                 var paragraph = document.createElement('p');
                 paragraph.className = "card-text";
@@ -801,11 +804,12 @@ function getShopItem(item_slug)
 				addToCart(item, item_qty, selected_option);
 			}
         
-            var media_heading = document.createElement('h4');
+            var media_heading = document.createElement('h5');
             media_heading.className = "media-heading";
 
             var a = document.createElement('a');
             a.setAttribute('href', "#shop/"+item.slug);
+			a.style.textDecoration = "none";
             a.innerHTML = item.name;
 
             media_heading.appendChild(a);
@@ -873,7 +877,7 @@ function addToCart(item, qty, option)
 
 	notification_div.appendChild(close);
 
-	var notification_mess = document.createElement('p');
+	var notification_mess = document.createElement('div');
 	notification_mess.innerHTML = "added to cart";
 	notification_div.appendChild(notification_mess);
 
@@ -924,7 +928,7 @@ function getCart()
 		
 		//check if cart is empty - display message
 		var message = document.createElement('p');
-		message.innerHTML = "<h4>cart is empty</h4>";
+		message.innerHTML = "<h5 class='news-item-title'>cart is empty</h5>";
 		
 		div.appendChild(message);
 	}
@@ -1317,7 +1321,7 @@ function getCheckout()
 	var outer_div = document.createElement('div');
 	//outer_div.className = 'form-group';
 	outer_div.id = "checkout-container";
-	outer_div.style = "padding-top: 40px;"; //padding-right: 40px; padding-left: 40px;
+	outer_div.style = "padding-top: 24px;"; //padding-right: 40px; padding-left: 40px;
 	
 	var section_1 = document.createElement('div');
 	section_1.id = "section-1";
@@ -1325,20 +1329,20 @@ function getCheckout()
 	//title
 	var section_1_title = document.createElement('div');
 	section_1_title.id = "section-1-title";
-	section_1_title.style = "padding-left: 16px; margin-bottom: 16px;";
-	section_1_title.innerHTML = "<h4>buyer information</h4>";
+	section_1_title.style = "margin-bottom: 16px;";
+	section_1_title.innerHTML = "<h5>buyer information</h5>";
 	section_1.appendChild(section_1_title);
 	
 	var row_div_1 = document.createElement('div');
-	row_div_1.className = 'form-row';
+	row_div_1.className = 'row'; //has 2 columns
 	var row_div_2 = document.createElement('div');
-	row_div_2.className = 'form-row';
+	row_div_2.className = 'form-group row';
 	var col_div_1 = document.createElement('div');
-	col_div_1.className = 'form-group col-sm-6';
+	col_div_1.className = 'form-group col-xs-12 col-sm-6'; //column 1
 	var col_div_2 = document.createElement('div');
-	col_div_2.className = 'form-group col-sm-6';
+	col_div_2.className = 'form-group col-xs-12 col-sm-6'; //column 2
 	var col_div_3 = document.createElement('div');
-	col_div_3.className = 'form-group col-sm-12';
+	col_div_3.className = 'col-sm-12';
 	
 	//buyer info
 	var firstname_textbox = document.createElement('input');
@@ -1372,11 +1376,11 @@ function getCheckout()
 	section_1.appendChild(row_div_2);
 	
 	var validation_row_div_1 = document.createElement('div');
-	validation_row_div_1.className = 'form-row';
+	validation_row_div_1.className = 'form-group row';
 	
 	var validation_div_1 = document.createElement('div');
 	validation_div_1.id = "validation-section-1";
-	validation_div_1.className = "form-group col-sm-12";
+	validation_div_1.className = "col-sm-12";
 	//outer_div.appendChild(row_div_2);
 	
 	validation_row_div_1.appendChild(validation_div_1);
@@ -1416,7 +1420,7 @@ function getCheckout()
 
 			notification_div.appendChild(close);
 
-			var notification_mess = document.createElement('p');
+			var notification_mess = document.createElement('div');
 			notification_mess.innerHTML = "missing first name";
 			notification_div.appendChild(notification_mess);
 			
@@ -1439,7 +1443,7 @@ function getCheckout()
 
 			notification_div.appendChild(close);
 
-			var notification_mess = document.createElement('p');
+			var notification_mess = document.createElement('div');
 			notification_mess.innerHTML = "missing last name";
 			notification_div.appendChild(notification_mess);
 			
@@ -1462,7 +1466,7 @@ function getCheckout()
 
 			notification_div.appendChild(close);
 
-			var notification_mess = document.createElement('p');
+			var notification_mess = document.createElement('div');
 			notification_mess.innerHTML = "missing email";
 			notification_div.appendChild(notification_mess);
 			
@@ -1489,31 +1493,31 @@ function getCheckout()
 	//title
 	var section_2_title = document.createElement('div');
 	section_2_title.id = "section-2-title";
-	section_2_title.style = "padding-left: 16px; margin-bottom: 16px;";
-	section_2_title.innerHTML = "<h4>shipping information</h4>";
+	section_2_title.style = "margin-bottom: 16px;";
+	section_2_title.innerHTML = "<h5>shipping information</h5>";
 	section_2.appendChild(section_2_title);
 	
 	var row_div_3 = document.createElement('div');
-	row_div_3.className = 'form-row';
+	row_div_3.className = 'form-group row';
 	var row_div_4 = document.createElement('div');
-	row_div_4.className = 'form-row';
+	row_div_4.className = 'form-group row';
 	var row_div_5 = document.createElement('div');
-	row_div_5.className = 'form-row';
+	row_div_5.className = 'row'; //2 columns
 	var row_div_6 = document.createElement('div');
-	row_div_6.className = 'form-row';
+	row_div_6.className = 'row'; //2 columns
 	
 	var col_div_4 = document.createElement('div');
-	col_div_4.className = 'form-group col-sm-12';
+	col_div_4.className = 'col-sm-12';
 	var col_div_5 = document.createElement('div');
-	col_div_5.className = 'form-group col-sm-12';
+	col_div_5.className = 'col-sm-12';
 	var col_div_6 = document.createElement('div');
-	col_div_6.className = 'form-group col-sm-6';
+	col_div_6.className = 'form-group col-xs-12 col-sm-6'; //column 1
 	var col_div_7 = document.createElement('div');
-	col_div_7.className = 'form-group col-sm-6';
+	col_div_7.className = 'form-group col-xs-12 col-sm-6'; //column 2
 	var col_div_8 = document.createElement('div');
-	col_div_8.className = 'form-group col-sm-6';
+	col_div_8.className = 'form-group col-xs-12 col-sm-6'; //column 1
 	var col_div_9 = document.createElement('div');
-	col_div_9.className = 'form-group col-sm-6';
+	col_div_9.className = 'form-group col-xs-12 col-sm-6'; //column 2
 	
 	//shipping info
 	//address address 2 city state zip country
@@ -1579,11 +1583,11 @@ function getCheckout()
 	//outer_div.appendChild(row_div_6);
 	
 	var validation_row_div_2 = document.createElement('div');
-	validation_row_div_2.className = 'form-row';
+	validation_row_div_2.className = 'form-group row';
 	
 	var validation_div_2 = document.createElement('div');
 	validation_div_2.id = "validation-section-2";
-	validation_div_2.className = "form-group col-sm-12";
+	validation_div_2.className = "col-sm-12";
 	//outer_div.appendChild(row_div_2);
 	
 	validation_row_div_2.appendChild(validation_div_2);
@@ -1620,7 +1624,7 @@ function getCheckout()
 
 			notification_div.appendChild(close);
 
-			var notification_mess = document.createElement('p');
+			var notification_mess = document.createElement('div');
 			notification_mess.innerHTML = "missing address";
 			notification_div.appendChild(notification_mess);
 			
@@ -1643,7 +1647,7 @@ function getCheckout()
 
 			notification_div.appendChild(close);
 
-			var notification_mess = document.createElement('p');
+			var notification_mess = document.createElement('div');
 			notification_mess.innerHTML = "missing city";
 			notification_div.appendChild(notification_mess);
 			
@@ -1666,7 +1670,7 @@ function getCheckout()
 
 			notification_div.appendChild(close);
 
-			var notification_mess = document.createElement('p');
+			var notification_mess = document.createElement('div');
 			notification_mess.innerHTML = "missing zip code";
 			notification_div.appendChild(notification_mess);
 			
@@ -1963,7 +1967,7 @@ function addLoadMoreButton()
 					var div = document.createElement('div');
 					div.className = "news-item";
 
-					var heading = document.createElement('h4');
+					var heading = document.createElement('h5');
 					heading.className = "news-item-title";
 					//heading.innerHTML = posts[i].title;
 
@@ -2266,7 +2270,7 @@ function buildPPNotification(message, type)
 
 	notification_div.appendChild(close);
 
-	var notification_mess = document.createElement('p');
+	var notification_mess = document.createElement('div');
 	notification_mess.innerHTML = message;
 
 	notification_div.appendChild(notification_mess);
@@ -2298,18 +2302,18 @@ function buildPPNotification(message, type)
 //    
 //    //controls
 //    var lefta  = document.createElement('a');
-//    lefta.className = "left carousel-control";
+//    lefta.className = "carousel-control-prev";
 //    lefta.href = "#jibb-carousel";
 //    lefta.setAttribute("role", "button");
 //    lefta.setAttribute("data-slide", "prev");
-//    lefta.innerHTML = "<span class='glyphicon glyphicon-chevron-left' aria-hidden='true'></span><span class='sr-only'>Previous</span>";
+//    lefta.innerHTML = "<span class='carousel-control-prev-icon' aria-hidden='true'></span><span class='sr-only'>Previous</span>";
 //    
 //    var righta  = document.createElement('a');
-//    righta.className = "right carousel-control";
+//    righta.className = "carousel-control-next";
 //    righta.href = "#jibb-carousel";
 //    righta.setAttribute("role", "button");
 //    righta.setAttribute("data-slide", "next");
-//    righta.innerHTML = "<span class='glyphicon glyphicon-chevron-right' aria-hidden='true'></span><span class='sr-only'>Next</span>";
+//    righta.innerHTML = "<span class='carousel-control-next-icon' aria-hidden='true'></span><span class='sr-only'>Next</span>";
 //    
 //    outerdiv.appendChild(lefta);
 //    outerdiv.appendChild(righta);
@@ -2381,7 +2385,7 @@ function createUser()
                 {
                     
                     $('#error').html(""); //clear div
-                    $('#error').append("<div class='alert alert-danger alert-dismissable' role='alert'><a class='close' data-dismiss='alert'>&times;</a><p>"+data.message+"</p></div>");
+                    $('#error').append("<div class='alert alert-danger alert-dismissable' role='alert'><a class='close' data-dismiss='alert'>&times;</a><div>"+data.message+"</div></div>");
                 }
             });
         }
@@ -2389,14 +2393,14 @@ function createUser()
         {
         
             $('#error').html(""); //clear div
-            $('#error').append("<div class='alert alert-danger alert-dismissable' role='alert'><a class='close' data-dismiss='alert'>&times;</a><p>password does not match.</p></div>");
+            $('#error').append("<div class='alert alert-danger alert-dismissable' role='alert'><a class='close' data-dismiss='alert'>&times;</a><div>password does not match.</div></div>");
         }
     }
     else
     {
         
         $('#error').html(""); //clear div
-        $('#error').append("<div class='alert alert-danger alert-dismissable' role='alert'><a class='close' data-dismiss='alert'>&times;</a><p>email does not match.</p></div>");
+        $('#error').append("<div class='alert alert-danger alert-dismissable' role='alert'><a class='close' data-dismiss='alert'>&times;</a><div>email does not match.</div></div>");
     }
     
 }

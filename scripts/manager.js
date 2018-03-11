@@ -80,7 +80,7 @@ function addVideoCode()
 function addImageCode()
 {
 	
-	$('#post-content').val( $('#post-content').val() + '<img class="img-responsive center-block" src="" />');
+	$('#post-content').val( $('#post-content').val() + '<img class="img-fluid d-block mx-auto" src="" />');
 }
 
 function uploadFile()
@@ -237,14 +237,14 @@ function getPostsToEdit()
 			if($(window).width() < 768)
 			{
 			
-            	td4.innerHTML = "<button type='button' class='btn btn-default btn-sm edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+posts[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+posts[i].id+"' type='button' class='btn btn-danger btn-sm' onclick='deletePost("+posts[i].id+")'>Delete</button>";
+            	td4.innerHTML = "<button type='button' class='btn btn-secondary btn-sm edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+posts[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+posts[i].id+"' type='button' class='btn btn-danger btn-sm' onclick='deletePost("+posts[i].id+")'>Delete</button>";
 			}
 			else
 			{
 				
 				td4.style.textAlign = "right";
 			
-            	td4.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+posts[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+posts[i].id+"' type='button' class='btn btn-danger' onclick='deletePost("+posts[i].id+")'>Delete</button>";
+            	td4.innerHTML = "<button type='button' class='btn btn-secondary edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+posts[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+posts[i].id+"' type='button' class='btn btn-danger' onclick='deletePost("+posts[i].id+")'>Delete</button>";
 			}
 			
             row.appendChild(td1);
@@ -392,14 +392,14 @@ function getUsers()
 			if($(window).width() < 768)
 			{
 				
-				td5.innerHTML = "<button type='button' class='btn btn-default btn-sm edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+users[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+users[i].id+"' type='button' class='btn btn-danger btn-sm' onclick='deleteUser("+users[i].id+")'>Delete</button>";
+				td5.innerHTML = "<button type='button' class='btn btn-secondary btn-sm edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+users[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+users[i].id+"' type='button' class='btn btn-danger btn-sm' onclick='deleteUser("+users[i].id+")'>Delete</button>";
 			}
 			else
 			{
 				
 				td5.style.textAlign = "right";
 				
-				td5.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+users[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+users[i].id+"' type='button' class='btn btn-danger' onclick='deleteUser("+users[i].id+")'>Delete</button>";
+				td5.innerHTML = "<button type='button' class='btn btn-secondary edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+users[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+users[i].id+"' type='button' class='btn btn-danger' onclick='deleteUser("+users[i].id+")'>Delete</button>";
 			}
 
 //            row.appendChild(td1);
@@ -603,13 +603,13 @@ function getShopItems()
 			if($(window).width() < 768)
 			{
 				
-            	td7.innerHTML = "<button type='button' class='btn btn-default btn-sm edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger btn-sm' onclick='deleteItem("+items[i].id+")'>Delete</button>";
+            	td7.innerHTML = "<button type='button' class='btn btn-secondary btn-sm edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger btn-sm' onclick='deleteItem("+items[i].id+")'>Delete</button>";
 			}
 			else
 			{
 				
 				td7.style.textAlign = "right";
-            	td7.innerHTML = "<button type='button' class='btn btn-default edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger' onclick='deleteItem("+items[i].id+")'>Delete</button>";
+            	td7.innerHTML = "<button type='button' class='btn btn-secondary edit_modal' data-toggle='modal' data-target='#editModal' data-id='"+items[i].id+"'>Edit</button>&nbsp&nbsp<button id='delete_"+items[i].id+"' type='button' class='btn btn-danger' onclick='deleteItem("+items[i].id+")'>Delete</button>";
 			}
 
             row.appendChild(td1);
@@ -858,13 +858,13 @@ function getOrders()
 			if($(window).width() < 768)
 			{
 				
-				td6.innerHTML = "<button type='button' class='btn btn-default btn-sm view_modal' data-toggle='modal' data-target='#viewModal' data-id='"+orders[i].order_number+"'>View</button>&nbsp&nbsp<button id='delete_"+orders[i].order_number+"' type='button' class='btn btn-danger btn-sm' onclick='deleteOrder("+orders[i].order_number+")'>Delete</button>";
+				td6.innerHTML = "<button type='button' class='btn btn-secondary btn-sm view_modal' data-toggle='modal' data-target='#viewModal' data-id='"+orders[i].order_number+"'>View</button>&nbsp&nbsp<button id='delete_"+orders[i].order_number+"' type='button' class='btn btn-danger btn-sm' onclick='deleteOrder("+orders[i].order_number+")'>Delete</button>";
 			}
 			else
 			{
 			
 				td6.style.textAlign = "right";
-				td6.innerHTML = "<button type='button' class='btn btn-default view_modal' data-toggle='modal' data-target='#viewModal' data-id='"+orders[i].order_number+"'>View</button>&nbsp&nbsp<button id='delete_"+orders[i].order_number+"' type='button' class='btn btn-danger' onclick='deleteOrder("+orders[i].order_number+")'>Delete</button>";
+				td6.innerHTML = "<button type='button' class='btn btn-secondary view_modal' data-toggle='modal' data-target='#viewModal' data-id='"+orders[i].order_number+"'>View</button>&nbsp&nbsp<button id='delete_"+orders[i].order_number+"' type='button' class='btn btn-danger' onclick='deleteOrder("+orders[i].order_number+")'>Delete</button>";
 			}
 
             row.appendChild(td1);

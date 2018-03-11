@@ -6,13 +6,14 @@
     <head>
         <title>jibbcrew.com | atlanta bmx </title>
         
-        <!-- Latest compiled and minified CSS -->
-<!--        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">-->
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-<!--        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>-->
-        <script src="/scripts/bootstrap.min.js"></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+<!--		<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>-->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+		
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
         <link rel="stylesheet" href="/css/main.css" >
         
@@ -32,7 +33,7 @@
                 $('.modal-footer').html("");
                 
                 //create update button and add to modal
-                var update_button = $('<button type="button" class="btn btn-default" data-dismiss="modal">Update</button>').click(function () {
+                var update_button = $('<button type="button" class="btn btn-secondary" data-dismiss="modal">Update</button>').click(function () {
                     
                     //update post
                     updatePost(post_id);
@@ -44,43 +45,23 @@
         </script>
         
     </head>
-    <body style="margin: 60px;">
-		<!-- Fixed navbar -->
-        <nav class="navbar navbar-fixed-top jibb-navbar">
-            <div class="container jibb-outer-container">
-                <div class="navbar-header">
+    <body>
+		<nav class="navbar navbar-toggleable-md fixed-top navbar-light jibb-navbar-color">
+			<div class="container jibb-outer-container jibb-navbar-container">
+				<button type="button" class="navbar-toggler navbar-toggler-right jibb-menu-icon-v4" 
+					data-toggle="collapse" data-target="#jibb-navbar-collapse" 
+					aria-controls="jibb-navbar-collapse" aria-expanded="false" onclick="openSideNav()">
+					<span></span>
+					<span></span>
+					<span></span>
+				</button>
 
-					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" onclick="openSideNav()">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-
-                    <ul class="list-inline jibb-logo">
-                        <li>
-                            <a style="text-decoration: none;" href="/">
-                                <div style="border: 4px solid black; margin-top: 8px;">
-                                    <div style="padding-left: 4px; padding-right: 4px; margin-bottom: -8px; margin-top: -8px; font-size: 40px;">
-                                        <strong><i>JIBB</i></strong>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                        <li>
-                            <a style="text-decoration: none;" href="/">
-                                <div style="margin-left: -10px;">
-                                    <div style="font-size: 38px;">
-                                        <i>CREW</i>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
+				<a href="" class="navbar-brand" style="text-decoration: none;">
+					<img style="height: 50px; margin-top: 8px;" src="/img/jibbcrew-full-box-jibb.svg">
+				</a>
+				
 				<div id="side-nav" class="jibb-side-nav">
 				  	<a href="javascript:void(0)" class="close-btn" onclick="closeSideNav()">&times;</a>
-
 				  	<a href="/manager/dashboard.html">dashboard</a>
                    	<a href="/manager/manage-posts.html">manage posts</a>
                     <a href="/manager/manage-users.html">manage users</a>
@@ -89,37 +70,35 @@
 					<a href="#" onclick="logout()" >logout</a>
 				</div>
 				
-				<div class="navbar-collapse collapse">
-					<div class="nav navbar-nav navbar-right" style="margin-right: -37px;">
+				<div class="collapse navbar-collapse" id="jibb-navbar-collapse">
+					<div class="navbar-nav ml-auto" style="margin-right: -24px;">
 						<button type="button" class="jibb-menu-icon" onclick="openSideNav()">
 							<span></span>
 							<span></span>
 							<span></span>
 						</button>
 					</div>
-				</div>
-									
+				</div>			
             </div>
         </nav>
+		
         <div class="container jibb-outer-container">
-            <div class="row">
-                <div class="sidebar-module" style="overflow: hidden;">
-                    <h3 id="title" style="float: left;">edit posts</h3>
-                    <h5 style="float:right; margin-top: 30px;">User: <span id="user-name"></span></h5>
-                </div>
-                <div class="jibb-container">
-                    <div class="jibb-inner-container">
-                        <div id="posts">
-                            <!-- content here -->
-                        </div>
-                    </div>
-                </div>
+			
+			<div class="sidebar-module" style="overflow: hidden;">
+				<h3 id="title" style="float: left;">edit posts</h3>
+				<h6 style="float:right; margin-top: 10px;">User: <span id="user-name"></span></h6>
+			</div>
+			<div class="jibb-container">
+				<div class="jibb-inner-container">
+					<div id="posts">
+						<!-- content here -->
+					</div>
+				</div>
+			</div>
 
-                <div class="jibb-inner-container">
-                    <div id="result"></div>
-                </div>
-
-            </div>
+			<div class="jibb-inner-container">
+				<div id="result"></div>
+			</div>
         </div>
         
         <!-- Modal -->
