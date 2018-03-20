@@ -625,7 +625,7 @@ function getContact()
     paragraph2.appendChild(a2);
     
     var content = document.createElement("div");
-    content.innerHTML = "<img class='img-responsive center-block' src='uploads/jibbjam_group.JPG' />";
+    content.innerHTML = "<img class='img-fluid d-block mx-auto' src='uploads/jibbcrew_st_patties_jam_2018.jpg' />";
     
     div.appendChild(heading);
     div.appendChild(paragraph1);
