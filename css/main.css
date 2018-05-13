@@ -24,10 +24,16 @@ a:hover {
 
 .news-item .news-item-title {
 	padding-top: 4px;
+	float: left;
 }
 
 .news-item .news-item-title a{
 	text-decoration: none;
+}
+
+.news-item .news-item-date {
+	padding-top: 4px;
+	float: right;
 }
 
 .jibb-outer-container {

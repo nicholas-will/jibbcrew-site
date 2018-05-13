@@ -80,7 +80,7 @@ function addVideoCode()
 function addImageCode()
 {
 	
-	$('#post-content').val( $('#post-content').val() + '<img class="img-fluid d-block mx-auto" src="" />');
+	$('#post-content').val( $('#post-content').val() + '<img class="img-fluid d-block mx-auto" src="uploads/" />');
 }
 
 function uploadFile()
