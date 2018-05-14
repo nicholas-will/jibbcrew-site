@@ -1976,15 +1976,22 @@ function addLoadMoreButton()
 					var div = document.createElement('div');
 					div.className = "news-item";
 
+					var div2 = document.createElement('div');
+					div2.style.overflow = 'hidden';
+
 					var heading = document.createElement('h5');
 					heading.className = "news-item-title";
 					//heading.innerHTML = posts[i].title;
 
 					var a = document.createElement('a');
-					a.setAttribute('href', "#post/"+posts[i].slug);
+					a.href = "#post/" + posts[i].slug;
 					a.innerHTML = posts[i].title;
 
 					heading.appendChild(a);
+
+					var em = document.createElement('em');
+					em.className = "news-item-date";
+					em.innerHTML = posts[i].timestamp.substr(0,10);
 
 					var paragraph = document.createElement('p');
 					paragraph.className = "news-item-desc";
@@ -1993,7 +2000,9 @@ function addLoadMoreButton()
 					var content = document.createElement("div");
 					content.innerHTML = posts[i].content;
 
-					div.appendChild(heading);
+					div2.appendChild(heading);
+					div2.appendChild(em);
+					div.appendChild(div2);
 					div.appendChild(paragraph);
 					div.appendChild(content);
 
