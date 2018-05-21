@@ -19,7 +19,8 @@ a:hover {
 
 .news-item {
     border-top: 2px solid black;
-    padding-bottom: 16px;
+    padding-bottom: 24px;
+    margin-bottom: 12px;
 }
 
 .news-item .news-item-title {

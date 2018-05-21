@@ -557,27 +557,36 @@ function getPost(slug)
             $("#load-more-button").remove();
     
             var div = document.createElement('div');
-            div.className = "news-item";
+			div.className = "news-item";
 
-            var heading = document.createElement('h5');
-            heading.className = "news-item-title";
+			var div2 = document.createElement('div');
+			div2.style.overflow = 'hidden';
 
-            var a = document.createElement('a');
-            a.setAttribute('href', "#post/"+post.slug);
-            a.innerHTML = post.title;
+			var heading = document.createElement('h5');
+			heading.className = "news-item-title";
 
-            heading.appendChild(a);
+			var a = document.createElement('a');
+			a.href = "#post/" + post.slug;
+			a.innerHTML = post.title;
 
-            var paragraph = document.createElement('p');
-            paragraph.className = "news-item-desc";
-            paragraph.innerHTML = post.description;
+			heading.appendChild(a);
 
-            var content = document.createElement("div");
-            content.innerHTML = post.content;
+			var em = document.createElement('em');
+			em.className = "news-item-date";
+			em.innerHTML = post.timestamp.substr(0,10);
 
-            div.appendChild(heading);
-            div.appendChild(paragraph);
-            div.appendChild(content);
+			var paragraph = document.createElement('p');
+			paragraph.className = "news-item-desc";
+			paragraph.innerHTML = post.description;
+
+			var content = document.createElement("div");
+			content.innerHTML = post.content;
+
+			div2.appendChild(heading);
+			div2.appendChild(em);
+			div.appendChild(div2);
+			div.appendChild(paragraph);
+			div.appendChild(content);
 
             $('#posts').append(div);
         
