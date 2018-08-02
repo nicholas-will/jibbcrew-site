@@ -598,7 +598,7 @@ function getPost(slug)
             fbdiv.setAttribute("data-width", "100%"); 
             fbdiv.setAttribute("data-numposts", "5");
         
-            document.getElementById('main-row').appendChild(fbdiv);
+            document.getElementById('posts').appendChild(fbdiv);
 
             FB.XFBML.parse();
 

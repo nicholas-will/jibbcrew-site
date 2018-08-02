@@ -79,8 +79,23 @@ function addVideoCode()
 
 function addImageCode()
 {
+	//todo ***test this function***
+	var inputName = document.getElementById('fileInput');
+	var imgPath;
+
+	imgPath = inputName.value;
 	
-	$('#post-content').val( $('#post-content').val() + '<img class="img-fluid d-block mx-auto" src="uploads/" />');
+	if(imgPath != "")
+   	{
+		
+	   $('#post-content').val( $('#post-content').val() + '<img class="img-fluid d-block mx-auto" src="uploads/' + imgPath.replace("C:\\fakepath\\", "") + '" />');
+   	}
+	else
+	{
+		
+		$('#post-content').val( $('#post-content').val() + '<img class="img-fluid d-block mx-auto" src="uploads/" />');
+	}
+	
 }
 
 function uploadFile()
