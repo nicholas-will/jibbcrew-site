@@ -4,7 +4,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <head>
-        <title>jibbcrew.com | atlanta bmx </title>
+        <title>jibbcrew.com | atlanta bmx</title>
 
         <!-- Latest compiled and minified JavaScript -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -14,6 +14,8 @@
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
 		
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+		
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		
         <link rel="stylesheet" href="css/main.css" >
         
@@ -57,7 +59,55 @@
                         fjs.parentNode.insertBefore(js, fjs);
                 }(document, 'script', 'facebook-jssdk'));
         </script>
-        
+		
+		<script>
+			$(function() {
+ 
+				$("#search_posts").autocomplete({
+					source: "router.php?route=get-search-posts",
+					minLength: 1,
+					select: function(event, ui) {
+						var slug = ui.item.id;
+						if(slug != '#') {
+							location.href = '#post/' + slug;
+						}
+						
+						//close sideNav
+						closeSideNav();
+						
+						$(this).val(''); 
+						
+						return false;
+					},
+
+					dataType: "json",   //return data in json format
+					
+//					success: function(data)
+//                    {
+//                        response($.map(data, function(item)
+//                        {
+//                            return{
+//                                    label: item.label,
+//                                    value: item.value,
+//                                    id: item.id
+//                                   }
+//                        }));
+//					},
+					
+					messages: {
+						noResults: '',
+						results: function() {}
+					},
+					
+				   	//optional (if other layers overlap autocomplete list)
+					open: function(event, ui) {
+						$(".ui-autocomplete").css("z-index", 9999);
+						$(".ui-helper-hidden-accessible").css("display", "none");
+					}
+				});
+
+			});
+		</script>
     </head>
     <body>
 
@@ -82,6 +132,7 @@
 					<a href="#gallery" onclick="closeSideNav()">gallery</a>
 					<a href="#shop" onclick="closeSideNav()">shop</a>
 					<a href="#contact" onclick="closeSideNav()">contact</a>
+					<input class="ui-autocomplete-input form-control input-lg jibb-search-box" type="text" id="search_posts" placeholder="search">
 				</div>
 
 				<div class="collapse navbar-collapse" id="jibb-navbar-collapse">

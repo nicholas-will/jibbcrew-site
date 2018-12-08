@@ -199,6 +199,39 @@ a:hover {
 	margin-left: 50px;
 }
 
+.ui-menu {
+	background-color: #ffffff;
+	max-width: 420px;
+	list-style: none;
+	padding: 8px 14px;
+}
+
+.jibb-search-box {
+	margin-left: 80px; 
+	margin-top: 26px; 
+	max-width: 420px;
+}
+
+@media only screen and (max-width: 1024px) {
+	.ui-menu {
+		max-width: 320px;
+	}
+
+	.jibb-search-box {
+		max-width: 320px;
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.ui-menu {
+		max-width: 220px;
+	}
+
+	.jibb-search-box {
+		max-width: 220px;
+	}
+}
+
 @media (max-width: 768px){
 	.jibb-menu-icon {
 		display: none;

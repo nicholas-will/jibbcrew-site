@@ -26,6 +26,10 @@ class router
             case 'get-posts' :
                 $this->getPosts();
                 break;
+				
+			case 'get-search-posts' :
+				$this->getSearchPosts();
+				break;
                 
             case 'get-post' :
                 $this->getPost();
@@ -133,6 +137,56 @@ class router
         header ("Content-type: application/json");
         echo json_encode($post_data);
     }
+	
+	private function getSearchPosts()
+	{
+		
+		//prevent direct access
+		$is_ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND
+		strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+		
+		if(!$is_ajax) 
+		{
+		  $user_error = 'Access denied';
+		  trigger_error($user_error, E_USER_ERROR);
+		}
+		
+		$search_term = $_GET['term']."%";
+		
+		$query = $this->dbh->prepare("SELECT title, slug FROM `posts` WHERE `title` LIKE :term ORDER BY `title` ASC");
+        $query->bindParam(':term', $search_term);
+        $query->execute();
+
+		$count = $query->rowCount();
+		
+        $query->setFetchMode(PDO::FETCH_ASSOC);
+		
+		//generate post title data array
+		$post_title_data = array();
+
+		if($count > 0)
+		{
+			
+    		while($row = $query->fetch())
+			{
+				
+				$data[] = array(
+					'label' => $row['title'],
+					'id' => $row['slug'],
+					'value' => $row['title']
+				);
+				
+//        		$data['label'] = $row['title'];
+//        		$data['id'] = $row['slug'];
+//        		$data['value'] = $row['title'];
+//        		array_push($post_title_data, $data);
+    		}
+		}
+
+		// Return results as json encoded array
+		header ("Content-type: application/json");
+		echo json_encode($data);
+	}
     
     private function getPost()
     {
