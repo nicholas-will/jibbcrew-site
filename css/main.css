@@ -213,14 +213,14 @@ a:hover {
 	max-width: 420px;
 	list-style: none;
 	padding: 8px 14px;
+	max-height: 324px;
+	overflow: scroll;
 }
 
 .jibb-search-box {
 	margin-left: 80px; 
 	margin-top: 26px; 
 	max-width: 420px;
-	max-height: 324px;
-	overflow: scroll;
 }
 
 @media only screen and (max-width: 1024px) {
