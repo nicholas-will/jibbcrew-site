@@ -687,7 +687,7 @@ function getShop()
                 var img = document.createElement('img');
                 img.className = 'card-img-top';
                 img.src = items[i].image_path;
-                img.style = 'width: 100%; height: 200px;';
+                img.style = 'width: 100%;';
                 
                 var card_body = document.createElement('div');
                 card_body.className = 'card-block';
