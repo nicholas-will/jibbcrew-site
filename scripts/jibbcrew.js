@@ -670,19 +670,32 @@ function getShop()
         }).done(function(items) {
         
             $('#posts').html(""); //clear div
-    
+		
             for(var i = 0; i < items.length; i++)
             {
 
-                var inner_div = document.createElement('div');
-                inner_div.className = 'responsive-card-row';
+				if(i % 4 == 0)
+				{
+					
+					if(i != 0)
+					{
+						
+						div.appendChild(row_div);
+					}
+					
+					var row_div = document.createElement('div');
+					row_div.className = 'responsive-card-row';
+				}
+				
+                var col_div = document.createElement('div');
+                col_div.className = 'responsive-card-col';
                 
                 var card = document.createElement('div');
                 card.className = 'card jibb-card';
                 
                 var a = document.createElement('a');
                 a.href = '#shop/' + items[i].slug;
-                a.style = 'text-decoration:none';
+                a.style = 'text-decoration:none;';
                 
                 var img = document.createElement('img');
                 img.className = 'card-img-top';
@@ -694,7 +707,7 @@ function getShop()
                 
                 var paragraph = document.createElement('p');
                 paragraph.className = "card-text";
-                paragraph.innerHTML = items[i].name + " - $" + items[i].price;
+                paragraph.innerHTML = '<strong>' + items[i].name + '</strong>' + '<br/>' + "$" + items[i].price;
 
                 card_body.appendChild(paragraph);
                 
@@ -703,11 +716,14 @@ function getShop()
                 
                 a.appendChild(card);
                 
-                inner_div.appendChild(a);
+                col_div.appendChild(a);
                 
-                div.appendChild(inner_div);
-                $('#posts').append(div);
+                row_div.appendChild(col_div);
             }
+		
+		
+				div.appendChild(row_div);
+                $('#posts').append(div);
 
         }).fail(function() {
             $('#posts').html(""); //clear div

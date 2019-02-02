@@ -61,20 +61,27 @@ a:hover {
 }
 
 .jibb-card {
-    margin-top: 20px;
-    border-bottom: 2px solid #000 !important;
-}
-
-.jibb-card:hover {
-/*    color: #ccc;*/
-    border-bottom: 2px solid #fff !important;
-/*    cursor: pointer;*/
+/*    margin-top: 10px;*/
 }
 
 .responsive-card-row {
+	padding: 10px 0px;
+}
+
+.responsive-card-row:after {
+	content: "";
+  	display: table;
+  	clear: both;
+}
+
+.responsive-card-col {
     float: left; 
-    padding: 0 10px; 
+    padding: 10px; 
     width: 24.9%;
+}
+
+.responsive-card-col:hover {
+	border: 1px solid #eee !important;
 }
 
 .video-container {
@@ -223,6 +230,16 @@ a:hover {
 	max-width: 420px;
 }
 
+.card-block {
+	margin-top: 16px;
+    border-top: 2px solid black;
+	padding: .5em 0;
+}
+
+.card-text {
+	font-size: 12px;
+}
+
 @media only screen and (max-width: 1024px) {
 	.ui-menu {
 		max-width: 320px;
@@ -275,7 +292,7 @@ a:hover {
 }
 
 .card-block {
-	padding: .5em;
+	padding: .5em 0;
 }
 
 /** carousel responsive fix **/
@@ -286,14 +303,14 @@ a:hover {
 }
 
 @media only screen and (max-width: 990px){
-    .responsive-card-row {
+    .responsive-card-col {
         width: 48%;
         margin: 6px 0;
     }
 }
 
 @media only screen and (max-width: 500px){
-    .responsive-card-row {
+    .responsive-card-col {
         width: 100%;
     }
 }
