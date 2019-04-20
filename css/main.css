@@ -16,6 +16,10 @@ a:hover {
     background-color: white;
 }
 
+.jibb-navbar-brand {
+	padding-left: 44%;
+}
+
 .news-item {
     border-top: 2px solid black;
     padding-bottom: 24px;
@@ -193,7 +197,7 @@ a:hover {
 
 /* The navigation menu links */
 .jibb-side-nav a {
-	padding-left: 86px;
+	padding-left: 78px;
 	text-decoration: none;
 	font-size: 58px;
 	font-weight: 600;
@@ -227,7 +231,7 @@ a:hover {
 .jibb-search-box {
 	margin-left: 80px; 
 	margin-top: 26px; 
-	max-width: 420px;
+	max-width: 220px;
 }
 
 .card-block {
@@ -245,9 +249,11 @@ a:hover {
 		max-width: 320px;
 	}
 
+/*
 	.jibb-search-box {
 		max-width: 320px;
 	}
+*/
 }
 
 @media only screen and (max-width: 768px) {
@@ -255,9 +261,11 @@ a:hover {
 		max-width: 220px;
 	}
 
+/*
 	.jibb-search-box {
 		max-width: 220px;
 	}
+*/
 }
 
 @media (max-width: 768px){
@@ -344,12 +352,24 @@ a:hover {
 	.navbar-toggle { 
 		margin-right: 5px;
 	}
+	
+	.jibb-navbar-brand {
+		padding-left: 42.5%;
+	}
 }
 
 @media only screen and (max-width: 480px) {
 	.jibb-navbar-container {
 		margin-left: 0;
         margin-right: -18px;
+	}
+	
+	.jibb-search-box {
+		margin-left: 110px; 
+	}
+	
+	.jibb-navbar-brand {
+		padding-left: 35%;
 	}
 	
     .row {
@@ -366,5 +386,15 @@ a:hover {
 	
 	.table td, .table th {
 		padding: .25rem;
+	}
+}
+
+@media only screen and (max-width: 375px) {
+	.jibb-navbar-brand {
+		padding-left: 32%;
+	}
+	
+	.jibb-search-box {
+		margin-left: 84px; 
 	}
 }
