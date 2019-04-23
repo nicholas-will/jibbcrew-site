@@ -197,9 +197,9 @@ a:hover {
 
 /* The navigation menu links */
 .jibb-side-nav a {
-	padding-left: 78px;
+	padding-left: 40px;
 	text-decoration: none;
-	font-size: 58px;
+	font-size: 50px;
 	font-weight: 600;
 	color: #fff;
 	display: block;
@@ -221,7 +221,7 @@ a:hover {
 
 .ui-menu {
 	background-color: #ffffff;
-	max-width: 420px;
+	max-width: 220px;
 	list-style: none;
 	padding: 8px 14px;
 	max-height: 324px;
@@ -229,7 +229,7 @@ a:hover {
 }
 
 .jibb-search-box {
-	margin-left: 80px; 
+	margin-left: 40px; 
 	margin-top: 26px; 
 	max-width: 220px;
 }
@@ -245,9 +245,11 @@ a:hover {
 }
 
 @media only screen and (max-width: 1024px) {
+/*
 	.ui-menu {
 		max-width: 320px;
 	}
+*/
 
 /*
 	.jibb-search-box {
@@ -257,9 +259,11 @@ a:hover {
 }
 
 @media only screen and (max-width: 768px) {
+/*
 	.ui-menu {
 		max-width: 220px;
 	}
+*/
 
 /*
 	.jibb-search-box {

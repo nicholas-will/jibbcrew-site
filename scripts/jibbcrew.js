@@ -17,7 +17,7 @@ function openSideNav()
 	else
 	{
 
-		document.getElementById("side-nav").style = "width: 50%;";
+		document.getElementById("side-nav").style = "width: 300px;";
 	}
 }
 
