@@ -4,36 +4,27 @@ $(document).ready(function() {
 });
 
 $(document).on('click','.navbar-collapse.in',function(e) {
-
     if( $(e.target).is('a') && ( $(e.target).attr('class') != 'dropdown-toggle' ) ) {
         $(this).collapse('hide');
     }
 
 });
 
-function openSideNav() 
-{
+function openSideNav() {
 	
-	if($(window).width() < 768)
-	{
-
+	if($(window).width() < 768) {
 		document.getElementById("side-nav").style = "width: 100%;";
 	}
-	else
-	{
-
-		document.getElementById("side-nav").style = "width: 50%;";
-//		document.getElementById("main").style.marginLeft = "268px";
+	else{
+		document.getElementById("side-nav").style = "width: 340px;";
 	}
 }
 
-function closeSideNav() 
-{
+function closeSideNav() {
 	document.getElementById("side-nav").style = "width: 0px;";
-//	document.getElementById("main").style.marginLeft = "0";
 }
 
-function addPost()
+function addPost(status)
 {
 
     var now = new Date();
@@ -49,6 +40,7 @@ function addPost()
             description: $('#post-description').val(),
             type: $('#post-type').val(),
             title: $('#post-title').val(),
+			status: status,
             date: formattedDate
         }
     }).done(function(result) {
@@ -71,10 +63,17 @@ function clearTextboxes()
     $('#post-title').val("");
 }
 
-function addVideoCode()
+function addVideoCode(type)
 {
 	
-	$('#post-content').val( $('#post-content').val() + '<div class="video-container"></div>');
+	if(type == 'youtube')
+	{
+		$('#post-content').val( $('#post-content').val() + '<div class="video-container"><iframe width="560" height="315" src="" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>');
+	}
+	else 
+	{
+		$('#post-content').val( $('#post-content').val() + '<div class="video-container"></div>');
+	}
 }
 
 function addImageCode()
@@ -104,6 +103,7 @@ function uploadFile()
     //var url = 'upload.php'
     var fileInput = document.getElementById('fileInput');
     var file = fileInput.files[0];
+	console.log(file);
     var form_data = new FormData();
     form_data.append('fileInput', file);
 
@@ -135,6 +135,7 @@ function updatePost(id)
             route: 'update-post',
             //user: '',
             title: $('#post-title').val(),
+			status: $('#post-status').val(),
             description: $('#post-description').val(),
             content: $('#post-content').val(),
             date: formattedDate,
@@ -212,8 +213,8 @@ function getPostsToEdit()
         th1.innerHTML = "title";
         
         var th2 = document.createElement('th');
-//        th2.style = "width:35%";
-        th2.innerHTML = "description";
+        th2.style = "text-align: center;";
+        th2.innerHTML = "status";
         
 //        var th3 = document.createElement('th');
 //        th3.style = "width:40%";
@@ -241,7 +242,16 @@ function getPostsToEdit()
             td1.innerHTML = posts[i].title;
 
             var td2 = document.createElement('td');
-            td2.innerHTML = posts[i].description;
+			
+			if(posts[i].status == 'draft')
+			{
+				td2.innerHTML = "<p class='alert-warning' style='border-radius:10px; text-align: center;'>" + posts[i].status + "</p>";
+				
+			}
+			else 
+			{
+				td2.innerHTML = "<p class='alert-success' style='border-radius:10px; text-align: center;'>" + posts[i].status + "</p>";
+			}
 
 //            var td3 = document.createElement('td');
 //            td3.innerHTML = posts[i].stripped_content.substr(0,90); //may have to change
@@ -299,7 +309,11 @@ function getPostToEdit(id)
         $("#post-title").val('');
         
         $("#post-title").val(post.title);
-        
+		
+		$('#post-status').val('');
+		
+        $('#post-status').val(post.status);
+		
         $("#post-description").val('');
         
         $("#post-description").val(post.description);
@@ -1199,6 +1213,6 @@ function logout()
         
         console.log("logged out");
         
-        location.replace("/#login");
+        location.replace("/");
     });
 }

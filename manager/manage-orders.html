@@ -59,13 +59,13 @@
 					<img style="height: 40px;" src="/img/jibbcrew-big-jibb.svg">
 				</a>
 				
-				<div id="side-nav" class="jibb-side-nav">
+				<div id="side-nav" class="jibb-side-nav manager">
 				  	<a href="javascript:void(0)" class="close-btn" onclick="closeSideNav()">&times;</a>
 				  	<a href="/manager/dashboard.html">dashboard</a>
-                   	<a href="/manager/manage-posts.html">manage posts</a>
-                    <a href="/manager/manage-users.html">manage users</a>
-                    <a href="/manager/manage-shop.html">manage shop</a>
-					<a href="/manager/manage-orders.html">manage orders</a>
+                   	<a href="/manager/manage-posts.html">posts</a>
+                    <a href="/manager/manage-users.html">users</a>
+                    <a href="/manager/manage-shop.html">shop</a>
+					<a href="/manager/manage-orders.html">orders</a>
 					<a href="#" onclick="logout()" >logout</a>
 				</div>
 				
@@ -85,7 +85,6 @@
 
 			<div class="sidebar-module" style="overflow: hidden;">
 				<h3 id="title" style="float: left;">manage orders</h3>
-				<h6 style="float:right; margin-top: 10px;">User: <span id="user-name"></span></h6>
 			</div>
 			<div class="jibb-container">
 				<div class="jibb-inner-container">
@@ -98,6 +97,8 @@
 			<div class="jibb-inner-container">
 				<div id="result"></div>
 			</div>
+			
+			<h6 style="float:right; margin-top: 10px;">logged in as: <span id="user-name"></span></h6>
         </div>
         
         <!-- Modal -->

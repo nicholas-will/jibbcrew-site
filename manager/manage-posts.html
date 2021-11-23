@@ -15,7 +15,9 @@
 		
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
-        <link rel="stylesheet" href="/css/main.css" >
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+		
+		<link rel="stylesheet" href="/css/main.css" >
         
         <script src="/scripts/manager.js"></script>
 
@@ -28,22 +30,93 @@
             $(document).on("click", ".edit_modal", function () {
                 var post_id = $(this).data('id');
                 
-                getPostToEdit(post_id);
-                
-                $('.modal-footer').html("");
-                
-                //create update button and add to modal
-                var update_button = $('<button type="button" class="btn btn-secondary" data-dismiss="modal">Update</button>').click(function () {
-                    
-                    //update post
-                    updatePost(post_id);
-                });
-                
-                $('.modal-footer').append(update_button);
+				makeEditModal(post_id);
 
             }); 
+			
+			function makeEditModal(id)
+			{
+				
+				getPostToEdit(id);
+
+				$('.modal-footer').html("");
+
+				//create update button and add to modal
+				var update_button = $('<button type="button" class="btn btn-secondary" data-dismiss="modal">Update</button>').click(function () {
+
+					//update post
+					updatePost(id);
+				});
+
+				$('.modal-footer').append(update_button);	
+			}
+			
+			$(function() {
+ 
+				$("#search_edit_posts").autocomplete({
+					source: "/router.php?route=get-search-posts-to-edit",
+					minLength: 1,
+					select: function(event, ui) {
+						
+						var id = ui.item.value;
+						console.log(id);
+						console.log(ui.item);
+						
+						if(id)
+						{
+							
+							makeEditModal(id);
+							$('#editModal').modal('show');
+						}
+						
+						$(this).val(''); 
+						
+						return false;
+					},
+
+					dataType: "json",   //return data in json format
+					
+//					success: function(data)
+//                    {
+//                        response($.map(data, function(item)
+//                        {
+//                            return{
+//                                    label: item.label,
+//                                    value: item.value,
+//                                    id: item.id
+//                                   }
+//                        }));
+//					},
+					
+					messages: {
+						noResults: '',
+						results: function() {}
+					},
+					
+				   	//optional (if other layers overlap autocomplete list)
+					open: function(event, ui) {
+						$(".ui-autocomplete").css("z-index", 9999);
+						$(".ui-helper-hidden-accessible").css("display", "none");
+					}
+				});
+
+			});
         </script>
-        
+        <style>
+			#search_edit_posts {
+				max-width: 300px; 
+				float: right; 
+				margin-bottom: 4px;
+			}
+			
+			@media only screen and (max-width: 600px)
+			{
+				
+				#search_edit_posts {
+				max-width: 100%; 
+			}
+			}
+		</style>
     </head>
     <body>
 		<nav class="navbar navbar-toggleable-md fixed-top navbar-light jibb-navbar-color">
@@ -60,13 +133,13 @@
 					<img style="height: 40px;" src="/img/jibbcrew-big-jibb.svg">
 				</a>
 				
-				<div id="side-nav" class="jibb-side-nav">
+				<div id="side-nav" class="jibb-side-nav manager">
 				  	<a href="javascript:void(0)" class="close-btn" onclick="closeSideNav()">&times;</a>
 				  	<a href="/manager/dashboard.html">dashboard</a>
-                   	<a href="/manager/manage-posts.html">manage posts</a>
-                    <a href="/manager/manage-users.html">manage users</a>
-                    <a href="/manager/manage-shop.html">manage shop</a>
-					<a href="/manager/manage-orders.html">manage orders</a>
+                   	<a href="/manager/manage-posts.html">posts</a>
+                    <a href="/manager/manage-users.html">users</a>
+                    <a href="/manager/manage-shop.html">shop</a>
+					<a href="/manager/manage-orders.html">orders</a>
 					<a href="#" onclick="logout()" >logout</a>
 				</div>
 				
@@ -85,8 +158,8 @@
         <div class="container jibb-outer-container">
 			
 			<div class="sidebar-module" style="overflow: hidden;">
-				<h3 id="title" style="float: left;">edit posts</h3>
-				<h6 style="float:right; margin-top: 10px;">User: <span id="user-name"></span></h6>
+				<h3 id="title" style="float: left;">manage posts</h3>
+				<input class="ui-autocomplete-input form-control input-lg" type="text" id="search_edit_posts" placeholder="search">
 			</div>
 			<div class="jibb-container">
 				<div class="jibb-inner-container">
@@ -99,6 +172,8 @@
 			<div class="jibb-inner-container">
 				<div id="result"></div>
 			</div>
+			
+			<h6 style="float:right; margin-top: 10px;">logged in as: <span id="user-name"></span></h6>
         </div>
         
         <!-- Modal -->
@@ -114,6 +189,13 @@
                           <div id="edit-post" class="form-group">
                               <input type='text' class='form-control' id='post-title' value=''>
                               <br/>
+							  <div id="status-container">
+								  <select id="post-status" class='form-control'>
+									  <option value="draft">Draft</option>
+									  <option value="published">Published</option>
+								  </select>
+								  <br/>
+							  </div>
                               <input type='text' class='form-control' id='post-description' value=''>
                               <br/>
                               <textarea class='form-control' rows='14' id='post-content' name='post-content'></textarea>

@@ -1,29 +1,21 @@
 $(document).on('click','.navbar-collapse.in',function(e) {
-
     if( $(e.target).is('a') && ( $(e.target).attr('class') != 'dropdown-toggle' ) ) {
         $(this).collapse('hide');
     }
 
 });
 
-function openSideNav() 
-{
+function openSideNav() {
 	
-	if($(window).width() < 768)
-	{
-
+	if($(window).width() < 768) {
 		document.getElementById("side-nav").style = "width: 100%;";
 	}
-	else
-	{
-
-		document.getElementById("side-nav").style = "width: 300px;";
+	else{
+		document.getElementById("side-nav").style = "width: 320px;";
 	}
 }
 
-function closeSideNav() 
-{
-	
+function closeSideNav() {
 	document.getElementById("side-nav").style = "width: 0px;";
 }
 
@@ -34,9 +26,8 @@ routie({
 	'': function() {
         //console.log(window.location.hash);
         
-        ga('set', 'page', '/' + window.location.hash);
-        ga('send', 'pageview');
-               
+//        gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});       
+		
         post_type = 'all';
         
         $("#title").html("");
@@ -50,8 +41,7 @@ routie({
     'videos': function() {
         //console.log(window.location.hash);
         
-        ga('set', 'page', '/' + window.location.hash);
-        ga('send', 'pageview');
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
         
         //set post_type
         post_type = 'video';
@@ -67,8 +57,7 @@ routie({
     'gallery': function() {
         //console.log(window.location.hash);
         
-        ga('set', 'page', '/' + window.location.hash);
-        ga('send', 'pageview');
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
                     
         //set post_type
         post_type = 'gallery';
@@ -84,8 +73,7 @@ routie({
     'contact': function() {
         //console.log(window.location.hash);
         
-        ga('set', 'page', '/' + window.location.hash);
-        ga('send', 'pageview');
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
                     
         //set post_type
         post_type = 'contact';
@@ -102,8 +90,7 @@ routie({
     },
     'shop': function() {
 		
-        ga('set', 'page', '/' + window.location.hash);
-        ga('send', 'pageview');
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
 
         $("#title").html("");
         
@@ -117,8 +104,7 @@ routie({
     },
     'shop/:item': function(item_slug) {
 		
-        ga('set', 'page', '/' + window.location.hash);
-        ga('send', 'pageview');
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
         
         getShopItem(item_slug);   
         
@@ -126,15 +112,13 @@ routie({
     'post/:slug': function(slug) {
         //console.log(window.location.hash);
         
-        ga('set', 'page', '/' + window.location.hash);
-        ga('send', 'pageview');
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
     
         getPost(slug);
     },
 	'cart': function() {
 		
-		ga('set', 'page', '/' + window.location.hash);
-        ga('send', 'pageview');
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
 		
 		$("#title").html("");
         
@@ -148,8 +132,7 @@ routie({
 	},
 	'checkout': function() {
 	
-		ga('set', 'page', '/' + window.location.hash);
-        ga('send', 'pageview');
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
 		
 		$("#title").html("");
         
@@ -163,6 +146,8 @@ routie({
 	},
     'login': function() {
         
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
+		
 		$('#title').html("");
         
         $('#title').html("login");
@@ -172,11 +157,11 @@ routie({
         $("#load-more-button").remove();
         
         $("#comments").remove();
-		
-        //window.location.href = "login.html";
     },
 	'new-user': function() {
         
+//		gtag('config', 'UA-62557010-1', {'page_path': '/' + window.location.hash});
+		
 		$('#title').html("");
         
         $('#title').html("new user");
@@ -186,8 +171,6 @@ routie({
         $("#load-more-button").remove();
         
         $("#comments").remove();
-		
-        //window.location.href = "login.html";
     },
 });
 
@@ -200,19 +183,22 @@ function getLogin()
 	var container_div = document.createElement('div');
 	container_div.style = "padding-top: 24px;";
 	
+	var inner_container_div = document.createElement('div');
+	inner_container_div.className = "d-flex justify-content-center align-content-center";
+	
+	var form_div = document.createElement('div');
+	form_div.style = "padding: 20px; border: 1px solid #ddd;";
+	
 	var form = document.createElement('form');
-//	form.className = "form-horizontal";
 	form.id = "form-login";
 	form.setAttribute('role', "form");
 	form.setAttribute('method', "post");
 	form.setAttribute('action', "login-router.php");
 	
-	var inner_div_1 = document.createElement('div');
-	inner_div_1.className = "form-group row"; //align-items-center justify-content-center
+	var group_1 = document.createElement('div');
+	group_1.className = "form-group";
 	
-	var col_div_1 = document.createElement('div');
-	col_div_1.className = "col-sm-8";
-	
+	//email
 	var input_1 = document.createElement('input');
 	input_1.className = "form-control";
 	input_1.setAttribute('type', "text");
@@ -220,16 +206,18 @@ function getLogin()
 	input_1.setAttribute('name', "email");
 	input_1.setAttribute('placeholder', "email");
 	
-	col_div_1.appendChild(input_1);
+	group_1.appendChild(input_1);
 	
-	inner_div_1.appendChild(col_div_1);
+	//email label
+	var label_1 = document.createElement('label');
+	label_1.setAttribute('for', "email");
 	
-	var inner_div_2 = document.createElement('div');
-	inner_div_2.className = "form-group row"; //align-items-center justify-content-center
+//	group_1.appendChild(label_1);
 	
-	var col_div_2 = document.createElement('div');
-	col_div_2.className = "col-sm-8";
+	var group_2 = document.createElement('div');
+	group_2.className = "form-group";
 	
+	//password
 	var input_2 = document.createElement('input');
 	input_2.className = "form-control";
 	input_2.setAttribute('type', "password");
@@ -237,21 +225,26 @@ function getLogin()
 	input_2.setAttribute('name', "password");
 	input_2.setAttribute('placeholder', "password");
 	
-	col_div_2.appendChild(input_2);
+	group_2.appendChild(input_2);
 	
-	inner_div_2.appendChild(col_div_2);
+	//password label
+	var label_2 = document.createElement('label');
+	label_2.setAttribute('for', "password");
 	
-	var inner_div_3 = document.createElement('div');
-	inner_div_3.className = "form-group row"; //align-items-center justify-content-center
+//	group_1.appendChild(label_2);
+	
+	var group_3 = document.createElement('div');
+	group_3.className = "row form-group";
 	
 	var col_div_3 = document.createElement('div');
-	col_div_3.className = "col-10 col-md-6";
-	col_div_3.innerHTML = "new user? <a href='#new-user'>create login here</a>";
+	col_div_3.className = "col-10 col-md-8";
+	col_div_3.style = 'padding-top: 5px;';
+	col_div_3.innerHTML = "new user? <a href='#new-user'>create login</a>";
 	
-	inner_div_3.appendChild(col_div_3);
+	group_3.appendChild(col_div_3);
 	
 	var col_div_4 = document.createElement('div');
-	col_div_4.className = "col-2 col-md-2";
+	col_div_4.className = "col-2 col-md-4";
 	
 	var input_3 = document.createElement('input');
 	input_3.className = "btn outline";
@@ -262,7 +255,7 @@ function getLogin()
 	
 	col_div_4.appendChild(input_3);
 	
-	inner_div_3.appendChild(col_div_4);
+	group_3.appendChild(col_div_4);
 	
 	//hidden
 	var input_4 = document.createElement('input');
@@ -270,12 +263,14 @@ function getLogin()
 	input_4.setAttribute('name', "route");
 	input_4.setAttribute('value', "login");
 	
-	form.appendChild(inner_div_1);
-	form.appendChild(inner_div_2);
-	form.appendChild(inner_div_3);
+	form.appendChild(group_1);
+	form.appendChild(group_2);
+	form.appendChild(group_3);
 	form.appendChild(input_4);
 	
-	container_div.appendChild(form);
+	form_div.appendChild(form);
+	inner_container_div.appendChild(form_div);
+	container_div.appendChild(inner_container_div);
 	container_div.appendChild(document.createElement('br'));
 	
 	var error_div = document.createElement('div');
@@ -317,7 +312,7 @@ function getNewUser()
 	div.className = "news-item";
 	
 	var container_div = document.createElement('div');
-	container_div.style = "padding-top: 20px;";
+	container_div.style = "padding-top: 24px;";
 	
 	var inner_container_div = document.createElement('div');
 //	inner_container_div.className = "form-horizontal";
@@ -331,7 +326,7 @@ function getNewUser()
 	p1.setAttribute('for', "fullname");
 	
 	var col_div_1 = document.createElement('div');
-	col_div_1.className = "col-sm-10";
+	col_div_1.className = "col-sm-12";
 	
 	var input_1 = document.createElement('input');
 	input_1.className = "form-control";
@@ -353,7 +348,7 @@ function getNewUser()
 	p2.setAttribute('for', "email1");
 	
 	var col_div_2 = document.createElement('div');
-	col_div_2.className = "col-sm-10";
+	col_div_2.className = "col-sm-12";
 	
 	var input_2 = document.createElement('input');
 	input_2.className = "form-control";
@@ -371,7 +366,7 @@ function getNewUser()
 	inner_div_3.className = "form-group row";
 	
 	var col_div_3 = document.createElement('div');
-	col_div_3.className = "col-sm-10";
+	col_div_3.className = "col-sm-12";
 	
 	var input_3 = document.createElement('input');
 	input_3.className = "form-control";
@@ -392,7 +387,7 @@ function getNewUser()
 	p3.setAttribute('for', "password1");
 	
 	var col_div_4 = document.createElement('div');
-	col_div_4.className = "col-sm-10";
+	col_div_4.className = "col-sm-12";
 	
 	var input_4 = document.createElement('input');
 	input_4.className = "form-control";
@@ -409,7 +404,7 @@ function getNewUser()
 	inner_div_5.className = "form-group row";
 	
 	var col_div_5 = document.createElement('div');
-	col_div_5.className = "col-sm-10";
+	col_div_5.className = "col-sm-12";
 	
 	var input_5 = document.createElement('input');
 	input_5.className = "form-control";
@@ -426,7 +421,7 @@ function getNewUser()
 	inner_div_6.className = "form-group row";
 	
 	var col_div_6 = document.createElement('div');
-	col_div_6.className = "col-sm-10";
+	col_div_6.className = "col-sm-12";
 	
 	var input_6 = document.createElement('input');
 	input_6.className = "btn outline";

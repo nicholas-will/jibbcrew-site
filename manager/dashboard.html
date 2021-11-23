@@ -35,13 +35,13 @@
 					<img style="height: 40px;" src="/img/jibbcrew-big-jibb.svg">
 				</a>
 				
-				<div id="side-nav" class="jibb-side-nav">
+				<div id="side-nav" class="jibb-side-nav manager">
 				  	<a href="javascript:void(0)" class="close-btn" onclick="closeSideNav()">&times;</a>
 				  	<a href="/manager/dashboard.html">dashboard</a>
-                   	<a href="/manager/manage-posts.html">manage posts</a>
-                    <a href="/manager/manage-users.html">manage users</a>
-                    <a href="/manager/manage-shop.html">manage shop</a>
-					<a href="/manager/manage-orders.html">manage orders</a>
+                   	<a href="/manager/manage-posts.html">posts</a>
+                    <a href="/manager/manage-users.html">users</a>
+                    <a href="/manager/manage-shop.html">shop</a>
+					<a href="/manager/manage-orders.html">orders</a>
 					<a href="#" onclick="logout()" >logout</a>
 				</div>
 				
@@ -59,57 +59,60 @@
 		
         <div class="container jibb-outer-container">
 
-                <div class="sidebar-module" style="overflow: hidden;">
-                    <h3 id="title" style="float: left;">new post</h3>
-                    <h6 style="float:right; margin-top: 10px;">User: <span id="user-name"></span></h6>
-                </div>
-                <div class="jibb-container">
-                    <div class="jibb-inner-container">
-						<div style="min-height: 616px;">
-							<div class="form-group">
-								<input type="text" class="form-control" id="post-title" placeholder="title"> 
-							</div>
-							<form>
-								<div class="form-group row">
-									<div class="form-group col-md-4">
-										<label for="fileInput">image upload, post type</label>
-										<input type="file" name="fileInput" id="fileInput" class="form-control-file">
-									</div>
-									<div class="form-group col-md-2">
-										<input class="btn btn-secondary form-control" type="button" value="Upload" onclick="uploadFile()">
-									</div>
-									<div class="form-group col-md-2"> 
-										<select class="form-control" name="type" id="post-type">
-											<option value="news">News</option>
-											<option value="video">Video</option>
-											<option value="gallery">Gallery</option>
-											<option value="other">Other</option>
-										</select>
-									</div>
+			<div class="sidebar-module" style="overflow: hidden;">
+				<h3 id="title" style="float: left;">create post</h3>
+			</div>
+			<div class="jibb-container">
+				<div class="jibb-inner-container">
+					<div style="min-height: 616px;">
+						<div class="form-group">
+							<input type="text" class="form-control" id="post-title" placeholder="title"> 
+						</div>
+						<form>
+							<div class="form-group row">
+								<div class="form-group col-md-4">
+									<label for="fileInput">image upload</label>
+									<input type="file" name="fileInput" id="fileInput" class="form-control-file">
 								</div>
-							</form>
-							<div class="form-group">
-								<input type="text" class="form-control" id="post-description" placeholder="description"> 
+								<div class="form-group col-md-2">
+									<br/>
+									<input style='margin-top: 8px;' class="btn btn-secondary form-control" type="button" value="Upload" onclick="uploadFile()">
+								</div>
+								<div class="form-group col-md-2"> 
+									<label for="post-type">post type</label>
+									<select class="form-control" name="type" id="post-type">
+										<option value="news">News</option>
+										<option value="video">Video</option>
+										<option value="gallery">Gallery</option>
+										<option value="other">Other</option>
+									</select>
+								</div>
 							</div>
-							<div class="form-group">
-								<label for="post-content">type post below, html is allowed</label>
-							<textarea class="form-control" rows="12" id="post-content" name="content"></textarea>
-							</div>
-							
-							<div style="padding-top: 8px;">
-								<button type="button" class="btn btn-secondary" onclick="addVideoCode()">Video</button>
-								<button type="button" class="btn btn-secondary" onclick="addImageCode()">Image</button>
-								<button type="button" class="btn outline" onclick="addPost()" style="float: right;">Post</button>
+						</form>
+						<div class="form-group">
+							<input type="text" class="form-control" id="post-description" placeholder="description"> 
+						</div>
+						<div class="form-group">
+							<label for="post-content">type post below, html is allowed</label>
+						<textarea class="form-control" rows="12" id="post-content" name="content"></textarea>
+						</div>
+
+						<div style="padding-top: 8px;">
+							<button type="button" class="btn btn-secondary" onclick="addVideoCode('youtube')">Video</button>
+							<button type="button" class="btn btn-secondary" onclick="addImageCode()">Image</button>
+							<div style="float: right;">
+								<button type="button" class="btn default" onclick="addPost('draft')">Save Draft</button>
+								<button type="button" class="btn outline" onclick="addPost('published')">Post</button>
 							</div>
 						</div>
-                    </div>
-					<div class="jibb-inner-container">
-                    	<div id="result"></div>
-                	</div>
-                </div>
-                
-                <div style="float: right; margin-right: 8px;"><h4></h4></div>
+					</div>
+				</div>
+				<div class="jibb-inner-container">
+					<div id="result"></div>
+				</div>
+			</div>
 
+			<h6 style="float:right; margin-top: 10px;">logged in as: <span id="user-name"></span></h6>
         </div>
     </body>
 </html>

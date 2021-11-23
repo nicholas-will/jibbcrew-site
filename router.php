@@ -50,6 +50,10 @@ class router
             case 'get-posts-to-edit' :
                 $this->getPostsToEdit();
                 break;
+				
+			case 'get-search-posts-to-edit' :
+                $this->getSearchPostsToEdit();
+                break;
                 
             case 'get-post-to-edit' :
                 $this->getPostToEdit();
@@ -97,22 +101,22 @@ class router
         {
 
             case 'video' :
-                $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `type` = 'video' ORDER BY `id` DESC LIMIT :start, 5");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `type` = 'video' AND `status` = 'published' ORDER BY `id` DESC LIMIT :start, 5");
                 $query->bindParam(':start', intval(trim($start)));
                 break;
                 
             case 'gallery' :
-                $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `type` = 'gallery' ORDER BY `id` DESC LIMIT :start, 5");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `type` = 'gallery' AND `status` = 'published' ORDER BY `id` DESC LIMIT :start, 5");
                 $query->bindParam(':start', intval(trim($start)));
                 break;
                 
             case 'all' :
-                $query = $this->dbh->prepare("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT :start, 5");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `status` = 'published' ORDER BY `id` DESC LIMIT :start, 5");
                 $query->bindParam(':start', intval(trim($start)));
                 break;
                 
             default :
-                $query = $this->dbh->prepare("SELECT * FROM `posts` ORDER BY `id` DESC LIMIT :start, 5");
+                $query = $this->dbh->prepare("SELECT * FROM `posts` WHERE `status` = 'published' ORDER BY `id` DESC LIMIT :start, 5");
                 $query->bindParam(':start', intval(trim($start)));
         }
 
@@ -153,7 +157,7 @@ class router
 		
 		$search_term = $_GET['term']."%";
 		
-		$query = $this->dbh->prepare("SELECT title, slug FROM `posts` WHERE `title` LIKE :term ORDER BY `title` ASC");
+		$query = $this->dbh->prepare("SELECT title, slug FROM `posts` WHERE `title` LIKE :term AND `status` = 'published' ORDER BY `title` ASC");
         $query->bindParam(':term', $search_term);
         $query->execute();
 
@@ -248,12 +252,13 @@ class router
         $type = $_POST['type'];
         $date = date('Y-m-d H:i:s');
         $title = $_POST['title'];
+        $status = $_POST['status'];
         $slug = $this->slug($title);
 
         $name = $this->getUserName($this->dbh);
 
-        $query = $this->dbh->prepare("INSERT INTO posts (name, title, type, content, slug, timestamp, description)
-        VALUES (:name, :title, :type, :content, :slug, :date, :description)");
+        $query = $this->dbh->prepare("INSERT INTO posts (name, title, type, content, slug, timestamp, description, status)
+        VALUES (:name, :title, :type, :content, :slug, :date, :description, :status)");
 
         $query->bindParam(':name', $name);
         $query->bindParam(':title', $title);
@@ -262,11 +267,19 @@ class router
         $query->bindParam(':slug', $slug);
         $query->bindParam(':date', $date);
         $query->bindParam(':description', $description);
+        $query->bindParam(':status', $status);
 
         if($query->execute())
         {
+            if($status == 'published')
+			{
+				echo "successfully added post.";
+			}
+			else
+			{
+				echo "successfully added draft.";
+			}
             
-            echo "successfully added post.";
         }
         else 
         {
@@ -305,6 +318,7 @@ class router
         //$type = $_POST['type'];
         $date = date('Y-m-d H:i:s');
         $title = $_POST['title'];
+		$status = $_POST['status'];
         $description = $_POST['description'];
         //$name = getUserName($dbh);
         $id = $_POST['id'];
@@ -312,10 +326,11 @@ class router
 
         $this->dbh->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
-        $query = $this->dbh->prepare("UPDATE `posts` SET `title` = :title, `content` = :content, `slug` = :slug, `timestamp` = :date, `description` = :description WHERE `id` = :id LIMIT 1");
+        $query = $this->dbh->prepare("UPDATE `posts` SET `title` = :title, `content` = :content, `slug` = :slug, `timestamp` = :date, `description` = :description, `status` = :status WHERE `id` = :id LIMIT 1");
 
         //$query->bindParam(':name', $name);
         $query->bindParam(':title', $title);
+        $query->bindParam(':status', $status);
         $query->bindParam(':description', $description);
         //$query->bindParam(':type', $type);
         $query->bindParam(':content', $content);
@@ -372,13 +387,61 @@ class router
                     'stripped_content' => str_replace(array("<", "</", ">"), " ", $row['content']),
                     'content' => $row['content'],
                     'type' => $row['type'],
-                    'timestamp' => $row['timestamp']
+                    'timestamp' => $row['timestamp'],
+					'status' => $row['status']
             );
         }
         
         header ("Content-type: application/json");
         echo json_encode($post_data);
     }
+	
+	private function getSearchPostsToEdit()
+	{
+		
+		//todo: same as getSearchPosts but returns id of searched posts
+		//prevent direct access
+		$is_ajax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) AND
+		strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+		
+		if(!$is_ajax) 
+		{
+		  $user_error = 'Access denied';
+		  trigger_error($user_error, E_USER_ERROR);
+		}
+		
+		$search_term = $_GET['term']."%";
+		
+		$query = $this->dbh->prepare("SELECT title, slug, id FROM `posts` WHERE `title` LIKE :term ORDER BY `title` ASC");
+        $query->bindParam(':term', $search_term);
+        $query->execute();
+
+		$count = $query->rowCount();
+		
+        $query->setFetchMode(PDO::FETCH_ASSOC);
+		
+		//generate post title data array
+		$post_title_data = array();
+
+		if($count > 0)
+		{
+			
+    		while($row = $query->fetch())
+			{
+				
+				$data[] = array(
+					'label' => $row['title'],
+//					'id' => $row['id'],
+//					'slug' => $row['slug'],
+					'value' => $row['id']
+				);
+    		}
+		}
+
+		// Return results as json encoded array
+		header ("Content-type: application/json");
+		echo json_encode($data);
+	}
     
     private function getPostToEdit()
     {
@@ -403,7 +466,8 @@ class router
                     'title' => $row['title'],
                     'description' => ($row['description'] ?: ""),
                     'content' => $row['content'],
-                    'type' => $row['type']
+                    'type' => $row['type'],
+					'status' => $row['status']
         );
         
         header ("Content-type: application/json");
@@ -598,7 +662,7 @@ class router
             setcookie('user_id', '', time() - 9999999); // empty value and old timestamp
         }
 
-        header("Location: /#login"); // Redirecting To Home Page
+        header("Location: /"); // Redirecting To Home Page
     }
 }
 

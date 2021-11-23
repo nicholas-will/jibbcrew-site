@@ -1,7 +1,8 @@
 body {
     font-family: Helvetica Neue, Calibri, Helvetica, Arial, sans-serif;
-	padding-top: 84px; 
-	margin-bottom: 60px;
+	padding-top: 68px; 
+	margin-bottom: 8px;
+	background: #ededed;
 }
 
 a {
@@ -13,11 +14,16 @@ a:hover {
 }
 
 .jibb-navbar-color {
-    background-color: white;
+    background-color: #ededed;
 }
 
-.jibb-navbar-brand {
-	padding-left: 44%;
+.jibb-secondary-header {
+	overflow: hidden; 
+	padding-top: 12px; 
+	padding-bottom: 8px; 
+	background: #fff; 
+	z-index: 100; 
+	top: 70px;
 }
 
 .news-item {
@@ -144,7 +150,7 @@ a:hover {
 .jibb-menu-icon {
 	position: relative;
 	float: right;
-	padding: 9px 10px;
+	padding: 12px 10px;
 	margin-top: 7px;
 	margin-right: 15px;
 	margin-bottom: 8px;
@@ -197,11 +203,15 @@ a:hover {
 .jibb-side-nav a {
 	padding-left: 40px;
 	text-decoration: none;
-	font-size: 50px;
+	font-size: 40px;
 	font-weight: 600;
 	color: #fff;
 	display: block;
 	transition: 0.3s;
+}
+
+.jibb-side-nav.manager a {
+	font-size: 40px;
 }
 
 .jibb-side-nav a:hover {
@@ -227,9 +237,9 @@ a:hover {
 }
 
 .jibb-search-box {
-	margin-left: 40px; 
+	margin: 0 auto;
 	margin-top: 26px; 
-	max-width: 220px;
+	max-width: 246px;
 }
 
 .card-block {
@@ -240,6 +250,12 @@ a:hover {
 
 .card-text {
 	font-size: 12px;
+}
+
+.img-fluid {
+	max-width: 960px;
+	width: 100%;
+	height: auto;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -256,28 +272,19 @@ a:hover {
 */
 }
 
-@media only screen and (max-width: 768px) {
-/*
-	.ui-menu {
-		max-width: 220px;
-	}
-*/
 
-/*
-	.jibb-search-box {
-		max-width: 220px;
+@media only screen and (max-width: 768px){
+	.jibb-secondary-header {
+		top: 64px;
 	}
-*/
-}
-
-@media (max-width: 768px){
+	
 	.jibb-menu-icon {
 		display: none;
 	}
 
 	.jibb-side-nav {
 		text-align: center;
-		padding-top: 60px; 
+		padding-top: 100px; 
 	}
 	
 	.jibb-side-nav a {
@@ -286,8 +293,15 @@ a:hover {
 	}
 	
 	.jibb-side-nav .close-btn {
-		right: 10px;
-    	margin-top: -12px;
+		right: 12px;
+    	margin-top: -8px;
+	}
+}
+
+@media only screen and (max-width: 600px) {
+	.jibb-secondary-header {
+		top: 60px;
+/*		background: #ededed;*/
 	}
 }
 
@@ -354,25 +368,33 @@ a:hover {
 	.navbar-toggle { 
 		margin-right: 5px;
 	}
-	
-	.jibb-navbar-brand {
-		padding-left: 42.5%;
-	}
 }
 
 @media only screen and (max-width: 480px) {
+	body {
+		padding-top: 64px;
+		background: #fff;
+	}
+	
 	.jibb-navbar-container {
-		margin-left: 0;
-        margin-right: -18px;
+		margin-left: -8px;
+        margin-right: -8px;
 	}
 	
-	.jibb-search-box {
-		margin-left: 110px; 
+	.jibb-navbar-color {
+		background-color: #fff;
 	}
 	
+	.jibb-menu-icon-v4 {
+		margin-right: -10px;
+	}
+	
+	
+/*
 	.jibb-navbar-brand {
 		padding-left: 35%;
 	}
+*/
 	
     .row {
         padding: 0px;
@@ -388,15 +410,5 @@ a:hover {
 	
 	.table td, .table th {
 		padding: .25rem;
-	}
-}
-
-@media only screen and (max-width: 375px) {
-	.jibb-navbar-brand {
-		padding-left: 32%;
-	}
-	
-	.jibb-search-box {
-		margin-left: 84px; 
 	}
 }
